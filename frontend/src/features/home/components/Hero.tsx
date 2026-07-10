@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import TripPlannerCard from "./TripPlannerCard";
 import heroImage from "../../../assets/images/hero.jpg";
 
@@ -38,13 +39,19 @@ export default function Hero() {
           </p>
 
           <div className="mt-10 flex flex-wrap gap-4">
-            <button className="rounded-xl bg-emerald-600 px-7 py-4 font-semibold text-white transition hover:scale-105 hover:bg-emerald-700">
+            <Link
+              to="/planner"
+              className="rounded-xl bg-emerald-600 px-7 py-4 font-semibold text-white transition hover:scale-105 hover:bg-emerald-700"
+            >
               Start Planning →
-            </button>
+            </Link>
 
-            <button className="rounded-xl border border-white/40 bg-white/10 px-7 py-4 font-semibold text-white backdrop-blur-md transition hover:bg-white/20">
+            <Link
+              to="/destinations"
+              className="rounded-xl border border-white/40 bg-white/10 px-7 py-4 font-semibold text-white backdrop-blur-md transition hover:bg-white/20"
+            >
               Explore Destinations
-            </button>
+            </Link>
           </div>
         </motion.div>
 
