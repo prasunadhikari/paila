@@ -32,7 +32,7 @@ export default function ItineraryPage() {
         "https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=1200",
       weather: "22°C Cloudy",
       budget: "NPR 6,100",
-      travelTime: "6–7 Hours",
+      travelTime: "6-7 Hours",
       activities: [
         "Drive to Pokhara",
         "Boat ride on Phewa Lake",
@@ -126,7 +126,7 @@ export default function ItineraryPage() {
 
           <div className="space-y-12">
 
-            {itinerary.map((day, index) => (
+            {itinerary.map((day) => (
               <div key={day.day} className="relative md:pl-20">
 
                 {/* Timeline Dot */}
