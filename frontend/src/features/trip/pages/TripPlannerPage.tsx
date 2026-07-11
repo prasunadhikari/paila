@@ -1,100 +1,121 @@
 import { useNavigate } from "react-router-dom";
 
+import PlannerInput from "../components/PlannerInput";
+import PlannerSelect from "../components/PlannerSelect";
+import InterestChip from "../components/InterestChip";
+
 export default function TripPlannerPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-slate-100 px-6 py-12">
-      <div className="mx-auto max-w-5xl rounded-3xl bg-white p-10 shadow-2xl">
-        <h1 className="text-5xl font-bold text-slate-900">
-          ✨ Plan Your Nepal Trip
-        </h1>
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-emerald-50 px-6 py-12">
+      <div className="mx-auto max-w-6xl">
 
-        <p className="mt-3 text-lg text-slate-500">
-          Tell Paila about your journey and let AI build the perfect itinerary.
-        </p>
+        {/* Header */}
+        <div className="mb-12 text-center">
+          <h1 className="text-5xl font-black text-slate-900 md:text-6xl">
+            ✨ Plan Your Nepal Adventure
+          </h1>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          <input
-            className="rounded-xl border border-slate-300 p-4 outline-none focus:border-emerald-500"
-            placeholder="📍 Starting From"
-          />
-
-          <input
-            className="rounded-xl border border-slate-300 p-4 outline-none focus:border-emerald-500"
-            placeholder="📍 Destination"
-          />
-
-          <input
-            type="date"
-            className="rounded-xl border border-slate-300 p-4 outline-none focus:border-emerald-500"
-          />
-
-          <input
-            type="number"
-            className="rounded-xl border border-slate-300 p-4 outline-none focus:border-emerald-500"
-            placeholder="📅 Number of Days"
-          />
-
-          <input
-            type="number"
-            className="rounded-xl border border-slate-300 p-4 outline-none focus:border-emerald-500"
-            placeholder="💰 Budget (NPR)"
-          />
-
-          <input
-            type="number"
-            className="rounded-xl border border-slate-300 p-4 outline-none focus:border-emerald-500"
-            placeholder="👥 Travelers"
-          />
-
-          <select className="rounded-xl border border-slate-300 p-4 outline-none focus:border-emerald-500">
-            <option>🏨 Hotel Preference</option>
-            <option>Budget</option>
-            <option>Standard</option>
-            <option>Luxury</option>
-          </select>
-
-          <select className="rounded-xl border border-slate-300 p-4 outline-none focus:border-emerald-500">
-            <option>🚗 Transportation</option>
-            <option>Bus</option>
-            <option>Car</option>
-            <option>Flight</option>
-            <option>Bike</option>
-          </select>
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
+            Tell Paila about your journey and let AI create the perfect
+            personalized itinerary in seconds.
+          </p>
         </div>
 
-        <div className="mt-10">
-          <h2 className="mb-4 text-xl font-semibold">
-            ❤️ What are you interested in?
-          </h2>
+        {/* Planner Card */}
+        <div className="rounded-[32px] border border-white/50 bg-white/80 p-10 shadow-2xl backdrop-blur-xl">
 
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-            {[
-              "Adventure",
-              "Trekking",
-              "Culture",
-              "Wildlife",
-              "Photography",
-              "Food",
-            ].map((interest) => (
-              <label
-                key={interest}
-                className="flex cursor-pointer items-center gap-2 rounded-xl border border-slate-300 p-4 transition hover:border-emerald-500 hover:bg-emerald-50"
-              >
-                <input type="checkbox" />
-                {interest}
-              </label>
-            ))}
+          <div className="grid gap-6 md:grid-cols-2">
+
+            <PlannerInput
+              icon="📍"
+              placeholder="Starting From"
+            />
+
+            <PlannerInput
+              icon="🏔️"
+              placeholder="Destination"
+            />
+
+            <PlannerInput
+              icon="📅"
+              type="date"
+            />
+
+            <PlannerInput
+              icon="🗓️"
+              type="number"
+              placeholder="Trip Duration (Days)"
+            />
+
+            <PlannerInput
+              icon="💰"
+              type="number"
+              placeholder="Budget (NPR)"
+            />
+
+            <PlannerInput
+              icon="👥"
+              type="number"
+              placeholder="Travelers"
+            />
+
+            <PlannerSelect
+              icon="🏨"
+              options={[
+                "Hotel Preference",
+                "Budget",
+                "Standard",
+                "Luxury",
+              ]}
+            />
+
+            <PlannerSelect
+              icon="🚗"
+              options={[
+                "Transportation",
+                "Bus",
+                "Car",
+                "Flight",
+                "Bike",
+              ]}
+            />
+
           </div>
-        </div>
 
-        <button
-          onClick={() => navigate("/loading")}
-          className="mt-10 w-full rounded-2xl bg-emerald-600 py-5 text-xl font-bold text-white transition hover:bg-emerald-700"
-        >
-          ✨ Generate AI Trip
-        </button>
+          {/* Interests */}
+          <div className="mt-12">
+            <h2 className="mb-6 text-2xl font-bold text-slate-900">
+              ❤️ Interests
+            </h2>
+
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+
+              <InterestChip icon="⛰️" label="Trekking" />
+              <InterestChip icon="🏕️" label="Camping" />
+              <InterestChip icon="📸" label="Photography" />
+              <InterestChip icon="🦏" label="Wildlife" />
+              <InterestChip icon="🛕" label="Culture" />
+              <InterestChip icon="🍜" label="Food" />
+              <InterestChip icon="🚵" label="Adventure" />
+              <InterestChip icon="🌅" label="Nature" />
+              <InterestChip icon="🧘" label="Relaxation" />
+
+            </div>
+          </div>
+
+          {/* Button */}
+          <div className="mt-14">
+            <button
+              onClick={() => navigate("/loading")}
+              className="w-full rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 py-5 text-xl font-bold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl"
+            >
+              ✨ Generate My AI Trip
+            </button>
+          </div>
+
+        </div>
       </div>
     </div>
   );
