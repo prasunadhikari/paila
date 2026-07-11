@@ -8,52 +8,39 @@ import {
   Car,
   Lightbulb,
 } from "lucide-react";
+import mustang from "../../../assets/destinations/mustang.jpg";
+import pokhara from "../../../assets/destinations/pokhara.jpg";
+import chitwan from "../../../assets/destinations/chitwan.jpg";
+import lumbini from "../../../assets/destinations/lumbini.jpg";
+import rara from "../../../assets/destinations/rara.jpg";
+import everest from "../../../assets/destinations/everest.jpg";
+import { useLocation } from "react-router-dom";
+import TripMap from "../../../components/TripMap";
 
 export default function ItineraryPage() {
-  const itinerary = [
-    {
-      day: "Day 1",
-      location: "Kathmandu",
-      image:
-        "https://images.unsplash.com/photo-1605640840605-14ac1855827b?w=1200",
-      weather: "24°C Sunny",
-      budget: "NPR 4,200",
-      travelTime: "-",
-      activities: [
-        "Visit Kathmandu Durbar Square",
-        "Explore Swayambhunath",
-        "Dinner at Thamel",
-      ],
-    },
-    {
-      day: "Day 2",
-      location: "Pokhara",
-      image:
-        "https://images.unsplash.com/photo-1605649487212-47bdab064df7?w=1200",
-      weather: "22°C Cloudy",
-      budget: "NPR 6,100",
-      travelTime: "6-7 Hours",
-      activities: [
-        "Drive to Pokhara",
-        "Boat ride on Phewa Lake",
-        "Sunset at Lakeside",
-      ],
-    },
-    {
-      day: "Day 3",
-      location: "Mustang",
-      image:
-        "https://images.unsplash.com/photo-1627894483216-2138af692e32?w=1200",
-      weather: "12°C Cold",
-      budget: "NPR 8,200",
-      travelTime: "5 Hours",
-      activities: [
-        "Explore Lower Mustang",
-        "Photography",
-        "Local Coffee & Culture",
-      ],
-    },
-  ];
+  const location = useLocation();
+
+  const trip = location.state?.trip?.trip;
+  const destination = trip.summary.destination.toLowerCase();
+
+let heroImage = mustang;
+
+if (destination.includes("pokhara")) heroImage = pokhara;
+else if (destination.includes("chitwan")) heroImage = chitwan;
+else if (destination.includes("lumbini")) heroImage = lumbini;
+else if (destination.includes("rara")) heroImage = rara;
+else if (destination.includes("everest")) heroImage = everest;
+else if (destination.includes("mustang")) heroImage = mustang;
+
+  if (!trip) {
+    return (
+      <div className="flex min-h-screen items-center justify-center text-2xl font-bold">
+        No trip data found.
+      </div>
+    );
+  }
+
+  const itinerary = trip.days;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-emerald-50 px-6 py-12">
@@ -65,6 +52,7 @@ export default function ItineraryPage() {
           <div className="grid gap-8 p-10 lg:grid-cols-2">
 
             <div>
+
               <h1 className="text-5xl font-black text-white">
                 Your AI Trip is Ready
               </h1>
@@ -79,7 +67,7 @@ export default function ItineraryPage() {
                   <MapPin className="mb-3 h-7 w-7 text-white" />
                   <p className="text-sm text-emerald-100">Destination</p>
                   <h3 className="text-2xl font-bold text-white">
-                    Mustang
+                    {trip.summary.destination}
                   </h3>
                 </div>
 
@@ -87,7 +75,7 @@ export default function ItineraryPage() {
                   <Wallet className="mb-3 h-7 w-7 text-white" />
                   <p className="text-sm text-emerald-100">Budget</p>
                   <h3 className="text-2xl font-bold text-white">
-                    NPR 18,500
+                    {trip.summary.budget}
                   </h3>
                 </div>
 
@@ -95,7 +83,7 @@ export default function ItineraryPage() {
                   <Clock3 className="mb-3 h-7 w-7 text-white" />
                   <p className="text-sm text-emerald-100">Duration</p>
                   <h3 className="text-2xl font-bold text-white">
-                    3 Days
+                    {trip.summary.days} Days
                   </h3>
                 </div>
 
@@ -103,50 +91,45 @@ export default function ItineraryPage() {
                   <CloudSun className="mb-3 h-7 w-7 text-white" />
                   <p className="text-sm text-emerald-100">Weather</p>
                   <h3 className="text-2xl font-bold text-white">
-                    Sunny
+                    {trip.summary.weather}
                   </h3>
                 </div>
 
               </div>
+
             </div>
 
             <img
-              src="https://images.unsplash.com/photo-1627894483216-2138af692e32?w=1200"
-              alt="Mustang"
-              className="h-full min-h-[320px] w-full rounded-3xl object-cover"
-            />
+  src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80"
+  alt={trip.summary.destination}
+  className="h-full min-h-[320px] w-full rounded-3xl object-cover"
+/>
 
           </div>
+
         </div>
-                {/* Timeline */}
+
+        {/* Timeline */}
+
         <div className="relative mt-16">
 
-          {/* Vertical Line */}
           <div className="absolute left-8 top-0 hidden h-full w-1 rounded-full bg-emerald-200 md:block"></div>
 
           <div className="space-y-12">
 
-            {itinerary.map((day) => (
+            {itinerary.map((day: any) => (
               <div key={day.day} className="relative md:pl-20">
 
-                {/* Timeline Dot */}
                 <div className="absolute left-4 top-10 hidden h-8 w-8 rounded-full border-4 border-white bg-emerald-500 shadow-lg md:block"></div>
 
-                <div className="overflow-hidden rounded-3xl bg-white shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
-
-                  <img
-                    src={day.image}
-                    alt={day.location}
-                    className="h-72 w-full object-cover"
-                  />
-
-                  <div className="p-8">
+                <div className="overflow-hidden rounded-3xl bg-white shadow-xl">
+                                    <div className="p-8">
 
                     <div className="flex flex-wrap items-center justify-between gap-4">
 
                       <div>
                         <p className="font-semibold text-emerald-600">
-                          {day.day}
+                          Day {day.day}
                         </p>
 
                         <h2 className="mt-2 flex items-center gap-2 text-3xl font-bold text-slate-900">
@@ -182,7 +165,7 @@ export default function ItineraryPage() {
                         <div>
                           <Clock3 className="mx-auto h-6 w-6 text-cyan-600" />
                           <p className="mt-2 text-sm text-slate-500">
-                            Travel
+                            Travel Time
                           </p>
 
                           <p className="font-semibold">
@@ -196,7 +179,7 @@ export default function ItineraryPage() {
 
                     <div className="mt-8 space-y-3">
 
-                      {day.activities.map((activity) => (
+                      {day.activities.map((activity: string) => (
                         <div
                           key={activity}
                           className="rounded-xl bg-slate-50 px-5 py-4 transition hover:bg-emerald-50"
@@ -217,13 +200,25 @@ export default function ItineraryPage() {
           </div>
 
         </div>
-                {/* Bottom Section */}
+<div className="mt-16">
+  <h2 className="mb-6 text-3xl font-bold text-slate-900">
+    📍 Trip Location
+  </h2>
+
+  <TripMap
+    lat={28.3949}
+    lng={84.124}
+    destination={trip.summary.destination}
+  />
+</div>
+        {/* Bottom Section */}
+
         <div className="mt-16 grid gap-8 lg:grid-cols-2">
 
-          {/* Trip Details */}
           <div className="space-y-6">
 
             <div className="rounded-3xl bg-white p-8 shadow-xl">
+
               <div className="flex items-center gap-3">
                 <Hotel className="h-7 w-7 text-emerald-600" />
                 <h2 className="text-2xl font-bold">
@@ -232,19 +227,21 @@ export default function ItineraryPage() {
               </div>
 
               <p className="mt-5 text-xl font-semibold">
-                Hotel Middle Path & Spa
+                {trip.hotels[0]?.name}
               </p>
 
               <p className="mt-2 text-slate-600">
-                ★★★★☆ • Pokhara
+                {trip.hotels[0]?.rating}
               </p>
 
-              <p className="mt-2 text-emerald-600 font-semibold">
-                NPR 2,500 / night
+              <p className="mt-2 font-semibold text-emerald-600">
+                {trip.hotels[0]?.price}
               </p>
+
             </div>
 
             <div className="rounded-3xl bg-white p-8 shadow-xl">
+
               <div className="flex items-center gap-3">
                 <Utensils className="h-7 w-7 text-orange-500" />
                 <h2 className="text-2xl font-bold">
@@ -253,14 +250,17 @@ export default function ItineraryPage() {
               </div>
 
               <ul className="mt-5 space-y-3 text-slate-600">
-                <li>• Thakali Set</li>
-                <li>• Fresh Mustang Apples</li>
-                <li>• Local Momos</li>
-                <li>• Newari Cuisine</li>
+
+                {trip.foods.map((food: string) => (
+                  <li key={food}>• {food}</li>
+                ))}
+
               </ul>
+
             </div>
 
             <div className="rounded-3xl bg-white p-8 shadow-xl">
+
               <div className="flex items-center gap-3">
                 <Car className="h-7 w-7 text-cyan-600" />
                 <h2 className="text-2xl font-bold">
@@ -269,34 +269,42 @@ export default function ItineraryPage() {
               </div>
 
               <div className="mt-6 space-y-2 text-lg font-medium">
-                <p>📍 Kathmandu</p>
-                <p className="pl-3 text-slate-400">↓ 6–7 hrs</p>
-                <p>📍 Pokhara</p>
-                <p className="pl-3 text-slate-400">↓ 5 hrs</p>
-                <p>📍 Mustang</p>
+
+                {trip.days.map((d: any, index: number) => (
+                  <div key={index}>
+                    <p>{d.location}</p>
+                    {index !== trip.days.length - 1 && (
+                      <p className="pl-3 text-slate-400">
+                        ↓ {d.travelTime}
+                      </p>
+                    )}
+                  </div>
+                ))}
+
               </div>
+
             </div>
 
           </div>
+                    {/* AI Tips */}
 
-          {/* AI Tips */}
           <div className="rounded-3xl bg-gradient-to-br from-emerald-600 to-cyan-500 p-10 text-white shadow-2xl">
 
             <div className="flex items-center gap-3">
               <Lightbulb className="h-8 w-8" />
-
               <h2 className="text-3xl font-black">
                 AI Travel Tips
               </h2>
             </div>
 
             <ul className="mt-8 space-y-5 text-lg">
-              <li>✅ Carry warm clothes for Mustang.</li>
-              <li>✅ Start driving before 7 AM.</li>
-              <li>✅ Keep some cash for remote areas.</li>
-              <li>✅ Download offline maps.</li>
-              <li>✅ Roads may be dusty during summer.</li>
-              <li>✅ Drink plenty of water at higher altitude.</li>
+
+              {trip.tips.map((tip: string) => (
+                <li key={tip}>
+                  • {tip}
+                </li>
+              ))}
+
             </ul>
 
             <div className="mt-10 flex flex-wrap gap-4">
@@ -320,6 +328,7 @@ export default function ItineraryPage() {
         </div>
 
       </div>
+
     </div>
   );
 }

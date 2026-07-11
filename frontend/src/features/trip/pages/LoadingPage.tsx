@@ -1,13 +1,20 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function LoadingPage() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate("/itinerary");
+     console.log(location.state);
+
+        navigate("/itinerary", {
+          state: location.state,
+        }); navigate("/itinerary", {
+          state: location.state,
+        });
     }, 3000);
 
     return () => clearTimeout(timer);

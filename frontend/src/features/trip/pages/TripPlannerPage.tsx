@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import PlannerInput from "../components/PlannerInput";
 import PlannerSelect from "../components/PlannerSelect";
 import InterestChip from "../components/InterestChip";
+import { generateTrip } from "../../../services/trip.service";
 
 export default function TripPlannerPage() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function TripPlannerPage() {
         {/* Header */}
         <div className="mb-12 text-center">
           <h1 className="text-5xl font-black text-slate-900 md:text-6xl">
-            ✨ Plan Your Nepal Adventure
+             Plan Your Nepal Adventure
           </h1>
 
           <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
@@ -29,40 +30,40 @@ export default function TripPlannerPage() {
           <div className="grid gap-6 md:grid-cols-2">
 
             <PlannerInput
-              icon="📍"
+              icon=""
               placeholder="Starting From"
             />
 
             <PlannerInput
-              icon="🏔️"
+              icon=""
               placeholder="Destination"
             />
 
             <PlannerInput
-              icon="📅"
+              icon=""
               type="date"
             />
 
             <PlannerInput
-              icon="🗓️"
+              icon=""
               type="number"
               placeholder="Trip Duration (Days)"
             />
 
             <PlannerInput
-              icon="💰"
+              icon=""
               type="number"
               placeholder="Budget (NPR)"
             />
 
             <PlannerInput
-              icon="👥"
+              icon=""
               type="number"
               placeholder="Travelers"
             />
 
             <PlannerSelect
-              icon="🏨"
+              icon=""
               options={[
                 "Hotel Preference",
                 "Budget",
@@ -72,7 +73,7 @@ export default function TripPlannerPage() {
             />
 
             <PlannerSelect
-              icon="🚗"
+              icon=""
               options={[
                 "Transportation",
                 "Bus",
@@ -87,7 +88,7 @@ export default function TripPlannerPage() {
           {/* Interests */}
           <div className="mt-12">
             <h2 className="mb-6 text-2xl font-bold text-slate-900">
-              ❤️ Interests
+               Interests
             </h2>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -108,10 +109,34 @@ export default function TripPlannerPage() {
           {/* Button */}
           <div className="mt-14">
             <button
-              onClick={() => navigate("/loading")}
+              onClick={async () => {
+  try {
+    const trip = await generateTrip({
+      startingFrom: "Kathmandu",
+      destination: "Mustang",
+      days: 3,
+      budget: 20000,
+      travelers: 2,
+      hotel: "Standard",
+      transport: "Bus",
+      interests: ["Photography", "Nature"],
+    });
+
+    console.log(trip);
+
+    navigate("/loading", {
+  state: {
+    trip,
+  },
+});
+  } catch (error) {
+    console.error(error);
+    alert("Failed to generate trip.");
+  }
+}}
               className="w-full rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 py-5 text-xl font-bold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl"
             >
-              ✨ Generate My AI Trip
+               Generate My AI Trip
             </button>
           </div>
 
