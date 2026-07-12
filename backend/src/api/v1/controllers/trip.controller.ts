@@ -6,6 +6,13 @@ export async function generateTripController(
   res: Response
 ) {
   try {
+    // ==========================
+    // DEBUG: Incoming request
+    // ==========================
+    console.log("=========== REQUEST BODY ===========");
+    console.log(req.body);
+    console.log("====================================");
+
     const {
       startingFrom,
       destination,
@@ -27,9 +34,6 @@ VERY IMPORTANT RULES:
 - Use EXACTLY the destination provided by the user.
 - Use EXACTLY the starting location provided by the user.
 - Every itinerary MUST be based ONLY on those places.
-- If the destination is Pokhara, do NOT generate Mustang.
-- If the destination is Chitwan, do NOT generate Pokhara.
-- If the destination is Rara, do NOT generate Everest.
 - Never substitute another destination.
 
 Return ONLY valid JSON.
@@ -107,31 +111,34 @@ summary.startingFrom MUST be exactly "${startingFrom}"
 All day locations, hotels, foods, weather and tips must belong to "${destination}".
 `;
 
-   const trip = await generateTrip(prompt);
+    const trip = await generateTrip(prompt);
 
-   console.log("========== GEMINI RAW RESPONSE ==========");
-console.log(trip);
-console.log("=========================================");
+    // ==========================
+    // DEBUG: Gemini response
+    // ==========================
+    console.log("========== GEMINI RAW RESPONSE ==========");
+    console.log(trip);
+    console.log("=========================================");
 
-const parsedTrip = JSON.parse(trip);
+    const parsedTrip = JSON.parse(trip);
 
-res.json({
-  success: true,
-  trip: parsedTrip,
-});
+    res.json({
+      success: true,
+      trip: parsedTrip,
+    });
   } catch (error) {
     console.error(error);
 
-if (error instanceof Error) {
-  return res.status(500).json({
-    success: false,
-    message: error.message,
-  });
-}
+    if (error instanceof Error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
 
-return res.status(500).json({
-  success: false,
-  message: "Failed to generate trip.",
-});
+    return res.status(500).json({
+      success: false,
+      message: "Failed to generate trip.",
+    });
   }
 }
