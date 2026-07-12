@@ -109,6 +109,10 @@ All day locations, hotels, foods, weather and tips must belong to "${destination
 
    const trip = await generateTrip(prompt);
 
+   console.log("========== GEMINI RAW RESPONSE ==========");
+console.log(trip);
+console.log("=========================================");
+
 const parsedTrip = JSON.parse(trip);
 
 res.json({
