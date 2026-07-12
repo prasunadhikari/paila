@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/v1/trip";
+const API_URL = "https://paila-backend.onrender.com/api/v1/trip";
 
 export async function generateTrip(data: any) {
   const response = await fetch(`${API_URL}/generate`, {
