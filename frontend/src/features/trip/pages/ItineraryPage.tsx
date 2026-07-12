@@ -100,7 +100,7 @@ else if (destination.includes("mustang")) heroImage = mustang;
             </div>
 
             <img
-  src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80"
+  src={heroImage}
   alt={trip.summary.destination}
   className="h-full min-h-[320px] w-full rounded-3xl object-cover"
 />
