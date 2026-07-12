@@ -18,15 +18,26 @@ export async function generateTripController(
     } = req.body;
 
     const prompt = `
-You are an expert Nepal travel planner.
+You are an expert travel planner for Nepal.
+
+VERY IMPORTANT RULES:
+
+- NEVER change the destination.
+- NEVER change the starting location.
+- Use EXACTLY the destination provided by the user.
+- Use EXACTLY the starting location provided by the user.
+- Every itinerary MUST be based ONLY on those places.
+- If the destination is Pokhara, do NOT generate Mustang.
+- If the destination is Chitwan, do NOT generate Pokhara.
+- If the destination is Rara, do NOT generate Everest.
+- Never substitute another destination.
 
 Return ONLY valid JSON.
-
-Do NOT write markdown.
+Do NOT use markdown.
 Do NOT use triple backticks.
 Do NOT explain anything.
 
-Generate this exact structure:
+Generate exactly this structure:
 
 {
   "summary": {
@@ -36,7 +47,6 @@ Generate this exact structure:
     "budget": "",
     "weather": ""
   },
-
   "days": [
     {
       "day": 1,
@@ -51,7 +61,6 @@ Generate this exact structure:
       ]
     }
   ],
-
   "hotels": [
     {
       "name": "",
@@ -59,13 +68,11 @@ Generate this exact structure:
       "rating": ""
     }
   ],
-
   "foods": [
     "",
     "",
     ""
   ],
-
   "tips": [
     "",
     "",
@@ -73,16 +80,31 @@ Generate this exact structure:
   ]
 }
 
-Trip Details:
+USER INPUT
 
-Starting From: ${startingFrom}
+Starting Location: ${startingFrom}
+
 Destination: ${destination}
-Days: ${days}
+
+Number of Days: ${days}
+
 Budget: ${budget}
+
 Travelers: ${travelers}
-Hotel: ${hotel}
+
+Hotel Preference: ${hotel}
+
 Transport: ${transport}
-Interests: ${interests?.join(",")}
+
+Interests: ${interests?.join(", ")}
+
+Remember:
+
+summary.destination MUST be exactly "${destination}"
+
+summary.startingFrom MUST be exactly "${startingFrom}"
+
+All day locations, hotels, foods, weather and tips must belong to "${destination}".
 `;
 
    const trip = await generateTrip(prompt);
