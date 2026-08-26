@@ -1,313 +1,363 @@
+const unsplash = (query: string) =>
+  `https://images.unsplash.com/photo-${query}?auto=format&fit=crop&w=1200&q=85`;
+
 export const destinationImages: Record<string, string> = {
+  // =========================
+  // KATHMANDU VALLEY
+  // =========================
+
   kathmandu:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  pokhara:
-    "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=85",
-
-  chitwan:
-    "https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&w=1200&q=85",
-
-  mustang:
-    "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=1200&q=85",
-
-  everest:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  lumbini:
-    "https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=1200&q=85",
-
-  "rara-lake":
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85",
-
-  nagarkot:
-    "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=85",
-
-  bandipur:
-    "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=85",
-
-  janakpur:
-    "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1200&q=85",
-
-  gorkha:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  tansen:
-    "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=85",
-
-  bardia:
-    "https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&w=1200&q=85",
-
-  "koshi-tappu":
-    "https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&w=1200&q=85",
-
-  annapurna:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  langtang:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  manaslu:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  "mardi-himal":
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  "tilicho-lake":
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85",
-
-  gosaikunda:
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85",
-
-  phoksundo:
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85",
+    unsplash("1533130061792-64b345e4a833"),
 
   bhaktapur:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
+    unsplash("1605649487212-47bdab064df7"),
 
   patan:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  kirtipur:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  panauti:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  nuwakot:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  khokana:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  bungamati:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  "panch-pokhari":
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85",
-
-  "kapuche-lake":
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85",
-
-  "begnas-lake":
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85",
-
-  "phew-lake":
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85",
-
-  sarangkot:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  "world-peace-pagoda":
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  muktinath:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  marpha:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  "lo-manthang":
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  kalinchowk:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  daman:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  shivapuri:
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=85",
-
-  godavari:
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=85",
-
-  illam:
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85",
-
-  kanchenjunga:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  pathibhara:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  halesi:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  dhankuta:
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=85",
-
-  bhedetar:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  barahachhetra:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  dharan:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  biratnagar:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  mechinagar:
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=85",
+    unsplash("1605649487212-47bdab064df7"),
 
   lalitpur:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
+    unsplash("1605649487212-47bdab064df7"),
 
-  kakani:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
+  kirtipur:
+    unsplash("1605649487212-47bdab064df7"),
 
-  chisapani:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  sindhuli:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  sindhupalchok:
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=85",
-
-  dolakha:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  charikot:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  lamjung:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  "ghale-gaun":
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=85",
-
-  sikles:
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=85",
-
-  "tansen-palpa":
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  tilaurakot:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  palpa:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  kapilvastu:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  banke:
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=85",
-
-  nepalgunj:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  jumla:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  dolpo:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  simikot:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  khaptad:
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=85",
-
-  "api-base-camp":
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  badimalika:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  "dodhara-chandani":
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=85",
-
-  makalu:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  "sagarmatha-national-park":
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  "shey-phoksundo-national-park":
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
-
-  chitlang:
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=85",
-
-  markhu:
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85",
-
-  kulekhani:
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85",
-
-  namobuddha:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
-
-  dhulikhel:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
+  panauti:
+    unsplash("1605649487212-47bdab064df7"),
 
   "panauti-old-town":
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
+    unsplash("1605649487212-47bdab064df7"),
 
-  "tansen-bazaar":
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
+  nagarkot:
+    unsplash("1544735716-392fe2489ffa"),
 
-  "bardiya-national-park":
-    "https://images.unsplash.com/photo-1549366021-9f761d450615?auto=format&fit=crop&w=1200&q=85",
+  dhulikhel:
+    unsplash("1486911278844-a81c5267e227"),
 
-  "banke-national-park":
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=85",
+  namobuddha:
+    unsplash("1605649487212-47bdab064df7"),
+
+  kakani:
+    unsplash("1486911278844-a81c5267e227"),
+
+  chisapani:
+    unsplash("1441974231531-c6227db76b6e"),
+
+  shivapuri:
+    unsplash("1441974231531-c6227db76b6e"),
+
+  godavari:
+    unsplash("1441974231531-c6227db76b6e"),
 
   taudaha:
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85",
+    unsplash("1500530855697-b586d89ba3ee"),
 
   pharping:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
+    unsplash("1605649487212-47bdab064df7"),
 
   dakshinkali:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
+    unsplash("1605649487212-47bdab064df7"),
 
   sankhu:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
+    unsplash("1605649487212-47bdab064df7"),
+
+  khokana:
+    unsplash("1605649487212-47bdab064df7"),
+
+  bungamati:
+    unsplash("1605649487212-47bdab064df7"),
+
+  nuwakot:
+    unsplash("1486911278844-a81c5267e227"),
+
+  // =========================
+  // POKHARA / GANDAKI
+  // =========================
+
+  pokhara:
+    unsplash("1544735716-392fe2489ffa"),
+
+  sarangkot:
+    unsplash("1486911278844-a81c5267e227"),
+
+  "world-peace-pagoda":
+    unsplash("1605649487212-47bdab064df7"),
+
+  "begnas-lake":
+    unsplash("1500530855697-b586d89ba3ee"),
+
+  "phew-lake":
+    unsplash("1500530855697-b586d89ba3ee"),
+
+  "kapuche-lake":
+    unsplash("1500530855697-b586d89ba3ee"),
 
   "lekh-nath":
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85",
+    unsplash("1500530855697-b586d89ba3ee"),
+
+  bandipur:
+    unsplash("1544735716-392fe2489ffa"),
+
+  lamjung:
+    unsplash("1486911278844-a81c5267e227"),
+
+  "ghale-gaun":
+    unsplash("1441974231531-c6227db76b6e"),
+
+  sikles:
+    unsplash("1441974231531-c6227db76b6e"),
 
   kushma:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
+    unsplash("1486911278844-a81c5267e227"),
 
   baglung:
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=85",
+    unsplash("1441974231531-c6227db76b6e"),
 
   tatopani:
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=85",
+    unsplash("1441974231531-c6227db76b6e"),
 
-  "poon-hill":
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
+  // =========================
+  // ANNAPURNA / MUSTANG
+  // =========================
 
-  abc:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
+  annapurna:
+    unsplash("1486911278844-a81c5267e227"),
 
-  "thorong-la":
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
+  mustang:
+    unsplash("1605649487212-47bdab064df7"),
 
-  manang:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
+  muktinath:
+    unsplash("1486911278844-a81c5267e227"),
+
+  marpha:
+    unsplash("1486911278844-a81c5267e227"),
+
+  "lo-manthang":
+    unsplash("1486911278844-a81c5267e227"),
 
   jomsom:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
+    unsplash("1486911278844-a81c5267e227"),
 
   kagbeni:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
+    unsplash("1486911278844-a81c5267e227"),
 
-  "tansen-old-town":
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
+  manang:
+    unsplash("1486911278844-a81c5267e227"),
 
-  ramgram:
-    "https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=1200&q=85",
+  "thorong-la":
+    unsplash("1486911278844-a81c5267e227"),
 
-  "parsa-national-park":
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1200&q=85",
+  "poon-hill":
+    unsplash("1486911278844-a81c5267e227"),
+
+  abc:
+    unsplash("1486911278844-a81c5267e227"),
+
+  "mardi-himal":
+    unsplash("1486911278844-a81c5267e227"),
+
+  "tilicho-lake":
+    unsplash("1500530855697-b586d89ba3ee"),
+
+  // =========================
+  // EVEREST / KHUMBU
+  // =========================
+
+  everest:
+    unsplash("1486911278844-a81c5267e227"),
 
   sagarmatha:
-    "https://images.unsplash.com/photo-1486911278844-a81c5267e227?auto=format&fit=crop&w=1200&q=85",
+    unsplash("1486911278844-a81c5267e227"),
+
+  "sagarmatha-national-park":
+    unsplash("1486911278844-a81c5267e227"),
+
+  "gokyo-lakes":
+    unsplash("1500530855697-b586d89ba3ee"),
+
+  // =========================
+  // LANGTANG / BAGMATI
+  // =========================
+
+  langtang:
+    unsplash("1486911278844-a81c5267e227"),
+
+  gosaikunda:
+    unsplash("1500530855697-b586d89ba3ee"),
+
+  "panch-pokhari":
+    unsplash("1500530855697-b586d89ba3ee"),
+
+  sindhupalchok:
+    unsplash("1441974231531-c6227db76b6e"),
+
+  dolakha:
+    unsplash("1486911278844-a81c5267e227"),
+
+  charikot:
+    unsplash("1486911278844-a81c5267e227"),
+
+  kalinchowk:
+    unsplash("1486911278844-a81c5267e227"),
+
+  daman:
+    unsplash("1486911278844-a81c5267e227"),
+
+  chitlang:
+    unsplash("1441974231531-c6227db76b6e"),
+
+  markhu:
+    unsplash("1500530855697-b586d89ba3ee"),
+
+  kulekhani:
+    unsplash("1500530855697-b586d89ba3ee"),
+
+  // =========================
+  // CHITWAN / TERAI
+  // =========================
+
+  chitwan:
+    unsplash("1549366021-9f761d450615"),
+
+  "chitwan-national-park":
+    unsplash("1549366021-9f761d450615"),
+
+  bardia:
+    unsplash("1549366021-9f761d450615"),
+
+  "bardiya-national-park":
+    unsplash("1549366021-9f761d450615"),
+
+  "banke-national-park":
+    unsplash("1441974231531-c6227db76b6e"),
+
+  banke:
+    unsplash("1441974231531-c6227db76b6e"),
+
+  "parsa-national-park":
+    unsplash("1441974231531-c6227db76b6e"),
+
+  // =========================
+  // LUMBINI / WESTERN NEPAL
+  // =========================
+
+  lumbini:
+    unsplash("1605649487212-47bdab064df7"),
+
+  tilaurakot:
+    unsplash("1605649487212-47bdab064df7"),
+
+  kapilvastu:
+    unsplash("1605649487212-47bdab064df7"),
+
+  palpa:
+    unsplash("1533130061792-64b345e4a833"),
+
+  tansen:
+    unsplash("1533130061792-64b345e4a833"),
+
+  "tansen-palpa":
+    unsplash("1533130061792-64b345e4a833"),
+
+  "tansen-bazaar":
+    unsplash("1533130061792-64b345e4a833"),
+
+  "tansen-old-town":
+    unsplash("1533130061792-64b345e4a833"),
+
+  ramgram:
+    unsplash("1605649487212-47bdab064df7"),
+
+  // =========================
+  // KARNALI
+  // =========================
+
+  "rara-lake":
+    unsplash("1500530855697-b586d89ba3ee"),
+
+  rara:
+    unsplash("1500530855697-b586d89ba3ee"),
+
+  phoksundo:
+    unsplash("1500530855697-b586d89ba3ee"),
+
+  "shey-phoksundo-national-park":
+    unsplash("1486911278844-a81c5267e227"),
+
+  dolpo:
+    unsplash("1486911278844-a81c5267e227"),
+
+  jumla:
+    unsplash("1486911278844-a81c5267e227"),
+
+  simikot:
+    unsplash("1486911278844-a81c5267e227"),
+
+  khaptad:
+    unsplash("1441974231531-c6227db76b6e"),
+
+  badimalika:
+    unsplash("1486911278844-a81c5267e227"),
+
+  "api-base-camp":
+    unsplash("1486911278844-a81c5267e227"),
+
+  "dodhara-chandani":
+    unsplash("1441974231531-c6227db76b6e"),
+
+  // =========================
+  // KOSHI / EASTERN NEPAL
+  // =========================
+
+  ilam:
+    unsplash("1500530855697-b586d89ba3ee"),
+
+  illam:
+    unsplash("1500530855697-b586d89ba3ee"),
+
+  kanchenjunga:
+    unsplash("1486911278844-a81c5267e227"),
+
+  pathibhara:
+    unsplash("1486911278844-a81c5267e227"),
+
+  makalu:
+    unsplash("1486911278844-a81c5267e227"),
+
+  halesi:
+    unsplash("1605649487212-47bdab064df7"),
+
+  dhankuta:
+    unsplash("1441974231531-c6227db76b6e"),
+
+  bhedetar:
+    unsplash("1486911278844-a81c5267e227"),
+
+  barahachhetra:
+    unsplash("1605649487212-47bdab064df7"),
+
+  dharan:
+    unsplash("1605649487212-47bdab064df7"),
+
+  biratnagar:
+    unsplash("1605649487212-47bdab064df7"),
+
+  mechinagar:
+    unsplash("1441974231531-c6227db76b6e"),
+
+  "koshi-tappu":
+    unsplash("1549366021-9f761d450615"),
+
+  // =========================
+  // JANAKPUR / MADHESH
+  // =========================
+
+  janakpur:
+    unsplash("1548013146-72479768bada"),
+
+  // =========================
+  // OTHER
+  // =========================
+
+  gorkha:
+    unsplash("1533130061792-64b345e4a833"),
 };
