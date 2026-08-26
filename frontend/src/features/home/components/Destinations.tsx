@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import pokhara from "../../../assets/images/pokhara.jpg";
 import mustang from "../../../assets/images/mustang.jpg";
 import chitwan from "../../../assets/images/chitwan.jpg";
@@ -5,16 +7,19 @@ import chitwan from "../../../assets/images/chitwan.jpg";
 const places = [
   {
     name: "Pokhara",
+    slug: "pokhara",
     image: pokhara,
     description: "Lakes, mountains and unforgettable adventures.",
   },
   {
     name: "Mustang",
+    slug: "mustang",
     image: mustang,
     description: "Ancient Himalayan kingdom with breathtaking landscapes.",
   },
   {
     name: "Chitwan",
+    slug: "chitwan",
     image: chitwan,
     description: "Wildlife safaris, jungles and one-horned rhinos.",
   },
@@ -29,7 +34,7 @@ export default function Destinations() {
         </h2>
 
         <p className="mb-14 text-center text-lg text-slate-500">
-          Explore Nepal's most beautiful places with AI-powered trip planning.
+          Discover Nepal's most beautiful places, experiences and adventures.
         </p>
 
         <div className="grid gap-8 md:grid-cols-3">
@@ -56,9 +61,12 @@ export default function Destinations() {
                     {place.description}
                   </p>
 
-                  <button className="mt-5 rounded-xl bg-emerald-500 px-5 py-2 font-semibold text-white transition duration-300 hover:bg-emerald-600">
+                  <Link
+                    to={`/destinations/${place.slug}`}
+                    className="mt-5 inline-block rounded-xl bg-emerald-500 px-5 py-2 font-semibold text-white transition duration-300 hover:bg-emerald-600"
+                  >
                     Explore →
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
