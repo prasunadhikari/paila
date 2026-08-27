@@ -1,10 +1,7 @@
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 
-import tripRoutes from "./api/v1/routes/trip.routes.js";
-
-dotenv.config();
+import authRoutes from "./api/v1/routes/auth.routes.js";
 
 const app = express();
 
@@ -18,6 +15,6 @@ app.get("/", (_req, res) => {
   });
 });
 
-app.use("/api/v1/trip", tripRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 export default app;

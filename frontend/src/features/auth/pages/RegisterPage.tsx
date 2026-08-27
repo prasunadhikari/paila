@@ -1,7 +1,40 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import type { FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import heroImage from "../../../assets/images/hero.jpg";
+import { register } from "../../../api/auth";
 
 export default function RegisterPage() {
+  const navigate = useNavigate();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setError("");
+    setLoading(true);
+
+    try {
+      await register(name, email, password);
+
+      navigate("/login");
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Unable to create your account. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div
       className="relative flex min-h-screen items-center justify-center bg-cover bg-center px-6"
@@ -18,30 +51,50 @@ export default function RegisterPage() {
           Start your journey with Paila.
         </p>
 
-        <form className="mt-8 space-y-5">
+        {error && (
+          <div className="mt-5 rounded-xl border border-red-400/30 bg-red-500/10 p-3 text-center text-sm text-red-300">
+            {error}
+          </div>
+        )}
+
+        <form
+          className="mt-8 space-y-5"
+          onSubmit={handleSubmit}
+        >
           <input
             type="text"
             placeholder="Full Name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            required
             className="w-full rounded-xl border border-white/20 bg-white/10 p-4 text-white placeholder:text-slate-300 focus:border-emerald-400 focus:outline-none"
           />
 
           <input
             type="email"
             placeholder="Email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            required
             className="w-full rounded-xl border border-white/20 bg-white/10 p-4 text-white placeholder:text-slate-300 focus:border-emerald-400 focus:outline-none"
           />
 
           <input
             type="password"
             placeholder="Password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            required
+            minLength={6}
             className="w-full rounded-xl border border-white/20 bg-white/10 p-4 text-white placeholder:text-slate-300 focus:border-emerald-400 focus:outline-none"
           />
 
           <button
             type="submit"
-            className="w-full rounded-xl bg-emerald-500 py-4 font-semibold text-white hover:bg-emerald-600"
+            disabled={loading}
+            className="w-full rounded-xl bg-emerald-500 py-4 font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Create Account
+            {loading ? "Creating Account..." : "Create Account"}
           </button>
         </form>
 
