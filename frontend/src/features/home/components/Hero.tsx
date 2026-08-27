@@ -24,7 +24,7 @@ export default function Hero() {
         >
           {/* Badge */}
           <p className="mb-5 text-lg font-semibold text-emerald-300">
-          Your Nepal Travel Companion
+            Your Nepal Travel Companion
           </p>
 
           {/* Heading */}
@@ -46,7 +46,7 @@ export default function Hero() {
             <div className="flex flex-col gap-2 md:flex-row">
               {/* Destination Search */}
               <Link
-                to="/destinations"
+                to="/login"
                 className="flex flex-1 items-center rounded-xl bg-slate-50 px-5 py-4 transition hover:bg-slate-100"
               >
                 <span className="mr-3 text-xl">🔍</span>
@@ -64,7 +64,7 @@ export default function Hero() {
 
               {/* Explore Button */}
               <Link
-                to="/destinations"
+                to="/login"
                 className="flex items-center justify-center rounded-xl bg-emerald-600 px-8 py-4 font-semibold text-white transition hover:bg-emerald-700"
               >
                 Explore Nepal →
@@ -79,21 +79,21 @@ export default function Hero() {
             </span>
 
             <Link
-              to="/destinations/pokhara"
+              to="/login"
               className="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20"
             >
               Pokhara
             </Link>
 
             <Link
-              to="/destinations/mustang"
+              to="/login"
               className="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20"
             >
               Mustang
             </Link>
 
             <Link
-              to="/destinations/chitwan"
+              to="/login"
               className="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20"
             >
               Chitwan
@@ -103,7 +103,7 @@ export default function Hero() {
           {/* AI Chat */}
           <div className="mt-8">
             <Link
-              to="/chat"
+              to="/login"
               className="inline-flex items-center gap-2 text-sm font-semibold text-white/80 transition hover:text-emerald-300"
             >
               ✨ Ask Paila AI about your trip →

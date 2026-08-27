@@ -1,10 +1,12 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { destinations } from "../data/destinations";
 
 const ITEMS_PER_PAGE = 12;
 
 export default function DestinationsPage() {
+  const navigate = useNavigate();
+
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,6 +63,10 @@ export default function DestinationsPage() {
     setCurrentPage(1);
   };
 
+  const handleBack = () => {
+    navigate(-1);
+  };
+
   return (
     <main className="min-h-screen bg-slate-50">
       {/* HERO */}
@@ -69,12 +75,15 @@ export default function DestinationsPage() {
         <div className="absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-cyan-500/20 blur-3xl" />
 
         <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-32">
-          <Link
-            to="/"
+
+          {/* BACK BUTTON */}
+          <button
+            type="button"
+            onClick={handleBack}
             className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-white/80 backdrop-blur-md transition hover:bg-white/10 hover:text-white"
           >
-            ← Back to Home
-          </Link>
+            ← Back
+          </button>
 
           <div className="mt-12 max-w-4xl">
             <p className="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-400">
@@ -127,6 +136,7 @@ export default function DestinationsPage() {
               return (
                 <button
                   key={item}
+                  type="button"
                   onClick={() => handleCategory(item)}
                   className={`rounded-full px-5 py-2.5 text-sm font-semibold transition ${
                     active
@@ -175,6 +185,7 @@ export default function DestinationsPage() {
             </p>
 
             <button
+              type="button"
               onClick={clearFilters}
               className="mt-6 rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-700"
             >
@@ -243,6 +254,7 @@ export default function DestinationsPage() {
         {totalPages > 1 && (
           <div className="mt-14 flex flex-wrap items-center justify-center gap-2">
             <button
+              type="button"
               disabled={safePage === 1}
               onClick={() =>
                 setCurrentPage((page) => Math.max(page - 1, 1))
@@ -263,6 +275,7 @@ export default function DestinationsPage() {
               .map((page) => (
                 <button
                   key={page}
+                  type="button"
                   onClick={() => setCurrentPage(page)}
                   className={`h-11 w-11 rounded-xl text-sm font-bold transition ${
                     safePage === page
@@ -275,6 +288,7 @@ export default function DestinationsPage() {
               ))}
 
             <button
+              type="button"
               disabled={safePage === totalPages}
               onClick={() =>
                 setCurrentPage((page) =>
@@ -321,3 +335,4 @@ export default function DestinationsPage() {
     </main>
   );
 }
+

@@ -9,38 +9,86 @@ export async function registerController(
   res: Response
 ) {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, phone, password } = req.body;
 
-    if (!name || !email || !password) {
+    // Required fields
+    if (!name || !email || !phone || !password) {
       return res.status(400).json({
         success: false,
-        message: "Name, email and password are required",
+        message:
+          "Name, email, phone number and password are required",
       });
     }
 
-    if (password.length < 6) {
+    const cleanName = name.trim();
+    const cleanEmail = email.toLowerCase().trim();
+    const cleanPhone = phone.trim();
+
+    // Name validation
+    if (cleanName.length < 2) {
       return res.status(400).json({
         success: false,
-        message: "Password must be at least 6 characters long",
+        message: "Name must be at least 2 characters long",
       });
     }
 
+    if (cleanName.length > 50) {
+      return res.status(400).json({
+        success: false,
+        message: "Name cannot exceed 50 characters",
+      });
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(cleanEmail)) {
+      return res.status(400).json({
+        success: false,
+        message: "Please enter a valid email address",
+      });
+    }
+
+    // Phone validation
+    const phoneDigits = cleanPhone.replace(/\D/g, "");
+
+    if (phoneDigits.length < 7) {
+      return res.status(400).json({
+        success: false,
+        message: "Please enter a valid contact number",
+      });
+    }
+
+    // Password validation
+    if (password.length < 8) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Password must be at least 8 characters long",
+      });
+    }
+
+    // Check existing email
     const existingUser = await User.findOne({
-      email: email.toLowerCase().trim(),
+      email: cleanEmail,
     });
 
     if (existingUser) {
       return res.status(409).json({
         success: false,
-        message: "An account with this email already exists",
+        message:
+          "An account with this email already exists",
       });
     }
 
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 12);
 
+    // Create user
     const user = await User.create({
-      name: name.trim(),
-      email: email.toLowerCase().trim(),
+      name: cleanName,
+      email: cleanEmail,
+      phone: cleanPhone,
       password: hashedPassword,
     });
 
@@ -51,6 +99,7 @@ export async function registerController(
         id: user._id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
       },
     });
   } catch (error) {
@@ -58,7 +107,8 @@ export async function registerController(
 
     return res.status(500).json({
       success: false,
-      message: "Something went wrong while creating the account",
+      message:
+        "Something went wrong while creating the account",
     });
   }
 }
@@ -77,8 +127,10 @@ export async function loginController(
       });
     }
 
+    const cleanEmail = email.toLowerCase().trim();
+
     const user = await User.findOne({
-      email: email.toLowerCase().trim(),
+      email: cleanEmail,
     });
 
     if (!user) {
@@ -103,7 +155,9 @@ export async function loginController(
     const jwtSecret = process.env.JWT_SECRET;
 
     if (!jwtSecret) {
-      throw new Error("JWT_SECRET is not defined in .env");
+      throw new Error(
+        "JWT_SECRET is not defined in .env"
+      );
     }
 
     const token = jwt.sign(
@@ -124,6 +178,7 @@ export async function loginController(
         id: user._id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
       },
     });
   } catch (error) {
@@ -131,7 +186,8 @@ export async function loginController(
 
     return res.status(500).json({
       success: false,
-      message: "Something went wrong while logging in",
+      message:
+        "Something went wrong while logging in",
     });
   }
 }
@@ -148,7 +204,9 @@ export async function meController(
       });
     }
 
-    const user = await User.findById(req.userId).select("-password");
+    const user = await User.findById(req.userId).select(
+      "-password"
+    );
 
     if (!user) {
       return res.status(404).json({
@@ -163,6 +221,7 @@ export async function meController(
         id: user._id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
       },
     });
   } catch (error) {

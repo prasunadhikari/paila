@@ -7,19 +7,16 @@ import chitwan from "../../../assets/images/chitwan.jpg";
 const places = [
   {
     name: "Pokhara",
-    slug: "pokhara",
     image: pokhara,
     description: "Lakes, mountains and unforgettable adventures.",
   },
   {
     name: "Mustang",
-    slug: "mustang",
     image: mustang,
     description: "Ancient Himalayan kingdom with breathtaking landscapes.",
   },
   {
     name: "Chitwan",
-    slug: "chitwan",
     image: chitwan,
     description: "Wildlife safaris, jungles and one-horned rhinos.",
   },
@@ -61,8 +58,9 @@ export default function Destinations() {
                     {place.description}
                   </p>
 
+                  {/* Login required before viewing destination */}
                   <Link
-                    to={`/destinations/${place.slug}`}
+                    to="/login"
                     className="mt-5 inline-block rounded-xl bg-emerald-500 px-5 py-2 font-semibold text-white transition duration-300 hover:bg-emerald-600"
                   >
                     Explore →
