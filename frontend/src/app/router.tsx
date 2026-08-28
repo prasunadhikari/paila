@@ -12,116 +12,114 @@ import ItineraryPage from "../features/trip/pages/ItineraryPage";
 import DestinationsPage from "../features/destinations/pages/DestinationsPage";
 import DestinationPage from "../features/destinations/pages/DestinationPage";
 
+import AllFeedbackPage from "../features/home/pages/AllFeedbackPage";
+
 import DashboardPage from "../features/dashboard/pages/DashboardPage";
 import FeedbackAdminPage from "../features/admin/pages/FeedbackAdminPage";
 
 import ProtectedRoute from "../components/ProtectedRoute";
 
 /* =========================
-   SCROLL TO TOP
+SCROLL TO TOP
 ========================= */
 
 function ScrollToTop() {
-  const { pathname } = useLocation();
+const { pathname } = useLocation();
 
-  useLayoutEffect(() => {
-    // Disable browser's automatic scroll restoration
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
+useLayoutEffect(() => {
+if ("scrollRestoration" in window.history) {
+window.history.scrollRestoration = "manual";
+}
 
-    // Scroll the main browser window to the top
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "instant",
-    });
+window.scrollTo({
+  top: 0,
+  left: 0,
+  behavior: "instant",
+});
 
-    // Reset document scroll position
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-  }, [pathname]);
+document.documentElement.scrollTop = 0;
+document.body.scrollTop = 0;
 
-  return null;
+}, [pathname]);
+
+return null;
 }
 
 /* =========================
-   ROUTER
+ROUTER
 ========================= */
 
 export default function AppRouter() {
-  return (
-    <>
-      <ScrollToTop />
+return (
+<> <ScrollToTop />
 
-      <Routes>
-        {/* =========================
-            PUBLIC ROUTES
-        ========================== */}
+```
+  <Routes>
+    {/* =========================
+        PUBLIC ROUTES
+    ========================== */}
 
-        <Route
-          path="/"
-          element={<HomePage />}
-        />
+    {/* LANDING PAGE */}
+    <Route path="/" element={<HomePage />} />
 
-        <Route
-          path="/login"
-          element={<LoginPage />}
-        />
+    {/* AUTH */}
+    <Route path="/login" element={<LoginPage />} />
+    <Route path="/register" element={<RegisterPage />} />
 
-        <Route
-          path="/register"
-          element={<RegisterPage />}
-        />
+    {/* DESTINATIONS */}
+    <Route
+      path="/destinations"
+      element={<DestinationsPage />}
+    />
 
-        {/* Public destination listing */}
-        <Route
-          path="/destinations"
-          element={<DestinationsPage />}
-        />
+    {/* ALL FEEDBACK */}
+    <Route
+      path="/feedback"
+      element={<AllFeedbackPage />}
+    />
 
-        {/* =========================
-            PROTECTED ROUTES
-        ========================== */}
+    {/* =========================
+        PROTECTED ROUTES
+    ========================== */}
 
-        <Route element={<ProtectedRoute />}>
-          {/* Dashboard */}
-          <Route
-            path="/dashboard"
-            element={<DashboardPage />}
-          />
+    <Route element={<ProtectedRoute />}>
+      {/* Dashboard */}
+      <Route
+        path="/dashboard"
+        element={<DashboardPage />}
+      />
 
-          {/* Admin feedback management */}
-          <Route
-            path="/admin/feedback"
-            element={<FeedbackAdminPage />}
-          />
+      {/* Admin feedback management */}
+      <Route
+        path="/admin/feedback"
+        element={<FeedbackAdminPage />}
+      />
 
-          {/* Destination details */}
-          <Route
-            path="/destinations/:destination"
-            element={<DestinationPage />}
-          />
+      {/* Destination details */}
+      <Route
+        path="/destinations/:destination"
+        element={<DestinationPage />}
+      />
 
-          {/* Planner */}
-          <Route
-            path="/planner"
-            element={<TripPlannerPage />}
-          />
+      {/* Planner */}
+      <Route
+        path="/planner"
+        element={<TripPlannerPage />}
+      />
 
-          {/* Loading */}
-          <Route
-            path="/loading"
-            element={<LoadingPage />}
-          />
+      {/* Loading */}
+      <Route
+        path="/loading"
+        element={<LoadingPage />}
+      />
 
-          {/* Itinerary */}
-          <Route
-            path="/itinerary"
-            element={<ItineraryPage />}
-          />
-        </Route>
-      </Routes>
-    </>
-  );
+      {/* Itinerary */}
+      <Route
+        path="/itinerary"
+        element={<ItineraryPage />}
+      />
+    </Route>
+  </Routes>
+</>
+);
 }

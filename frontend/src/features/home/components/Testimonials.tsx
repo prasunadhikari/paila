@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   MapPin,
@@ -9,6 +10,7 @@ import {
   X,
   Send,
   CheckCircle2,
+  ArrowRight,
 } from "lucide-react";
 import { apiRequest } from "../../../api/client";
 
@@ -30,6 +32,24 @@ const reviews = [
     location: "Biratnagar, Nepal",
     review:
       "I loved how simple the experience was. Instead of opening ten different websites, I could get travel ideas in one place.",
+  },
+  {
+    name: "Nischal Thapa",
+    location: "Lalitpur, Nepal",
+    review:
+      "Paila gives me a much clearer idea of where to go and what to explore. The overall experience feels clean and easy.",
+  },
+  {
+    name: "Prakriti Gurung",
+    location: "Chitwan, Nepal",
+    review:
+      "I really like the concept of having Nepal travel information in one place. It makes discovering new destinations much easier.",
+  },
+  {
+    name: "Bibek Shrestha",
+    location: "Dharan, Nepal",
+    review:
+      "The interface is simple, modern, and easy to understand. Paila has a lot of potential for Nepal travelers.",
   },
 ];
 
@@ -93,7 +113,10 @@ export default function Testimonials() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-slate-50 py-24">
+      <section
+        id="testimonials"
+        className="relative overflow-hidden bg-slate-50 py-24"
+      >
         {/* Background decoration */}
         <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-blue-100/50 blur-3xl" />
         <div className="pointer-events-none absolute -right-32 bottom-0 h-72 w-72 rounded-full bg-emerald-100/40 blur-3xl" />
@@ -122,8 +145,8 @@ export default function Testimonials() {
             </p>
           </motion.div>
 
-          {/* Testimonials */}
-          <div className="mt-16 grid gap-7 md:grid-cols-3">
+          {/* Default Testimonials */}
+          <div className="mt-16 grid gap-7 md:grid-cols-2 lg:grid-cols-3">
             {reviews.map((review, index) => (
               <motion.article
                 key={review.name}
@@ -132,7 +155,7 @@ export default function Testimonials() {
                 viewport={{ once: true }}
                 transition={{
                   duration: 0.5,
-                  delay: index * 0.12,
+                  delay: index * 0.08,
                 }}
                 whileHover={{ y: -7 }}
                 className="group relative rounded-3xl border border-slate-200/80 bg-white p-8 shadow-sm transition-shadow duration-300 hover:shadow-xl"
@@ -167,7 +190,8 @@ export default function Testimonials() {
                       .split(" ")
                       .map((word) => word[0])
                       .join("")
-                      .slice(0, 2)}
+                      .slice(0, 2)
+                      .toUpperCase()}
                   </div>
 
                   <div>
@@ -184,6 +208,23 @@ export default function Testimonials() {
               </motion.article>
             ))}
           </div>
+
+          {/* See All Feedback */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="mt-10 text-center"
+          >
+            <Link
+              to="/feedback"
+              className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3.5 font-semibold text-slate-800 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
+            >
+              See All Feedback
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+            </Link>
+          </motion.div>
 
           {/* Feedback CTA */}
           <motion.div
