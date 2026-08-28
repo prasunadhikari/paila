@@ -1,9 +1,12 @@
+
 import { apiRequest } from "./client";
 
 export interface User {
   id: string;
   name: string;
   email: string;
+  phone: string;
+  role?: "user" | "admin";
 }
 
 interface AuthResponse {
@@ -21,6 +24,7 @@ interface MeResponse {
 export async function register(
   name: string,
   email: string,
+  phone: string,
   password: string
 ): Promise<AuthResponse> {
   return apiRequest<AuthResponse>("/auth/register", {
@@ -28,6 +32,7 @@ export async function register(
     body: JSON.stringify({
       name,
       email,
+      phone,
       password,
     }),
   });

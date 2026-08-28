@@ -118,10 +118,11 @@ export default function RegisterPage() {
        * Phone will be connected to the backend later.
        */
       await register(
-        name.trim(),
-        email.trim(),
-        password
-      );
+  name.trim(),
+  email.trim(),
+  phone.trim(),
+  password
+);
 
       navigate("/login");
     } catch (error) {
