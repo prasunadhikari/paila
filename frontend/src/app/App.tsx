@@ -14,7 +14,10 @@ import ItineraryPage from "../features/trip/pages/ItineraryPage";
 import DestinationsPage from "../features/destinations/pages/DestinationsPage";
 import DestinationPage from "../features/destinations/pages/DestinationPage";
 
+import FeedbackAdminPage from "../features/admin/pages/FeedbackAdminPage";
+
 import { useAuth } from "../context/AuthContext";
+
 
 function ProtectedRoute({
   children,
@@ -44,20 +47,32 @@ function ProtectedRoute({
   return <>{children}</>;
 }
 
+
 export default function App() {
   return (
     <Routes>
+
       {/* =========================
           Public Pages
       ========================== */}
 
-      <Route path="/" element={<HomePage />} />
+      <Route
+        path="/"
+        element={<HomePage />}
+      />
 
-      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/login"
+        element={<LoginPage />}
+      />
 
-      <Route path="/register" element={<RegisterPage />} />
+      <Route
+        path="/register"
+        element={<RegisterPage />}
+      />
 
-      {/* Destinations are PUBLIC */}
+      {/* Destinations */}
+
       <Route
         path="/destinations"
         element={<DestinationsPage />}
@@ -67,6 +82,7 @@ export default function App() {
         path="/destinations/:destination"
         element={<DestinationPage />}
       />
+
 
       {/* =========================
           Protected Pages
@@ -108,11 +124,26 @@ export default function App() {
         }
       />
 
-      {/* Unknown URL */}
+
+      {/* =========================
+          ADMIN
+      ========================== */}
+
+      <Route
+        path="/admin/feedback"
+        element={<FeedbackAdminPage />}
+      />
+
+
+      {/* =========================
+          UNKNOWN URL
+      ========================== */}
+
       <Route
         path="*"
         element={<Navigate to="/" replace />}
       />
+
     </Routes>
   );
 }
