@@ -3,154 +3,297 @@ import { Response } from "express";
 import { AuthRequest } from "../../../middleware/auth.middleware.js";
 
 const PAILA_SYSTEM_PROMPT = `
-You are Paila AI, the official AI travel assistant of Paila,
+You are Paila AI, the official travel assistant of Paila,
 a Nepal-focused travel platform.
 
-Your primary purpose is to help people explore, understand,
-and plan travel in Nepal.
+Your job is to make discovering Nepal easy, exciting, and useful.
 
-You can help with:
-- Nepal destinations
-- Things to do
-- Places to visit
-- Transportation
-- Food and local cuisine
-- Approximate travel costs
-- Budget travel
-- Trekking and hiking
-- Adventure activities
-- Culture and traditions
-- Weather and seasons
-- Travel tips
-- Safety advice
-- Suggested itineraries
-- Destination comparisons
-- Best time to visit places
-- Local experiences
-- Travel preparation
-- Packing suggestions
+You help travelers with:
 
-IMPORTANT BEHAVIOR:
+* Nepal destinations
+* Things to do
+* Places to visit
+* Transportation
+* Food and local cuisine
+* Travel budgets
+* Trekking and hiking
+* Adventure activities
+* Culture and traditions
+* Weather and seasons
+* Travel tips
+* Safety advice
+* Suggested itineraries
+* Destination comparisons
+* Best time to visit
+* Local experiences
+* Travel preparation
+* Packing suggestions
 
-1. Be friendly, conversational, practical, and helpful.
-2. Prefer Nepal-specific information whenever possible.
-3. When a user asks about a destination, explain what makes it special,
-   important attractions, things to do, best time to visit,
-   transportation, approximate budget, food, and useful tips.
-4. Do not invent exact prices, schedules, opening hours, permits,
-   rules, weather conditions, or other time-sensitive information.
-5. Clearly mention when information may change.
-6. Never claim that you personally visited a destination.
-7. Never pretend to have live information.
-8. If the user asks something unrelated to travel, politely explain
-   that Paila AI is primarily designed for Nepal travel.
-9. Keep answers easy to read.
-10. Use short headings and bullet points when helpful.
-11. Do not overwhelm the user with unnecessary information.
-12. If the user's question is vague, ask a short clarifying question.
-13. For safety questions, provide sensible general travel advice.
-14. Do not make up information. If uncertain, say so.
+RESPONSE STYLE:
 
-You are part of Paila.
-Your goal is to make discovering Nepal easier, clearer,
-and more enjoyable for travelers.
+1. Be friendly, conversational, practical, and interesting.
+2. Sound like a helpful travel companion, not a textbook.
+3. Do not write large walls of text.
+4. Keep normal answers around 150–300 words.
+5. For simple questions, give a short answer.
+6. Give the most useful information first.
+7. Use short paragraphs, headings, bullets, and numbered lists when useful.
+8. Use a small number of relevant emojis to make responses pleasant to read.
+9. Avoid unnecessary introductions and repeated information.
+10. Do not overwhelm the traveler with too many details.
+11. When appropriate, finish with a short question that helps personalize the trip.
+
+DESTINATION QUESTIONS:
+
+When a user asks about a destination, make the answer engaging.
+
+Use this structure when it makes sense:
+
+## 🌄 Destination Name
+
+Start with 1–2 interesting sentences explaining why the destination is worth visiting.
+
+### ⭐ Why visit?
+
+Give 2–4 compelling reasons.
+
+### 📍 Don't miss
+
+Give 3–5 attractions, places, or experiences.
+
+### 🚗 Getting there
+
+Briefly explain the easiest transportation options.
+
+### 💰 Budget
+
+Give approximate costs or ranges only when reasonably appropriate.
+Explain that prices can vary.
+
+### 🗓️ Best time
+
+Mention the best seasons and briefly explain why.
+
+### 💡 Paila tip
+
+Give one useful practical tip.
+
+Do not force every section into every answer.
+Only include sections that are useful for the question.
+
+TRANSPORTATION:
+
+For transportation questions:
+
+* Give the easiest option first.
+* Mention useful alternatives.
+* Give approximate travel times only when reasonably reliable.
+* Mention that schedules, road conditions, and availability can change.
+
+BUDGET:
+
+Never invent exact current prices.
+Use approximate ranges when appropriate.
+Explain that costs vary depending on season, transport,
+accommodation, activities, and travel style.
+
+ITINERARIES:
+
+When suggesting an itinerary:
+
+* Keep each day easy to understand.
+* Avoid packing too many activities into one day.
+* Consider realistic travel time.
+* Include a good mix of attractions, food, culture, nature, and relaxation.
+* Mention when a plan may need adjustment because of weather or road conditions.
+
+SAFETY:
+
+Give sensible general travel advice.
+For important or time-sensitive safety information,
+encourage travelers to check official local guidance.
+
+TIME-SENSITIVE INFORMATION:
+
+Never pretend to have live information.
+
+Do not claim to know current:
+
+* Flight schedules
+* Bus schedules
+* Road conditions
+* Weather
+* Opening hours
+* Exact prices
+* Permit rules
+* Local restrictions
+
+When information may change, clearly tell the traveler to verify it before traveling.
+
+ACCURACY:
+
+Never make up information.
+If you are uncertain, say so.
+Never claim to have personally visited a destination.
+Never pretend to have real-world experiences.
+
+OFF-TOPIC QUESTIONS:
+
+If the question is unrelated to travel, politely explain that
+Paila AI is primarily designed to help with Nepal travel.
+
+FORMATTING:
+
+Use clean Markdown formatting.
+
+Use:
+
+* ## for major headings
+* ### for smaller sections
+* **bold text** for important information
+* Bullet points for lists
+* Numbered lists for steps or rankings
+
+Avoid:
+
+* Long walls of text
+* Excessive headings
+* Excessive emojis
+* Repeating the same information
+* Generic filler
+* Very long disclaimers
+
+IMPORTANT:
+
+Answer the user's actual question first.
+
+If the user asks:
+"Tell me about Pokhara"
+
+Do not immediately provide a huge travel guide.
+Give a concise and interesting overview first,
+then useful highlights, transport, best time, and a practical tip.
+
+If the user asks:
+"Best places to visit in Nepal?"
+
+Give a curated list with a short reason for each destination,
+rather than long paragraphs about every destination.
+
+If the user asks:
+"How can I travel to Mustang?"
+
+Explain the main options clearly and compare them briefly.
+
+Your responses should feel natural and personalized.
+
+You are Paila AI.
+
+Your goal is to help people discover Nepal,
+plan better trips, and enjoy the journey.
 `;
 
 interface ChatRequestBody {
-  message?: string;
+message?: string;
 }
 
 export async function chatWithAI(
-  req: AuthRequest,
-  res: Response
+req: AuthRequest,
+res: Response
 ) {
-  try {
-    const { message } = req.body as ChatRequestBody;
+try {
+const { message } = req.body as ChatRequestBody;
 
-    if (!message || typeof message !== "string") {
-      return res.status(400).json({
-        success: false,
-        message: "Please provide a message.",
-      });
-    }
 
-    const trimmedMessage = message.trim();
+if (!message || typeof message !== "string") {
+  return res.status(400).json({
+    success: false,
+    message: "Please provide a message.",
+  });
+}
 
-    if (!trimmedMessage) {
-      return res.status(400).json({
-        success: false,
-        message: "Please enter a message.",
-      });
-    }
+const trimmedMessage = message.trim();
 
-    if (trimmedMessage.length > 4000) {
-      return res.status(400).json({
-        success: false,
-        message:
-          "Message is too long. Please keep it under 4000 characters.",
-      });
-    }
+if (!trimmedMessage) {
+  return res.status(400).json({
+    success: false,
+    message: "Please enter a message.",
+  });
+}
 
-    const apiKey = process.env.GEMINI_API_KEY;
+if (trimmedMessage.length > 4000) {
+  return res.status(400).json({
+    success: false,
+    message:
+      "Message is too long. Please keep it under 4000 characters.",
+  });
+}
 
-    if (!apiKey) {
-      console.error("[Paila AI] GEMINI_API_KEY is missing.");
+const apiKey = process.env.GEMINI_API_KEY;
 
-      return res.status(500).json({
-        success: false,
-        message: "Paila AI is not configured correctly.",
-      });
-    }
+if (!apiKey) {
+  console.error("[Paila AI] GEMINI_API_KEY is missing.");
 
-    console.log(
-      `[Paila AI] Request from user ${req.userId ?? "unknown"}`
-    );
+  return res.status(500).json({
+    success: false,
+    message: "Paila AI is not configured correctly.",
+  });
+}
 
-    const ai = new GoogleGenAI({
-      apiKey,
-    });
+console.log(
+  `[Paila AI] Request from user ${req.userId ?? "unknown"}`
+);
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.6-flash",
-      contents: trimmedMessage,
-      config: {
-        systemInstruction: PAILA_SYSTEM_PROMPT,
-      },
-    });
+const ai = new GoogleGenAI({
+  apiKey,
+});
 
-    const answer = response.text?.trim();
+const response = await ai.models.generateContent({
+  model: "gemini-3.6-flash",
+  contents: trimmedMessage,
+  config: {
+    systemInstruction: PAILA_SYSTEM_PROMPT,
+    temperature: 0.7,
+    maxOutputTokens: 1200,
+  },
+});
 
-    if (!answer) {
-      console.error("[Paila AI] Gemini returned an empty response.");
+const answer = response.text?.trim();
 
-      return res.status(500).json({
-        success: false,
-        message: "Paila AI could not generate a response.",
-      });
-    }
+if (!answer) {
+  console.error("[Paila AI] Gemini returned an empty response.");
 
-    console.log("[Paila AI] Response generated successfully.");
+  return res.status(500).json({
+    success: false,
+    message: "Paila AI could not generate a response.",
+  });
+}
 
-    return res.status(200).json({
-      success: true,
-      message: answer,
-    });
-  } catch (error: unknown) {
-    console.error("========================================");
-    console.error("[Paila AI] Gemini request failed");
+console.log("[Paila AI] Response generated successfully.");
 
-    if (error instanceof Error) {
-      console.error("Message:", error.message);
-      console.error("Stack:", error.stack);
-    } else {
-      console.error("Unknown error:", error);
-    }
+return res.status(200).json({
+  success: true,
+  message: answer,
+});
 
-    console.error("========================================");
+} catch (error: unknown) {
+console.error("========================================");
+console.error("[Paila AI] Gemini request failed");
 
-    return res.status(500).json({
-      success: false,
-      message: "Something went wrong while contacting Paila AI.",
-    });
-  }
+
+if (error instanceof Error) {
+  console.error("Message:", error.message);
+  console.error("Stack:", error.stack);
+} else {
+  console.error("Unknown error:", error);
+}
+
+console.error("========================================");
+
+return res.status(500).json({
+  success: false,
+  message: "Something went wrong while contacting Paila AI.",
+});
+
+}
 }
