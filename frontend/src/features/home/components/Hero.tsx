@@ -103,7 +103,7 @@ export default function Hero() {
           {/* AI Chat */}
           <div className="mt-8">
             <Link
-              to="/login"
+              to="/ai"
               className="inline-flex items-center gap-2 text-sm font-semibold text-white/80 transition hover:text-emerald-300"
             >
               ✨ Ask Paila AI about your trip →
