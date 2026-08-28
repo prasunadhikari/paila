@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 
 import authRoutes from "./api/v1/routes/auth.routes.js";
+import feedbackRoutes from "./api/v1/routes/feedback.routes.js";
 
 const app = express();
 
@@ -16,5 +17,6 @@ app.get("/", (_req, res) => {
 });
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/feedback", feedbackRoutes);
 
 export default app;
