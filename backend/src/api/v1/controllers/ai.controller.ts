@@ -104,41 +104,28 @@ IMPORTANT RESPONSE STYLE:
    when relevant.
 
 19. For questions involving "tomorrow", "today", current
-   schedules, current weather, or live availability, do not
-   pretend to know the current information. Explain that the
-   user should verify the latest schedule or conditions.
+   schedules, current weather, or live availability, use
+   current information when Google Search is available.
 
-20. For safety questions, provide sensible general travel advice
-   and recommend checking official local guidance when appropriate.
+20. For current travel conditions, disasters, road closures, weather,
+   transportation disruptions, permits, safety alerts, or recent news,
+   prefer verified information from reliable and official sources.
 
-21. If the user asks something unrelated to travel, politely explain
-   that Paila AI is primarily designed for Nepal travel.
+21. Clearly distinguish current information found through search from
+   general travel knowledge.
 
-22. Do not make every answer sound formal.
-   Talk like a knowledgeable local travel assistant.
+22. If search results are unavailable or insufficient, say so instead
+   of inventing current information.
 
-23. Avoid phrases such as:
-   "As an AI..."
-   "I cannot..."
-   unless absolutely necessary.
+23. For current information, prioritize:
+   - Government sources
+   - Official authorities
+   - Official transportation providers
+   - Reputable news organizations
+   - Other reliable sources
 
-24. Do not say you have personally experienced a destination.
-
-25. When the user asks about recent, current, latest, today, tomorrow,
-    ongoing, or time-sensitive events, use Google Search when available.
-
-26. For current travel conditions, disasters, road closures, weather,
-    transportation disruptions, permits, safety alerts, or recent news,
-    prefer verified information from reliable and official sources.
-
-27. Clearly distinguish current information found through search from
-    general travel knowledge.
-
-28. If search results are unavailable or insufficient, say so instead
-    of inventing current information.
-
-29. The goal is NOT to provide the longest answer.
-    The goal is to provide the most useful answer.
+24. The goal is NOT to provide the longest answer.
+   The goal is to provide the most useful answer.
 
 You are Paila AI.
 Make Nepal easier to discover.
@@ -152,6 +139,71 @@ const MODELS: string[] = [
   "gemini-3.5-flash-lite",
   "gemini-3.1-flash-lite",
 ];
+
+function isCurrentInformationRequest(message: string): boolean {
+  const text = message.toLowerCase();
+
+  const currentKeywords: string[] = [
+    "latest",
+    "recent",
+    "currently",
+    "current",
+    "right now",
+    "today",
+    "tonight",
+    "tomorrow",
+    "yesterday",
+    "this week",
+    "this month",
+    "ongoing",
+    "happening",
+    "happened",
+    "news",
+    "update",
+    "updates",
+    "live",
+    "real time",
+    "real-time",
+    "now",
+    "weather today",
+    "weather tomorrow",
+    "forecast",
+    "road condition",
+    "road conditions",
+    "road closure",
+    "road closures",
+    "highway condition",
+    "highway conditions",
+    "traffic",
+    "bus schedule",
+    "bus schedules",
+    "flight status",
+    "flight schedule",
+    "flight schedules",
+    "permit update",
+    "permit updates",
+    "flood",
+    "flooding",
+    "landslide",
+    "landslides",
+    "earthquake",
+    "earthquakes",
+    "disaster",
+    "disasters",
+    "accident",
+    "accidents",
+    "warning",
+    "warnings",
+    "alert",
+    "alerts",
+    "safety alert",
+    "safety alerts",
+    "closure",
+    "closures",
+  ];
+
+  return currentKeywords.some((keyword) => text.includes(keyword));
+}
 
 function isTemporaryGeminiError(error: unknown): boolean {
   if (!(error instanceof Error)) {
@@ -167,7 +219,8 @@ function isTemporaryGeminiError(error: unknown): boolean {
     message.includes("429") ||
     message.includes("resource exhausted") ||
     message.includes("rate limit") ||
-    message.includes("overloaded")
+    message.includes("overloaded") ||
+    message.includes("quota")
   );
 }
 
@@ -223,6 +276,15 @@ export async function chatWithAI(
       `[Paila AI] Request from user ${req.userId ?? "unknown"}`
     );
 
+    const useGoogleSearch =
+      isCurrentInformationRequest(trimmedMessage);
+
+    console.log(
+      `[Paila AI] Google Search: ${
+        useGoogleSearch ? "ENABLED" : "DISABLED"
+      }`
+    );
+
     const ai = new GoogleGenAI({
       apiKey,
     });
@@ -241,17 +303,27 @@ export async function chatWithAI(
       );
 
       try {
+        const config: {
+          systemInstruction: string;
+          tools?: Array<{
+            googleSearch: Record<string, never>;
+          }>;
+        } = {
+          systemInstruction: PAILA_SYSTEM_PROMPT,
+        };
+
+        if (useGoogleSearch) {
+          config.tools = [
+            {
+              googleSearch: {},
+            },
+          ];
+        }
+
         const response = await ai.models.generateContent({
           model,
           contents: trimmedMessage,
-          config: {
-            systemInstruction: PAILA_SYSTEM_PROMPT,
-            tools: [
-              {
-                googleSearch: {},
-              },
-            ],
-          },
+          config,
         });
 
         const answer = response.text?.trim();
