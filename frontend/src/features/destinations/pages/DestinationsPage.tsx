@@ -324,7 +324,7 @@ export default function DestinationsPage() {
             </p>
 
             <Link
-              to="/planner"
+              to="/ai"
               className="mt-7 inline-flex rounded-xl bg-emerald-500 px-6 py-3.5 font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-600 hover:shadow-xl"
             >
               Plan My Trip →
