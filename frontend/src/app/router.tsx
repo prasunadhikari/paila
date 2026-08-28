@@ -13,9 +13,9 @@ import DestinationsPage from "../features/destinations/pages/DestinationsPage";
 import DestinationPage from "../features/destinations/pages/DestinationPage";
 
 import DashboardPage from "../features/dashboard/pages/DashboardPage";
+import FeedbackAdminPage from "../features/admin/pages/FeedbackAdminPage";
 
 import ProtectedRoute from "../components/ProtectedRoute";
-
 
 /* =========================
    SCROLL TO TOP
@@ -30,34 +30,20 @@ function ScrollToTop() {
       window.history.scrollRestoration = "manual";
     }
 
-    // Scroll the browser window
+    // Scroll the main browser window to the top
     window.scrollTo({
       top: 0,
       left: 0,
       behavior: "instant",
     });
 
-    // Scroll document elements
+    // Reset document scroll position
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
-
-    // Also reset any scrollable containers
-    const scrollableElements = document.querySelectorAll(
-      "main, section, div"
-    );
-
-    scrollableElements.forEach((element) => {
-      const el = element as HTMLElement;
-
-      if (el.scrollTop > 0) {
-        el.scrollTop = 0;
-      }
-    });
   }, [pathname]);
 
   return null;
 }
-
 
 /* =========================
    ROUTER
@@ -69,7 +55,6 @@ export default function AppRouter() {
       <ScrollToTop />
 
       <Routes>
-
         {/* =========================
             PUBLIC ROUTES
         ========================== */}
@@ -95,17 +80,21 @@ export default function AppRouter() {
           element={<DestinationsPage />}
         />
 
-
         {/* =========================
             PROTECTED ROUTES
         ========================== */}
 
         <Route element={<ProtectedRoute />}>
-
           {/* Dashboard */}
           <Route
             path="/dashboard"
             element={<DashboardPage />}
+          />
+
+          {/* Admin feedback management */}
+          <Route
+            path="/admin/feedback"
+            element={<FeedbackAdminPage />}
           />
 
           {/* Destination details */}
@@ -131,9 +120,7 @@ export default function AppRouter() {
             path="/itinerary"
             element={<ItineraryPage />}
           />
-
         </Route>
-
       </Routes>
     </>
   );
