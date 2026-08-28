@@ -1,4 +1,4 @@
-import OpenAI from "openai";
+import { GoogleGenAI } from "@google/genai";
 import { Response } from "express";
 import { AuthRequest } from "../../../middleware/auth.middleware.js";
 
@@ -30,29 +30,26 @@ You can help with:
 - Travel preparation
 - Packing suggestions
 
-Be friendly, conversational, practical, and helpful.
+IMPORTANT BEHAVIOR:
 
-Prefer Nepal-specific information.
-
-Do not invent exact prices, schedules, opening hours,
-permits, rules, weather conditions, or other time-sensitive
-information.
-
-If information may change, tell the user to verify the
-latest information before traveling.
-
-Never claim to have personally visited a destination.
-
-Never pretend to have live information unless it is actually
-provided.
-
-If the user asks something unrelated to travel, politely
-explain that Paila AI is primarily designed for Nepal travel.
-
-Keep answers easy to read and use short headings or bullet
-points when useful.
-
-Do not make up information. If uncertain, say so.
+1. Be friendly, conversational, practical, and helpful.
+2. Prefer Nepal-specific information whenever possible.
+3. When a user asks about a destination, explain what makes it special,
+   important attractions, things to do, best time to visit,
+   transportation, approximate budget, food, and useful tips.
+4. Do not invent exact prices, schedules, opening hours, permits,
+   rules, weather conditions, or other time-sensitive information.
+5. Clearly mention when information may change.
+6. Never claim that you personally visited a destination.
+7. Never pretend to have live information.
+8. If the user asks something unrelated to travel, politely explain
+   that Paila AI is primarily designed for Nepal travel.
+9. Keep answers easy to read.
+10. Use short headings and bullet points when helpful.
+11. Do not overwhelm the user with unnecessary information.
+12. If the user's question is vague, ask a short clarifying question.
+13. For safety questions, provide sensible general travel advice.
+14. Do not make up information. If uncertain, say so.
 
 You are part of Paila.
 Your goal is to make discovering Nepal easier, clearer,
@@ -89,14 +86,15 @@ export async function chatWithAI(
     if (trimmedMessage.length > 4000) {
       return res.status(400).json({
         success: false,
-        message: "Message is too long. Please keep it under 4000 characters.",
+        message:
+          "Message is too long. Please keep it under 4000 characters.",
       });
     }
 
-    const apiKey = process.env.OPENAI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
-      console.error("[Paila AI] OPENAI_API_KEY is missing.");
+      console.error("[Paila AI] GEMINI_API_KEY is missing.");
 
       return res.status(500).json({
         success: false,
@@ -104,24 +102,26 @@ export async function chatWithAI(
       });
     }
 
-    const openai = new OpenAI({
+    console.log(
+      `[Paila AI] Request from user ${req.userId ?? "unknown"}`
+    );
+
+    const ai = new GoogleGenAI({
       apiKey,
     });
 
-    console.log("[Paila AI] Sending request to OpenAI...");
-    console.log("[Paila AI] User:", req.userId ?? "unknown");
-    console.log("[Paila AI] Message:", trimmedMessage);
-
-    const response = await openai.responses.create({
-      model: "gpt-5.6-luna",
-      instructions: PAILA_SYSTEM_PROMPT,
-      input: trimmedMessage,
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: trimmedMessage,
+      config: {
+        systemInstruction: PAILA_SYSTEM_PROMPT,
+      },
     });
 
-    const answer = response.output_text?.trim();
+    const answer = response.text?.trim();
 
     if (!answer) {
-      console.error("[Paila AI] Empty response from OpenAI.");
+      console.error("[Paila AI] Gemini returned an empty response.");
 
       return res.status(500).json({
         success: false,
@@ -137,12 +137,11 @@ export async function chatWithAI(
     });
   } catch (error: unknown) {
     console.error("========================================");
-    console.error("[Paila AI] OPENAI ERROR");
-    console.error("========================================");
+    console.error("[Paila AI] Gemini request failed");
 
     if (error instanceof Error) {
-      console.error("Error message:", error.message);
-      console.error("Error stack:", error.stack);
+      console.error("Message:", error.message);
+      console.error("Stack:", error.stack);
     } else {
       console.error("Unknown error:", error);
     }
