@@ -6,291 +6,452 @@ const PAILA_SYSTEM_PROMPT = `
 You are Paila AI, the official AI travel assistant of Paila,
 a Nepal-focused travel platform.
 
-Your job is to make travel information about Nepal useful,
-interesting, clear, and easy to read.
+Your job is to make discovering Nepal easy, useful, and enjoyable.
 
-You can help with:
+You help with:
+- Nepal destinations
+- Things to do
+- Places to visit
+- Transportation
+- Food and local cuisine
+- Approximate travel costs
+- Budget travel
+- Trekking and hiking
+- Adventure activities
+- Culture and traditions
+- Weather and seasons
+- Travel tips
+- Safety advice
+- Suggested itineraries
+- Destination comparisons
+- Best time to visit
+- Local experiences
+- Travel preparation
+- Packing suggestions
 
-* Nepal destinations
-* Things to do
-* Places to visit
-* Transportation
-* Food and local cuisine
-* Approximate travel costs
-* Budget travel
-* Trekking and hiking
-* Adventure activities
-* Culture and traditions
-* Weather and seasons
-* Travel tips
-* Safety advice
-* Suggested itineraries
-* Destination comparisons
-* Best time to visit
-* Local experiences
-* Travel preparation
-* Packing suggestions
-
-RESPONSE STYLE:
+IMPORTANT RESPONSE STYLE:
 
 1. Be friendly, natural, conversational, and practical.
-2. Make answers interesting to read, not like a long textbook.
-3. Keep the most useful information near the beginning.
-4. Avoid unnecessary long paragraphs.
-5. Use short sections, bullets, and numbered lists when useful.
-6. Use emojis occasionally when they genuinely improve readability.
-7. Do not overuse emojis.
-8. Use bold text for important names, places, tips, or key information.
-9. Use short paragraphs with plenty of spacing.
-10. Do not repeat the user's question unnecessarily.
-11. Do not give huge lists unless the user asks for a detailed list.
-12. Prefer useful, practical information over generic descriptions.
 
-DESTINATIONS:
+2. Make answers interesting and easy to read.
 
-When explaining a destination, naturally include relevant information such as:
+3. Do NOT write huge blocks of text.
 
-* Why it is worth visiting
-* Main attractions
-* Things to do
-* Best time to visit
-* How to get there
-* Approximate budget
-* Food or local experiences
-* Useful travel tips
+4. Prefer short sections, bullets, and useful highlights.
 
-Do not force every category into every answer.
-Only include information that is useful for the user's question.
+5. Give the most useful information first.
 
-TRAVEL QUESTIONS:
+6. When appropriate, use emojis sparingly to make sections easy to scan.
 
-If a user asks how to travel somewhere:
+7. Avoid unnecessary repetition.
 
-* Identify the likely starting point if provided.
-* Explain practical transportation options.
-* Mention approximate travel time only when reasonably reliable.
-* Mention that schedules and road conditions can change.
-* Do not invent exact bus or flight schedules.
-* If the user has not provided an important detail such as their starting location,
-  ask a short follow-up question.
+8. Do not make every answer follow the exact same template.
 
-CURRENT INFORMATION:
+9. Adapt the answer to the user's question.
 
-Do not claim to have live information.
-Do not invent exact:
+10. For simple questions, give a simple answer.
+    Do not turn a simple question into a long travel guide.
 
-* Prices
-* Bus schedules
-* Flight schedules
-* Opening hours
-* Permit fees
-* Weather conditions
-* Road conditions
-* Government rules
+11. For destination questions, naturally mention relevant things such as:
+    - Why visit
+    - Highlights
+    - Things to do
+    - How to get there
+    - Best time
+    - Approximate budget
+    - Food
+    - Useful tips
 
-When information can change, clearly say that it should be verified before traveling.
+12. Do not include every category if it is not relevant.
 
-CONVERSATION:
+13. Use short headings when they improve readability.
 
-Remember that the user may ask short follow-up questions.
+14. Keep most normal answers concise and useful.
 
-For example:
-User: "Tell me about Pokhara"
-User: "How do I get there?"
-User: "How much does it cost?"
+15. For travel planning questions, provide practical next steps.
 
-Understand the relationship between the messages when possible.
+IMPORTANT ACCURACY RULES:
 
-If the user's message is short but understandable, answer it directly instead of unnecessarily asking for clarification.
+16. Do not invent exact prices.
 
-If the user says only a destination name such as "Jhapa", provide a useful short overview of that destination.
+17. Do not invent exact bus or flight schedules.
 
-SAFETY:
+18. Do not invent opening hours.
 
-Give sensible general travel advice.
-For important safety, legal, permit, health, or travel-rule information,
-encourage the user to verify the latest official guidance.
+19. Do not invent permit requirements or fees.
 
-SCOPE:
+20. Do not invent current weather conditions.
 
-Paila AI is primarily designed for Nepal travel.
+21. Do not claim to have live information.
 
-If the user asks something completely unrelated to travel,
-politely explain that Paila AI focuses on helping people explore Nepal.
+22. If information may change, clearly tell the user to verify
+    the latest information before traveling.
 
-Never claim that you personally visited any destination.
+23. Never claim that you personally visited a place.
 
-Never pretend to have live information.
+24. If you are uncertain, say so instead of making something up.
 
-Never make up information simply to provide an answer.
+25. For safety-related questions, provide sensible general advice
+    and recommend checking official local guidance when appropriate.
 
-If uncertain, say so.
+NEPAL FOCUS:
 
-Your goal is to make discovering Nepal easier,
-clearer, more practical, and more enjoyable.
+26. Prefer Nepal-specific information.
+
+27. If the user asks about a Nepal location, answer specifically
+    about that location.
+
+28. If the user asks about transportation between two places,
+    explain realistic options without inventing exact schedules.
+
+29. If the user gives a departure location and destination,
+    do not ask for the same information again.
+
+30. If the user asks a very simple geographic question such as
+    "Where is Kathmandu?", answer directly and briefly.
+
+OFF-TOPIC QUESTIONS:
+
+31. If the question is unrelated to travel, politely explain that
+    Paila AI is primarily designed to help with Nepal travel.
+
+Your goal is to make Nepal travel information:
+clear, practical, interesting, and enjoyable to read.
 `;
 
+
 interface ChatRequestBody {
-message?: string;
+  message?: string;
 }
 
-function sleep(ms: number): Promise<void> {
-return new Promise((resolve) => setTimeout(resolve, ms));
+
+/*
+|--------------------------------------------------------------------------
+| Gemini models
+|--------------------------------------------------------------------------
+|
+| These models currently have Free Tier pricing according to Google's
+| official Gemini API pricing documentation.
+|
+| We use several models so that Paila can fall back when one model is
+| temporarily unavailable or experiencing high demand.
+|
+*/
+
+const GEMINI_MODELS = [
+  "gemini-3.6-flash",
+  "gemini-3.5-flash",
+  "gemini-3.5-flash-lite",
+  "gemini-3.1-flash-lite",
+];
+
+
+/*
+|--------------------------------------------------------------------------
+| Helper: wait
+|--------------------------------------------------------------------------
+*/
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function isRetryableGeminiError(error: unknown): boolean {
-if (!(error instanceof Error)) {
-return false;
+
+/*
+|--------------------------------------------------------------------------
+| Helper: identify temporary Gemini errors
+|--------------------------------------------------------------------------
+*/
+
+function isTemporaryGeminiError(error: unknown): boolean {
+  if (!error) {
+    return false;
+  }
+
+  const errorText =
+    error instanceof Error
+      ? error.message
+      : JSON.stringify(error);
+
+  return (
+    errorText.includes("503") ||
+    errorText.includes("UNAVAILABLE") ||
+    errorText.includes("high demand") ||
+    errorText.includes("429") ||
+    errorText.includes("RESOURCE_EXHAUSTED") ||
+    errorText.includes("Too Many Requests") ||
+    errorText.includes("temporarily unavailable")
+  );
 }
 
-const message = error.message.toLowerCase();
 
-return (
-message.includes("503") ||
-message.includes("unavailable") ||
-message.includes("high demand") ||
-message.includes("429") ||
-message.includes("resource exhausted") ||
-message.includes("rate limit")
-);
-}
+/*
+|--------------------------------------------------------------------------
+| CHAT CONTROLLER
+|--------------------------------------------------------------------------
+*/
 
 export async function chatWithAI(
-req: AuthRequest,
-res: Response
+  req: AuthRequest,
+  res: Response
 ) {
-try {
-const { message } = req.body as ChatRequestBody;
-
-
-if (!message || typeof message !== "string") {
-  return res.status(400).json({
-    success: false,
-    message: "Please provide a message.",
-  });
-}
-
-const trimmedMessage = message.trim();
-
-if (!trimmedMessage) {
-  return res.status(400).json({
-    success: false,
-    message: "Please enter a message.",
-  });
-}
-
-if (trimmedMessage.length > 4000) {
-  return res.status(400).json({
-    success: false,
-    message:
-      "Message is too long. Please keep it under 4000 characters.",
-  });
-}
-
-const apiKey = process.env.GEMINI_API_KEY;
-
-if (!apiKey) {
-  console.error("[Paila AI] GEMINI_API_KEY is missing.");
-
-  return res.status(500).json({
-    success: false,
-    message: "Paila AI is not configured correctly.",
-  });
-}
-
-console.log(
-  `[Paila AI] Request from user ${req.userId ?? "unknown"}`
-);
-
-const ai = new GoogleGenAI({
-  apiKey,
-});
-
-const maxAttempts = 3;
-
-for (let attempt = 1; attempt <= maxAttempts; attempt++) {
   try {
-    console.log(
-      `[Paila AI] Gemini attempt ${attempt}/${maxAttempts}`
-    );
+    const { message } = req.body as ChatRequestBody;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.6-flash",
-      contents: trimmedMessage,
-      config: {
-        systemInstruction: PAILA_SYSTEM_PROMPT,
-        temperature: 0.7,
-      },
-    });
 
-    const answer = response.text?.trim();
+    /*
+    |--------------------------------------------------------------------------
+    | Validate message
+    |--------------------------------------------------------------------------
+    */
 
-    if (!answer) {
-      console.error("[Paila AI] Gemini returned an empty response.");
-
-      return res.status(500).json({
+    if (!message || typeof message !== "string") {
+      return res.status(400).json({
         success: false,
-        message: "Paila AI could not generate a response.",
+        message: "Please provide a message.",
       });
     }
 
-    console.log("[Paila AI] Response generated successfully.");
+    const trimmedMessage = message.trim();
 
-    return res.status(200).json({
-      success: true,
-      message: answer,
-    });
-  } catch (error: unknown) {
-    console.error(
-      `[Paila AI] Gemini attempt ${attempt} failed.`
+    if (!trimmedMessage) {
+      return res.status(400).json({
+        success: false,
+        message: "Please enter a message.",
+      });
+    }
+
+    if (trimmedMessage.length > 4000) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Message is too long. Please keep it under 4000 characters.",
+      });
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Check Gemini API key
+    |--------------------------------------------------------------------------
+    */
+
+    const apiKey =
+      process.env.GEMINI_API_KEY ||
+      process.env.GOOGLE_API_KEY;
+
+    if (!apiKey) {
+      console.error(
+        "[Paila AI] GEMINI_API_KEY / GOOGLE_API_KEY is missing."
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: "Paila AI is not configured correctly.",
+      });
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Log request
+    |--------------------------------------------------------------------------
+    */
+
+    console.log(
+      `[Paila AI] Request from user ${
+        req.userId ?? "unknown"
+      }`
     );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Gemini client
+    |--------------------------------------------------------------------------
+    */
+
+    const ai = new GoogleGenAI({
+      apiKey,
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Try Gemini models in order
+    |--------------------------------------------------------------------------
+    */
+
+    let lastError: unknown = null;
+
+    for (let modelIndex = 0; modelIndex < GEMINI_MODELS.length; modelIndex++) {
+      const model = GEMINI_MODELS[modelIndex];
+
+      console.log(
+        `[Paila AI] Trying model ${model} (${modelIndex + 1}/${GEMINI_MODELS.length})`
+      );
+
+
+      /*
+      |--------------------------------------------------------------------------
+      | Retry each model twice for temporary failures
+      |--------------------------------------------------------------------------
+      */
+
+      for (let attempt = 1; attempt <= 2; attempt++) {
+        try {
+          console.log(
+            `[Paila AI] ${model} attempt ${attempt}/2`
+          );
+
+
+          const response = await ai.models.generateContent({
+            model,
+            contents: trimmedMessage,
+            config: {
+              systemInstruction: PAILA_SYSTEM_PROMPT,
+              temperature: 0.7,
+              maxOutputTokens: 1200,
+            },
+          });
+
+
+          const answer = response.text?.trim();
+
+
+          /*
+          |--------------------------------------------------------------------------
+          | Empty response
+          |--------------------------------------------------------------------------
+          */
+
+          if (!answer) {
+            console.warn(
+              `[Paila AI] ${model} returned an empty response.`
+            );
+
+            lastError = new Error(
+              `${model} returned an empty response`
+            );
+
+            break;
+          }
+
+
+          /*
+          |--------------------------------------------------------------------------
+          | Success
+          |--------------------------------------------------------------------------
+          */
+
+          console.log(
+            `[Paila AI] Response generated successfully using ${model}.`
+          );
+
+          return res.status(200).json({
+            success: true,
+            message: answer,
+          });
+
+
+        } catch (error: unknown) {
+          lastError = error;
+
+          console.error(
+            `[Paila AI] ${model} attempt ${attempt} failed.`
+          );
+
+
+          /*
+          |--------------------------------------------------------------------------
+          | Temporary error
+          |--------------------------------------------------------------------------
+          */
+
+          if (isTemporaryGeminiError(error)) {
+            if (attempt === 1) {
+              console.warn(
+                `[Paila AI] Temporary error from ${model}. Retrying...`
+              );
+
+              await sleep(1200);
+              continue;
+            }
+
+            console.warn(
+              `[Paila AI] ${model} is unavailable. Moving to fallback model.`
+            );
+
+            break;
+          }
+
+
+          /*
+          |--------------------------------------------------------------------------
+          | Non-temporary error
+          |--------------------------------------------------------------------------
+          */
+
+          console.error(
+            `[Paila AI] Non-temporary error from ${model}.`
+          );
+
+          break;
+        }
+      }
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | All models failed
+    |--------------------------------------------------------------------------
+    */
+
+    console.error("========================================");
+    console.error("[Paila AI] All Gemini models failed.");
+
+    if (lastError instanceof Error) {
+      console.error("Message:", lastError.message);
+      console.error("Stack:", lastError.stack);
+    } else {
+      console.error("Unknown error:", lastError);
+    }
+
+    console.error("========================================");
+
+
+    return res.status(503).json({
+      success: false,
+      message:
+        "Paila AI is temporarily busy. Please try again in a moment.",
+    });
+
+
+  } catch (error: unknown) {
+    /*
+    |--------------------------------------------------------------------------
+    | Unexpected server error
+    |--------------------------------------------------------------------------
+    */
+
+    console.error("========================================");
+    console.error("[Paila AI] Unexpected server error");
 
     if (error instanceof Error) {
       console.error("Message:", error.message);
+      console.error("Stack:", error.stack);
+    } else {
+      console.error("Unknown error:", error);
     }
 
-    if (
-      !isRetryableGeminiError(error) ||
-      attempt === maxAttempts
-    ) {
-      throw error;
-    }
+    console.error("========================================");
 
-    const delay = attempt * 1500;
 
-    console.log(
-      `[Paila AI] Temporary Gemini error. Retrying in ${delay}ms...`
-    );
-
-    await sleep(delay);
+    return res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong while contacting Paila AI.",
+    });
   }
-}
-
-return res.status(500).json({
-  success: false,
-  message: "Paila AI could not generate a response.",
-});
- 
-
-} catch (error: unknown) {
-console.error("========================================");
-console.error("[Paila AI] Gemini request failed");
-
- 
-if (error instanceof Error) {
-  console.error("Message:", error.message);
-  console.error("Stack:", error.stack);
-} else {
-  console.error("Unknown error:", error);
-}
-
-console.error("========================================");
-
-return res.status(503).json({
-  success: false,
-  message:
-    "Paila AI is temporarily busy. Please try again in a moment.",
-});
-
-}
 }
