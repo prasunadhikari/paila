@@ -197,13 +197,33 @@ interface ChatRequestBody {
 message?: string;
 }
 
+function isTemporaryGeminiError(error: unknown): boolean {
+if (!(error instanceof Error)) {
+return false;
+}
+
+const message = error.message.toLowerCase();
+
+return (
+message.includes("503") ||
+message.includes("unavailable") ||
+message.includes("high demand") ||
+message.includes("temporarily")
+);
+}
+
+function wait(ms: number): Promise<void> {
+return new Promise((resolve) => {
+setTimeout(resolve, ms);
+});
+}
+
 export async function chatWithAI(
 req: AuthRequest,
 res: Response
 ) {
 try {
 const { message } = req.body as ChatRequestBody;
-
 
 if (!message || typeof message !== "string") {
   return res.status(400).json({
@@ -248,17 +268,50 @@ const ai = new GoogleGenAI({
   apiKey,
 });
 
-const response = await ai.models.generateContent({
-  model: "gemini-3.6-flash",
-  contents: trimmedMessage,
-  config: {
-    systemInstruction: PAILA_SYSTEM_PROMPT,
-    temperature: 0.7,
-    maxOutputTokens: 1200,
-  },
-});
+let response;
 
-const answer = response.text?.trim();
+const maxAttempts = 3;
+
+for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+  try {
+    console.log(
+      `[Paila AI] Gemini attempt ${attempt}/${maxAttempts}`
+    );
+
+    response = await ai.models.generateContent({
+      model: "gemini-3.6-flash",
+      contents: trimmedMessage,
+      config: {
+        systemInstruction: PAILA_SYSTEM_PROMPT,
+        temperature: 0.7,
+        maxOutputTokens: 1200,
+      },
+    });
+
+    break;
+  } catch (error: unknown) {
+    console.error(
+      `[Paila AI] Gemini attempt ${attempt} failed.`
+    );
+
+    if (
+      !isTemporaryGeminiError(error) ||
+      attempt === maxAttempts
+    ) {
+      throw error;
+    }
+
+    const delay = attempt * 1500;
+
+    console.log(
+      `[Paila AI] Temporary Gemini error. Retrying in ${delay}ms...`
+    );
+
+    await wait(delay);
+  }
+}
+
+const answer = response?.text?.trim();
 
 if (!answer) {
   console.error("[Paila AI] Gemini returned an empty response.");
@@ -280,7 +333,6 @@ return res.status(200).json({
 console.error("========================================");
 console.error("[Paila AI] Gemini request failed");
 
-
 if (error instanceof Error) {
   console.error("Message:", error.message);
   console.error("Stack:", error.stack);
@@ -290,10 +342,20 @@ if (error instanceof Error) {
 
 console.error("========================================");
 
+if (isTemporaryGeminiError(error)) {
+  return res.status(503).json({
+    success: false,
+    message:
+      "Paila AI is a little busy right now. Please try again in a moment.",
+  });
+}
+
 return res.status(500).json({
   success: false,
-  message: "Something went wrong while contacting Paila AI.",
+  message:
+    "Something went wrong while contacting Paila AI.",
 });
+
 
 }
 }

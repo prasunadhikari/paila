@@ -44,79 +44,101 @@ return part;
 
 function formatAIMessage(content: string) {
 const lines = content.split("\n");
+const elements: React.ReactNode[] = [];
 
-return ( <div className="space-y-1">
-{lines.map((line, index) => {
+lines.forEach((line, index) => {
 const trimmed = line.trim();
 
+if (!trimmed || trimmed === "---") {
+  return;
+}
 
-    if (!trimmed || trimmed === "---") {
-      return null;
-    }
+if (trimmed.startsWith("## ")) {
+  elements.push(
+    <h2
+      key={index}
+      className="mt-6 mb-3 text-lg font-bold tracking-tight text-slate-900 first:mt-0"
+    >
+      {formatInlineText(trimmed.replace(/^## /, ""))}
+    </h2>
+  );
+  return;
+}
 
-    if (trimmed.startsWith("### ")) {
-      return (
-        <h3
-          key={index}
-          className="mt-5 mb-2 text-base font-bold text-slate-900 first:mt-0"
-        >
-          {trimmed.replace("### ", "")}
-        </h3>
-      );
-    }
+if (trimmed.startsWith("### ")) {
+  elements.push(
+    <h3
+      key={index}
+      className="mt-5 mb-2 text-base font-bold text-slate-900"
+    >
+      {formatInlineText(trimmed.replace(/^### /, ""))}
+    </h3>
+  );
+  return;
+}
 
-    if (trimmed.startsWith("## ")) {
-      return (
-        <h2
-          key={index}
-          className="mt-5 mb-2 text-lg font-bold text-slate-900 first:mt-0"
-        >
-          {trimmed.replace("## ", "")}
-        </h2>
-      );
-    }
+if (/^\d+\.\s/.test(trimmed)) {
+  const match = trimmed.match(/^(\d+)\.\s(.+)$/);
 
-    if (/^\d+\.\s/.test(trimmed)) {
-      const text = trimmed.replace(/^\d+\.\s/, "");
-
-      return (
-        <div key={index} className="mt-4">
-          <p className="font-semibold text-slate-900">
-            {formatInlineText(text)}
-          </p>
-        </div>
-      );
-    }
-
-    if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
-      const text = trimmed.replace(/^[-*]\s/, "");
-
-      return (
-        <div key={index} className="flex gap-2 pl-1">
-          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
-          <p className="text-slate-700">
-            {formatInlineText(text)}
-          </p>
-        </div>
-      );
-    }
-
-    return (
-      <p
+  if (match) {
+    elements.push(
+      <div
         key={index}
-        className="mb-2 text-slate-700 last:mb-0"
+        className="mt-3 flex gap-3"
       >
-        {formatInlineText(trimmed)}
-      </p>
-    );
-  })}
-</div>
+        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-xs font-bold text-emerald-700">
+          {match[1]}
+        </span>
 
+        <p className="pt-0.5 text-slate-700">
+          {formatInlineText(match[2])}
+        </p>
+      </div>
+    );
+  }
+
+  return;
+}
+
+if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
+  const text = trimmed.replace(/^[-*]\s/, "");
+
+  elements.push(
+    <div
+      key={index}
+      className="flex gap-3 pl-1"
+    >
+      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
+
+      <p className="text-slate-700">
+        {formatInlineText(text)}
+      </p>
+    </div>
+  );
+
+  return;
+}
+
+elements.push(
+  <p
+    key={index}
+    className="mb-2 leading-7 text-slate-700 last:mb-0"
+  >
+    {formatInlineText(trimmed)}
+  </p>
+);
+
+
+});
+
+return ( <div className="space-y-1">
+{elements} </div>
 );
 }
 
 export default function PailaAIPage() {
 const [input, setInput] = useState("");
+
 const [messages, setMessages] = useState<Message[]>([
 {
 id: 1,
@@ -175,16 +197,19 @@ try {
     import.meta.env.VITE_API_URL ||
     "https://paila-backend.onrender.com/api/v1";
 
-  const response = await fetch(`${API_BASE_URL}/ai/chat`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      message,
-    }),
-  });
+  const response = await fetch(
+    `${API_BASE_URL}/ai/chat`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        message,
+      }),
+    }
+  );
 
   const data = await response.json();
 
@@ -328,12 +353,16 @@ Back to Home </span> </Link>
 
                   <span
                     className="h-2 w-2 animate-bounce rounded-full bg-slate-400"
-                    style={{ animationDelay: "150ms" }}
+                    style={{
+                      animationDelay: "150ms",
+                    }}
                   />
 
                   <span
                     className="h-2 w-2 animate-bounce rounded-full bg-slate-400"
-                    style={{ animationDelay: "300ms" }}
+                    style={{
+                      animationDelay: "300ms",
+                    }}
                   />
                 </div>
               </div>
