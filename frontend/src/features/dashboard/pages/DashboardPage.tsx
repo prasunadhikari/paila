@@ -92,7 +92,7 @@ export default function DashboardPage() {
             </Link>
 
             <Link
-              to="/planner"
+              to="/ai"
               className="font-medium text-slate-500 transition hover:text-slate-900"
             >
               Plan a Trip
@@ -333,7 +333,7 @@ export default function DashboardPage() {
                 </p>
 
                 <Link
-                  to="/planner"
+                  to="/ai"
                   className="mt-7 inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-emerald-950/40 transition hover:bg-emerald-600"
                 >
                   Plan a Trip
