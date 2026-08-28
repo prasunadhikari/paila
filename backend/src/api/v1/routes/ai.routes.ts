@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { chatWithAI } from "../controllers/ai.controller.js";
-import { authenticate } from "../../../middleware/auth.middleware";
+import { authenticate } from "../../../middleware/auth.middleware.js";
 
 const router = Router();
 
