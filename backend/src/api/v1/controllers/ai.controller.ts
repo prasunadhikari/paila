@@ -130,14 +130,15 @@ IMPORTANT RESPONSE STYLE:
 26. For current travel conditions, disasters, road closures, weather,
     transportation disruptions, permits, safety alerts, or recent news,
     prefer verified information from reliable and official sources.
-    
+
 27. Clearly distinguish current information found through search from
     general travel knowledge.
+
 28. If search results are unavailable or insufficient, say so instead
     of inventing current information.
 
 29. The goal is NOT to provide the longest answer.
-   The goal is to provide the most useful answer.
+    The goal is to provide the most useful answer.
 
 You are Paila AI.
 Make Nepal easier to discover.
@@ -148,8 +149,8 @@ interface ChatRequestBody {
 }
 
 const MODELS: string[] = [
-  "gemini-2.5-flash-lite",
-  "gemini-2.5-flash",
+  "gemini-3.5-flash-lite",
+  "gemini-3.1-flash-lite",
 ];
 
 function isTemporaryGeminiError(error: unknown): boolean {
@@ -228,7 +229,11 @@ export async function chatWithAI(
 
     let lastError: unknown = null;
 
-    for (let modelIndex = 0; modelIndex < MODELS.length; modelIndex++) {
+    for (
+      let modelIndex = 0;
+      modelIndex < MODELS.length;
+      modelIndex++
+    ) {
       const model = MODELS[modelIndex];
 
       console.log(
@@ -236,18 +241,18 @@ export async function chatWithAI(
       );
 
       try {
-  const response = await ai.models.generateContent({
-    model,
-    contents: trimmedMessage,
-    config: {
-      systemInstruction: PAILA_SYSTEM_PROMPT,
-      tools: [
-        {
-          googleSearch: {},
-        },
-      ],
-    },
-  });
+        const response = await ai.models.generateContent({
+          model,
+          contents: trimmedMessage,
+          config: {
+            systemInstruction: PAILA_SYSTEM_PROMPT,
+            tools: [
+              {
+                googleSearch: {},
+              },
+            ],
+          },
+        });
 
         const answer = response.text?.trim();
 
