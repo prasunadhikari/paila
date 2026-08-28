@@ -130,10 +130,9 @@ IMPORTANT RESPONSE STYLE:
 26. For current travel conditions, disasters, road closures, weather,
     transportation disruptions, permits, safety alerts, or recent news,
     prefer verified information from reliable and official sources.
-
+    
 27. Clearly distinguish current information found through search from
     general travel knowledge.
-    
 28. If search results are unavailable or insufficient, say so instead
     of inventing current information.
 
@@ -149,8 +148,8 @@ interface ChatRequestBody {
 }
 
 const MODELS: string[] = [
-  "gemini-3.5-flash-lite",
-  "gemini-3.1-flash-lite",
+  "gemini-2.5-flash-lite",
+  "gemini-2.5-flash",
 ];
 
 function isTemporaryGeminiError(error: unknown): boolean {
