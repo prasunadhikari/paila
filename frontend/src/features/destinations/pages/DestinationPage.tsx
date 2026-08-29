@@ -5,7 +5,6 @@ import {
   CalendarDays,
   Car,
   ChevronRight,
-  Clock3,
   Compass,
   MapPin,
   Plane,
