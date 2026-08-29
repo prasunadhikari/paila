@@ -398,13 +398,7 @@ export default function DestinationsPage() {
                       <ArrowRight className="h-4 w-4" />
                     </Link>
 
-                    {/* Back to Dashboard */}
-                    <Link
-                      to="/dashboard"
-                      className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50"
-                    >
-                      Back to Dashboard
-                    </Link>
+                  
                   </div>
                 </div>
 
