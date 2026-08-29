@@ -20,7 +20,7 @@ export default function Hero() {
       <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black/70 to-transparent" />
 
       {/* Content */}
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center px-6 pb-32 pt-32">
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center px-4 pb-20 pt-36 sm:px-6 sm:pb-28 sm:pt-40 lg:px-8 lg:pb-32 lg:pt-32">
         <motion.div
           className="w-full max-w-5xl"
           initial={{ opacity: 0, y: 30 }}
@@ -28,31 +28,36 @@ export default function Hero() {
           transition={{ duration: 0.8 }}
         >
           {/* Badge */}
-          <p className="mb-5 text-lg font-semibold text-emerald-300">
+          <motion.p
+            className="mb-4 text-base font-semibold text-emerald-300 sm:mb-5 sm:text-lg"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
             Your Nepal Travel Companion
-          </p>
+          </motion.p>
 
           {/* Heading */}
-          <h1 className="text-5xl font-black leading-[0.95] tracking-tight text-white md:text-7xl lg:text-8xl">
+          <h1 className="max-w-4xl text-4xl font-black leading-[0.98] tracking-tight text-white sm:text-5xl md:text-7xl lg:text-8xl">
             Explore Nepal.
-            <span className="block bg-gradient-to-r from-emerald-300 to-cyan-400 bg-clip-text text-transparent">
+            <span className="mt-1 block bg-gradient-to-r from-emerald-300 to-cyan-400 bg-clip-text text-transparent sm:mt-0">
               Your journey starts here.
             </span>
           </h1>
 
           {/* Description */}
-          <p className="mt-7 max-w-2xl text-lg leading-8 text-gray-200 md:text-xl">
+          <p className="mt-5 max-w-2xl text-base leading-7 text-gray-200 sm:mt-7 sm:text-lg sm:leading-8 md:text-xl">
             Search flights, hotels, buses and experiences — all in one place.
           </p>
 
           {/* Travel Search */}
-          <div className="mt-10 w-full max-w-5xl overflow-hidden rounded-3xl bg-white shadow-2xl">
+          <div className="mt-7 w-full max-w-5xl overflow-hidden rounded-2xl bg-white shadow-2xl sm:mt-10 sm:rounded-3xl">
             {/* Search Tabs */}
-            <div className="flex overflow-x-auto border-b border-slate-200 px-3 pt-3">
+            <div className="flex overflow-x-auto border-b border-slate-200 px-2 pt-2 scrollbar-hide sm:px-3 sm:pt-3">
               <button
                 type="button"
                 onClick={() => setSearchType("flights")}
-                className={`flex min-w-fit items-center gap-2 rounded-t-2xl px-5 py-3 text-sm font-semibold transition ${
+                className={`flex min-w-fit shrink-0 items-center gap-2 rounded-t-xl px-4 py-3 text-sm font-semibold transition sm:rounded-t-2xl sm:px-5 ${
                   searchType === "flights"
                     ? "bg-emerald-50 text-emerald-700"
                     : "text-slate-500 hover:bg-slate-50"
@@ -64,7 +69,7 @@ export default function Hero() {
               <button
                 type="button"
                 onClick={() => setSearchType("hotels")}
-                className={`flex min-w-fit items-center gap-2 rounded-t-2xl px-5 py-3 text-sm font-semibold transition ${
+                className={`flex min-w-fit shrink-0 items-center gap-2 rounded-t-xl px-4 py-3 text-sm font-semibold transition sm:rounded-t-2xl sm:px-5 ${
                   searchType === "hotels"
                     ? "bg-emerald-50 text-emerald-700"
                     : "text-slate-500 hover:bg-slate-50"
@@ -76,7 +81,7 @@ export default function Hero() {
               <button
                 type="button"
                 onClick={() => setSearchType("bus")}
-                className={`flex min-w-fit items-center gap-2 rounded-t-2xl px-5 py-3 text-sm font-semibold transition ${
+                className={`flex min-w-fit shrink-0 items-center gap-2 rounded-t-xl px-4 py-3 text-sm font-semibold transition sm:rounded-t-2xl sm:px-5 ${
                   searchType === "bus"
                     ? "bg-emerald-50 text-emerald-700"
                     : "text-slate-500 hover:bg-slate-50"
@@ -88,7 +93,7 @@ export default function Hero() {
               <button
                 type="button"
                 onClick={() => setSearchType("experiences")}
-                className={`flex min-w-fit items-center gap-2 rounded-t-2xl px-5 py-3 text-sm font-semibold transition ${
+                className={`flex min-w-fit shrink-0 items-center gap-2 rounded-t-xl px-4 py-3 text-sm font-semibold transition sm:rounded-t-2xl sm:px-5 ${
                   searchType === "experiences"
                     ? "bg-emerald-50 text-emerald-700"
                     : "text-slate-500 hover:bg-slate-50"
@@ -99,11 +104,12 @@ export default function Hero() {
             </div>
 
             {/* Search Content */}
-            <div className="p-4 md:p-5">
+            <div className="p-3 sm:p-4 md:p-5">
+              {/* Flights */}
               {searchType === "flights" && (
                 <div>
                   {/* Trip Type */}
-                  <div className="mb-4 flex flex-wrap gap-5">
+                  <div className="mb-4 flex flex-wrap gap-x-5 gap-y-3">
                     <label className="flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-700">
                       <input
                         type="radio"
@@ -178,7 +184,7 @@ export default function Hero() {
                     {/* Search */}
                     <Link
                       to="/login"
-                      className="flex min-h-[88px] items-center justify-center rounded-2xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-xl"
+                      className="flex min-h-[72px] items-center justify-center rounded-2xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-xl active:scale-[0.98] md:min-h-[88px]"
                     >
                       Search Flights
                     </Link>
@@ -186,6 +192,7 @@ export default function Hero() {
                 </div>
               )}
 
+              {/* Hotels */}
               {searchType === "hotels" && (
                 <div className="grid gap-3 md:grid-cols-4">
                   {/* Destination */}
@@ -240,13 +247,14 @@ export default function Hero() {
                   {/* Search */}
                   <Link
                     to="/login"
-                    className="flex min-h-[88px] items-center justify-center rounded-2xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-xl"
+                    className="flex min-h-[72px] items-center justify-center rounded-2xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-xl active:scale-[0.98] md:min-h-[88px]"
                   >
                     Search Hotels
                   </Link>
                 </div>
               )}
 
+              {/* Bus */}
               {searchType === "bus" && (
                 <div className="grid gap-3 md:grid-cols-4">
                   {/* From */}
@@ -302,13 +310,14 @@ export default function Hero() {
                   {/* Search */}
                   <Link
                     to="/login"
-                    className="flex min-h-[88px] items-center justify-center rounded-2xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-xl"
+                    className="flex min-h-[72px] items-center justify-center rounded-2xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-xl active:scale-[0.98] md:min-h-[88px]"
                   >
                     Search Buses
                   </Link>
                 </div>
               )}
 
+              {/* Experiences */}
               {searchType === "experiences" && (
                 <div className="grid gap-3 md:grid-cols-3">
                   {/* Destination */}
@@ -343,7 +352,7 @@ export default function Hero() {
                   {/* Search */}
                   <Link
                     to="/login"
-                    className="flex min-h-[88px] items-center justify-center rounded-2xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-xl"
+                    className="flex min-h-[72px] items-center justify-center rounded-2xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-xl active:scale-[0.98] md:min-h-[88px]"
                   >
                     Explore Experiences
                   </Link>
@@ -353,42 +362,42 @@ export default function Hero() {
           </div>
 
           {/* Popular Destinations */}
-          <div className="mt-7 flex flex-wrap items-center gap-3">
-            <span className="text-sm font-medium text-white/70">
+          <div className="mt-6 flex flex-wrap items-center gap-2.5 sm:mt-7 sm:gap-3">
+            <span className="w-full text-sm font-medium text-white/70 sm:w-auto">
               Popular:
             </span>
 
             <Link
               to="/login"
-              className="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20"
+              className="rounded-full border border-white/30 bg-white/10 px-3.5 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20 active:scale-95 sm:px-4"
             >
               Pokhara
             </Link>
 
             <Link
               to="/login"
-              className="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20"
+              className="rounded-full border border-white/30 bg-white/10 px-3.5 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20 active:scale-95 sm:px-4"
             >
               Mustang
             </Link>
 
             <Link
               to="/login"
-              className="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20"
+              className="rounded-full border border-white/30 bg-white/10 px-3.5 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20 active:scale-95 sm:px-4"
             >
               Chitwan
             </Link>
 
             <Link
               to="/login"
-              className="rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20"
+              className="rounded-full border border-white/30 bg-white/10 px-3.5 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20 active:scale-95 sm:px-4"
             >
               Kathmandu
             </Link>
           </div>
 
           {/* AI Chat */}
-          <div className="mt-8">
+          <div className="mt-6 sm:mt-8">
             <Link
               to="/ai"
               className="inline-flex items-center gap-2 text-sm font-semibold text-white/80 transition hover:text-emerald-300"

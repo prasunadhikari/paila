@@ -1,6 +1,5 @@
-
 import { useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
@@ -16,8 +15,6 @@ import Sidebar from "../../../components/layout/Sidebar";
 const ITEMS_PER_PAGE = 12;
 
 export default function DestinationsPage() {
-  const navigate = useNavigate();
-
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
@@ -74,58 +71,47 @@ export default function DestinationsPage() {
     setCurrentPage(1);
   };
 
-  const handleBack = () => {
-    navigate(-1);
-  };
-
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen overflow-x-hidden bg-slate-50 text-slate-900">
       {/* =========================================================
-          SIDEBAR
+          SIDEBAR / MOBILE NAVBAR
       ========================================================== */}
       <Sidebar />
 
       {/* =========================================================
           PAGE CONTENT
       ========================================================== */}
-      <div className="ml-64">
+      <div className="lg:ml-64">
         <main>
           {/* =====================================================
               PAGE HEADER
           ====================================================== */}
           <section className="border-b border-slate-200 bg-white">
-            <div className="mx-auto max-w-7xl px-6 pb-12 pt-10 lg:px-8">
-              {/* Back */}
-              <button
-                type="button"
-                onClick={handleBack}
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Back
-              </button>
-
+            <div className="mx-auto max-w-7xl px-4 pb-10 pt-28 sm:px-6 sm:pb-12 sm:pt-12 lg:px-8 lg:pt-10">
               {/* Heading */}
-              <div className="mt-10 max-w-3xl">
-                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3.5 py-2 text-xs font-semibold text-emerald-700">
+              <div className="max-w-3xl">
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 sm:px-3.5 sm:py-2">
                   <Compass className="h-3.5 w-3.5" />
                   Explore Nepal
                 </div>
 
-                <h1 className="mt-5 text-4xl font-extrabold tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
+                <h1 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
                   Discover places
-                  <span className="text-emerald-500"> worth visiting.</span>
+                  <span className="text-emerald-500">
+                    {" "}
+                    worth visiting.
+                  </span>
                 </h1>
 
-                <p className="mt-5 max-w-2xl text-base leading-7 text-slate-500 sm:text-lg">
-                  Explore Nepal's mountains, lakes, heritage towns, wildlife
-                  destinations and hidden gems — all in one place.
+                <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-500 sm:mt-5 sm:text-lg sm:leading-7">
+                  Explore Nepal&apos;s mountains, lakes, heritage towns,
+                  wildlife destinations and hidden gems — all in one place.
                 </p>
               </div>
 
               {/* Search */}
-              <div className="mt-9 flex max-w-4xl flex-col gap-3 sm:flex-row">
-                <div className="flex flex-1 items-center rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 shadow-sm transition focus-within:border-emerald-300 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-500/10">
+              <div className="mt-7 flex max-w-4xl flex-col gap-3 sm:mt-9 sm:flex-row">
+                <div className="flex min-w-0 flex-1 items-center rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-3 shadow-sm transition focus-within:border-emerald-300 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-500/10 sm:px-4 sm:py-3.5">
                   <Search className="h-5 w-5 shrink-0 text-slate-400" />
 
                   <input
@@ -135,21 +121,22 @@ export default function DestinationsPage() {
                       handleSearch(event.target.value)
                     }
                     placeholder="Search Pokhara, Mustang, Everest..."
-                    className="ml-3 w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
+                    className="ml-3 min-w-0 w-full bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
                   />
 
                   {search && (
                     <button
                       type="button"
                       onClick={() => handleSearch("")}
-                      className="ml-2 rounded-lg px-2 py-1 text-xs font-semibold text-slate-400 transition hover:bg-slate-200 hover:text-slate-700"
+                      className="ml-2 shrink-0 rounded-lg px-2 py-1 text-xs font-semibold text-slate-400 transition hover:bg-slate-200 hover:text-slate-700"
                     >
                       Clear
                     </button>
                   )}
                 </div>
 
-                <div className="flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-6 py-3.5 shadow-sm">
+                {/* Destination Count */}
+                <div className="flex min-h-[52px] items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 shadow-sm sm:min-w-[150px] sm:px-6">
                   <span className="text-sm font-semibold text-slate-900">
                     {filteredDestinations.length}
                   </span>
@@ -168,9 +155,9 @@ export default function DestinationsPage() {
               CATEGORY FILTERS
           ====================================================== */}
           <section className="border-b border-slate-200 bg-white">
-            <div className="mx-auto max-w-7xl px-6 py-5 lg:px-8">
-              <div className="flex items-center gap-3 overflow-x-auto pb-1">
-                <span className="mr-1 shrink-0 text-sm font-semibold text-slate-500">
+            <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
+              <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none">
+                <span className="mr-1 shrink-0 text-xs font-semibold text-slate-500 sm:text-sm">
                   Explore by:
                 </span>
 
@@ -182,7 +169,7 @@ export default function DestinationsPage() {
                       key={item}
                       type="button"
                       onClick={() => handleCategory(item)}
-                      className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-semibold transition ${
+                      className={`shrink-0 rounded-xl px-3.5 py-2.5 text-xs font-semibold transition sm:px-4 sm:text-sm ${
                         active
                           ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/20"
                           : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900"
@@ -199,20 +186,20 @@ export default function DestinationsPage() {
           {/* =====================================================
               DESTINATIONS
           ====================================================== */}
-          <section className="mx-auto max-w-7xl px-6 py-14 lg:px-8 lg:py-16">
+          <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8 lg:py-16">
             {/* Section Heading */}
-            <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-5">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-600">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600 sm:text-sm">
                   Start Exploring
                 </p>
 
-                <h2 className="mt-2 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
+                <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-950 sm:text-4xl">
                   Popular destinations
                 </h2>
               </div>
 
-              <p className="max-w-md text-sm leading-6 text-slate-500 sm:text-right">
+              <p className="max-w-md text-xs leading-5 text-slate-500 sm:text-right sm:text-sm sm:leading-6">
                 {filteredDestinations.length > 0
                   ? `${filteredDestinations.length} ${
                       filteredDestinations.length === 1
@@ -227,18 +214,18 @@ export default function DestinationsPage() {
                 NO RESULTS
             ================================================== */}
             {visibleDestinations.length === 0 && (
-              <div className="mt-10 rounded-3xl border border-slate-200 bg-white px-6 py-20 text-center shadow-sm">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50">
-                  <Search className="h-7 w-7 text-emerald-500" />
+              <div className="mt-8 rounded-3xl border border-slate-200 bg-white px-5 py-16 text-center shadow-sm sm:mt-10 sm:px-6 sm:py-20">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 sm:h-16 sm:w-16">
+                  <Search className="h-6 w-6 text-emerald-500 sm:h-7 sm:w-7" />
                 </div>
 
-                <h3 className="mt-5 text-2xl font-bold text-slate-900">
+                <h3 className="mt-5 text-xl font-bold text-slate-900 sm:text-2xl">
                   No destinations found
                 </h3>
 
                 <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
-                  Try searching for another destination or choose a different
-                  category.
+                  Try searching for another destination or choose a
+                  different category.
                 </p>
 
                 <button
@@ -255,7 +242,7 @@ export default function DestinationsPage() {
                 DESTINATION CARDS
             ================================================== */}
             {visibleDestinations.length > 0 && (
-              <div className="mt-9 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="mt-7 grid gap-5 sm:mt-9 sm:grid-cols-2 lg:grid-cols-3">
                 {visibleDestinations.map((destination) => (
                   <Link
                     key={destination.slug}
@@ -275,17 +262,19 @@ export default function DestinationsPage() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-transparent" />
 
                       {/* Category */}
-                      <div className="absolute left-4 top-4">
-                        <span className="inline-flex rounded-full border border-white/20 bg-white/90 px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm backdrop-blur-md">
+                      <div className="absolute left-3 top-3 sm:left-4 sm:top-4">
+                        <span className="inline-flex rounded-full border border-white/20 bg-white/90 px-2.5 py-1.5 text-[11px] font-semibold text-slate-700 shadow-sm backdrop-blur-md sm:px-3 sm:text-xs">
                           {destination.category}
                         </span>
                       </div>
 
                       {/* Location */}
                       <div className="absolute bottom-4 left-4 right-4">
-                        <div className="flex items-center gap-1.5 text-sm font-medium text-white">
-                          <MapPin className="h-4 w-4" />
-                          {destination.location}
+                        <div className="flex items-center gap-1.5 text-xs font-medium text-white sm:text-sm">
+                          <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                          <span className="truncate">
+                            {destination.location}
+                          </span>
                         </div>
 
                         <h3 className="mt-1 text-2xl font-bold text-white">
@@ -295,13 +284,13 @@ export default function DestinationsPage() {
                     </div>
 
                     {/* Card Content */}
-                    <div className="p-5">
+                    <div className="p-4 sm:p-5">
                       <p className="line-clamp-2 min-h-[48px] text-sm leading-6 text-slate-500">
                         {destination.description}
                       </p>
 
-                      <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
-                        <span className="text-sm font-semibold text-emerald-600">
+                      <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-4 sm:mt-5">
+                        <span className="text-xs font-semibold text-emerald-600 sm:text-sm">
                           Explore destination
                         </span>
 
@@ -319,17 +308,18 @@ export default function DestinationsPage() {
                 PAGINATION
             ================================================== */}
             {totalPages > 1 && (
-              <div className="mt-12 flex flex-wrap items-center justify-center gap-2">
+              <div className="mt-10 flex flex-wrap items-center justify-center gap-2 sm:mt-12">
                 <button
                   type="button"
                   disabled={safePage === 1}
                   onClick={() =>
                     setCurrentPage((page) => Math.max(page - 1, 1))
                   }
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-semibold text-slate-600 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 sm:gap-2 sm:px-4 sm:text-sm"
                 >
                   <ArrowLeft className="h-4 w-4" />
-                  Previous
+                  <span className="hidden xs:inline">Previous</span>
+                  <span className="sm:hidden">Prev</span>
                 </button>
 
                 {Array.from(
@@ -345,7 +335,7 @@ export default function DestinationsPage() {
                       key={page}
                       type="button"
                       onClick={() => setCurrentPage(page)}
-                      className={`h-11 w-11 rounded-xl text-sm font-bold transition ${
+                      className={`h-10 w-10 rounded-xl text-sm font-bold transition sm:h-11 sm:w-11 ${
                         safePage === page
                           ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/20"
                           : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900"
@@ -363,9 +353,9 @@ export default function DestinationsPage() {
                       Math.min(page + 1, totalPages)
                     )
                   }
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-semibold text-slate-600 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 sm:gap-2 sm:px-4 sm:text-sm"
                 >
-                  Next
+                  <span>Next</span>
                   <ArrowRight className="h-4 w-4" />
                 </button>
               </div>
@@ -375,41 +365,43 @@ export default function DestinationsPage() {
           {/* =====================================================
               PAILA AI CTA
           ====================================================== */}
-          <section className="mx-auto max-w-7xl px-6 pb-16 lg:px-8 lg:pb-20">
-            <div className="relative overflow-hidden rounded-[2rem] border border-emerald-100 bg-gradient-to-br from-emerald-50 via-white to-cyan-50">
+          <section className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8 lg:pb-20">
+            <div className="relative overflow-hidden rounded-[1.5rem] border border-emerald-100 bg-gradient-to-br from-emerald-50 via-white to-cyan-50 sm:rounded-[2rem]">
               {/* Decorative elements */}
               <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-emerald-200/30 blur-3xl" />
 
               <div className="absolute -bottom-24 left-20 h-64 w-64 rounded-full bg-cyan-200/20 blur-3xl" />
 
-              <div className="relative grid items-center gap-10 p-8 sm:p-10 lg:grid-cols-[1fr_auto] lg:p-14">
+              <div className="relative grid items-center gap-8 p-6 sm:gap-10 sm:p-10 lg:grid-cols-[1fr_auto] lg:p-14">
                 <div className="max-w-2xl">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-3.5 py-2 text-xs font-semibold text-emerald-700 shadow-sm">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white/80 px-3 py-1.5 text-xs font-semibold text-emerald-700 shadow-sm sm:px-3.5 sm:py-2">
                     <Sparkles className="h-3.5 w-3.5" />
                     Paila AI
                   </div>
 
-                  <h2 className="mt-5 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
+                  <h2 className="mt-4 text-2xl font-bold tracking-tight text-slate-950 sm:mt-5 sm:text-4xl">
                     Not sure where to go next?
                   </h2>
 
-                  <p className="mt-4 max-w-xl text-base leading-7 text-slate-600">
-                    Tell Paila about your travel style, budget and interests.
-                    Discover destinations that fit your next Nepal adventure.
+                  <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600 sm:mt-4 sm:text-base sm:leading-7">
+                    Tell Paila about your travel style, budget and
+                    interests. Discover destinations that fit your next
+                    Nepal adventure.
                   </p>
 
-                  <div className="mt-7 flex flex-wrap gap-3">
+                  <div className="mt-6 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap">
                     <Link
                       to="/ai"
-                      className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:-translate-y-0.5 hover:bg-emerald-600"
+                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:-translate-y-0.5 hover:bg-emerald-600"
                     >
                       Plan My Trip
                       <ArrowRight className="h-4 w-4" />
                     </Link>
 
+                    {/* Back to Dashboard */}
                     <Link
-                      to="/"
-                      className="inline-flex items-center rounded-xl border border-slate-200 bg-white px-5 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50"
+                      to="/dashboard"
+                      className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50"
                     >
                       Back to Dashboard
                     </Link>
@@ -433,12 +425,12 @@ export default function DestinationsPage() {
             FOOTER
         ======================================================== */}
         <footer className="border-t border-slate-200 bg-white">
-          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-center sm:flex-row sm:text-left lg:px-8">
-            <p className="text-sm text-slate-400">
+          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-6 text-center sm:flex-row sm:gap-3 sm:px-6 sm:py-7 sm:text-left lg:px-8">
+            <p className="text-xs text-slate-400 sm:text-sm">
               © {new Date().getFullYear()} Paila. Made for Nepal.
             </p>
 
-            <p className="text-sm text-slate-400">
+            <p className="text-xs text-slate-400 sm:text-sm">
               Every journey starts with a step. 🇳🇵
             </p>
           </div>
