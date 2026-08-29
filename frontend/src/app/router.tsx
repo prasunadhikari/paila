@@ -1,4 +1,3 @@
-
 import { useLayoutEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
@@ -16,6 +15,7 @@ import FeedbackAdminPage from "../features/admin/pages/FeedbackAdminPage";
 
 import ProtectedRoute from "../components/ProtectedRoute";
 import PailaAIPage from "../features/ai/pages/PailaAIPage";
+import ProfilePage from "../features/profile/pages/ProfilePage";
 
 /* =========================
    SCROLL TO TOP
@@ -92,15 +92,11 @@ export default function AppRouter() {
           />
 
           {/* Destinations */}
-<Route element={<ProtectedRoute />}>
-  <Route path="/destinations" element={<DestinationsPage />} />
-  <Route path="/destinations/:destination" element={<DestinationPage />} />
-  <Route path="/dashboard" element={<DashboardPage />} />
-  <Route path="/ai" element={<PailaAIPage />} />
-  <Route path="/admin/feedback" element={<FeedbackAdminPage />} />
-</Route>
+          <Route
+            path="/destinations"
+            element={<DestinationsPage />}
+          />
 
-          {/* Destination Details */}
           <Route
             path="/destinations/:destination"
             element={<DestinationPage />}
@@ -110,6 +106,12 @@ export default function AppRouter() {
           <Route
             path="/ai"
             element={<PailaAIPage />}
+          />
+
+          {/* Profile */}
+          <Route
+            path="/profile"
+            element={<ProfilePage />}
           />
 
           {/* Admin Feedback */}

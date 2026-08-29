@@ -222,6 +222,7 @@ export async function meController(
         name: user.name,
         email: user.email,
         phone: user.phone,
+        role: user.role,
       },
     });
   } catch (error) {
@@ -230,6 +231,98 @@ export async function meController(
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
+    });
+  }
+}
+
+/* =========================================================
+   UPDATE PROFILE
+========================================================= */
+
+export async function updateProfileController(
+  req: AuthRequest,
+  res: Response
+) {
+  try {
+    if (!req.userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Authentication required",
+      });
+    }
+
+    const { name, phone } = req.body;
+
+    // Required fields
+    if (!name || !phone) {
+      return res.status(400).json({
+        success: false,
+        message: "Name and phone number are required",
+      });
+    }
+
+    const cleanName = name.trim();
+    const cleanPhone = phone.trim();
+
+    // Name validation
+    if (cleanName.length < 2) {
+      return res.status(400).json({
+        success: false,
+        message: "Name must be at least 2 characters long",
+      });
+    }
+
+    if (cleanName.length > 50) {
+      return res.status(400).json({
+        success: false,
+        message: "Name cannot exceed 50 characters",
+      });
+    }
+
+    // Phone validation
+    const phoneDigits = cleanPhone.replace(/\D/g, "");
+
+    if (phoneDigits.length < 7) {
+      return res.status(400).json({
+        success: false,
+        message: "Please enter a valid contact number",
+      });
+    }
+
+    // Find authenticated user
+    const user = await User.findById(req.userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Update only editable fields
+    user.name = cleanName;
+    user.phone = cleanPhone;
+
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error("Update profile error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message:
+        "Something went wrong while updating your profile",
     });
   }
 }

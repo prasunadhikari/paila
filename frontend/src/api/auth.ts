@@ -20,6 +20,12 @@ interface MeResponse {
   user: User;
 }
 
+interface UpdateProfileResponse {
+  success: boolean;
+  message: string;
+  user: User;
+}
+
 export async function register(
   name: string,
   email: string,
@@ -56,5 +62,20 @@ export async function getCurrentUser(
   return apiRequest<MeResponse>("/auth/me", {
     method: "GET",
     token,
+  });
+}
+
+export async function updateProfile(
+  token: string,
+  name: string,
+  phone: string
+): Promise<UpdateProfileResponse> {
+  return apiRequest<UpdateProfileResponse>("/auth/profile", {
+    method: "PUT",
+    token,
+    body: JSON.stringify({
+      name,
+      phone,
+    }),
   });
 }
