@@ -31,7 +31,7 @@ export default function LoginPage() {
   // don't allow them to stay on the login page.
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/dashboard", { replace: true });
+      navigate("/", { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
@@ -65,7 +65,7 @@ export default function LoginPage() {
       );
 
       // Login successful → user dashboard
-      navigate("/dashboard", { replace: true });
+    navigate("/", { replace: true });
     } catch (error) {
       setError(
         error instanceof Error

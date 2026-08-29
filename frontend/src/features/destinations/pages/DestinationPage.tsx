@@ -1,5 +1,21 @@
 import { Link, useParams } from "react-router-dom";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CalendarDays,
+  Car,
+  ChevronRight,
+  Clock3,
+  Compass,
+  MapPin,
+  Plane,
+  Sparkles,
+  Star,
+  Train,
+  Wallet,
+} from "lucide-react";
 import { destinations, type Destination } from "../data/destinations";
+import Sidebar from "../../../components/layout/Sidebar";
 
 type Activity = {
   name: string;
@@ -776,6 +792,28 @@ function createGenericDetails(destination: Destination): DestinationDetails {
   };
 }
 
+function getTravelIcon(type: string) {
+  const value = type.toLowerCase();
+
+  if (value.includes("flight")) {
+    return <Plane className="h-5 w-5" />;
+  }
+
+  if (
+    value.includes("car") ||
+    value.includes("taxi") ||
+    value.includes("jeep")
+  ) {
+    return <Car className="h-5 w-5" />;
+  }
+
+  if (value.includes("bus")) {
+    return <Train className="h-5 w-5" />;
+  }
+
+  return <Compass className="h-5 w-5" />;
+}
+
 export default function DestinationPage() {
   const { destination } = useParams<{ destination: string }>();
 
@@ -787,247 +825,433 @@ export default function DestinationPage() {
 
   if (!place) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-slate-50 px-6">
-        <div className="max-w-lg text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-600">
-            Paila
-          </p>
+      <div className="min-h-screen bg-[#f8f8f6]">
+        <Sidebar />
 
-          <h1 className="mt-3 text-4xl font-bold text-slate-900">
-            Destination Not Found
-          </h1>
+        <main className="ml-64 flex min-h-screen items-center justify-center px-6">
+          <div className="max-w-lg text-center">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50">
+              <MapPin className="h-7 w-7 text-emerald-500" />
+            </div>
 
-          <p className="mt-4 leading-7 text-slate-500">
-            We couldn't find this destination in the current destination
-            database.
-          </p>
+            <p className="mt-6 text-xs font-bold uppercase tracking-[0.2em] text-emerald-600">
+              Paila
+            </p>
 
-          <Link
-            to="/destinations"
-            className="mt-7 inline-flex rounded-xl bg-emerald-500 px-6 py-3 font-semibold text-white transition hover:bg-emerald-600"
-          >
-            ← Back to Destinations
-          </Link>
-        </div>
-      </main>
+            <h1 className="mt-3 text-4xl font-bold tracking-tight text-slate-950">
+              Destination not found
+            </h1>
+
+            <p className="mt-4 leading-7 text-slate-500">
+              We couldn't find this destination in the current destination
+              database.
+            </p>
+
+            <Link
+              to="/destinations"
+              className="mt-7 inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-600"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to destinations
+            </Link>
+          </div>
+        </main>
+      </div>
     );
   }
 
   const details = detailsBySlug[place.slug] ?? createGenericDetails(place);
 
   return (
-    <main className="min-h-screen bg-slate-50">
-      {/* Hero */}
-      <section className="relative h-[520px] overflow-hidden bg-slate-900">
-        <img
-          src={place.image}
-          alt={`${place.name}, ${place.location}, Nepal`}
-          className="absolute inset-0 h-full w-full object-cover object-center"
-        />
+    <div className="min-h-screen bg-[#f8f8f6] text-slate-900">
+      {/* Sidebar */}
+      <Sidebar />
 
-        <div className="absolute inset-0 bg-black/25" />
+      {/* Main Content */}
+      <div className="ml-64">
+        <main>
+          {/* =====================================================
+              HERO
+          ====================================================== */}
+          <section className="relative h-[500px] overflow-hidden bg-slate-900">
+            <img
+              src={place.image}
+              alt={`${place.name}, ${place.location}, Nepal`}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+            {/* Image overlays */}
+            <div className="absolute inset-0 bg-black/15" />
 
-        <div className="absolute left-0 right-0 top-8 mx-auto max-w-7xl px-6">
-          <Link
-            to="/destinations"
-            className="inline-flex items-center rounded-full bg-black/40 px-5 py-2.5 text-sm font-medium text-white backdrop-blur-md transition hover:bg-black/60"
-          >
-            ← Back to Explore
-          </Link>
-        </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/5" />
 
-        <div className="absolute bottom-12 left-0 right-0 mx-auto max-w-7xl px-6">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-300">
-            {place.location} • {place.province}
-          </p>
+            {/* Top navigation */}
+            <div className="absolute left-0 right-0 top-0">
+              <div className="mx-auto max-w-7xl px-8 pt-8 lg:px-10">
+                <Link
+                  to="/destinations"
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-black/20 px-4 py-2.5 text-sm font-medium text-white backdrop-blur-md transition hover:bg-black/35"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  All destinations
+                </Link>
+              </div>
+            </div>
 
-          <h1 className="text-5xl font-bold tracking-tight text-white md:text-7xl">
-            {place.name}
-          </h1>
+            {/* Hero content */}
+            <div className="absolute bottom-0 left-0 right-0">
+              <div className="mx-auto max-w-7xl px-8 pb-12 lg:px-10">
+                <div className="max-w-4xl">
+                  <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.15em] text-emerald-300">
+                    <span>{place.location}</span>
+                    <span className="text-white/40">•</span>
+                    <span>{place.province}</span>
+                  </div>
 
-          <p className="mt-3 max-w-3xl text-xl text-gray-200 md:text-2xl">
-            {details.subtitle}
-          </p>
-        </div>
-      </section>
+                  <h1 className="mt-3 text-5xl font-bold tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">
+                    {place.name}
+                  </h1>
 
-      {/* Basic Information */}
-      <section className="mx-auto max-w-7xl px-6 py-10">
-        <div className="grid gap-4 md:grid-cols-4">
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-slate-400">Rating</p>
+                  <p className="mt-3 max-w-2xl text-lg leading-7 text-white/80 sm:text-xl">
+                    {details.subtitle}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
 
-            <p className="mt-2 text-2xl font-bold text-slate-900">
-              ⭐ {place.rating.toFixed(1)}
-            </p>
-          </div>
+          {/* =====================================================
+              DESTINATION INFO
+          ====================================================== */}
+          <section className="border-b border-slate-200 bg-white">
+            <div className="mx-auto max-w-7xl px-8 lg:px-10">
+              <div className="grid divide-y divide-slate-200 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+                {/* Rating */}
+                <div className="flex items-center gap-4 py-6 sm:px-6 sm:first:pl-0">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-50">
+                    <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
+                  </div>
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-slate-400">Location</p>
+                  <div>
+                    <p className="text-xs font-medium text-slate-400">
+                      Rating
+                    </p>
 
-            <p className="mt-2 text-lg font-bold text-slate-900">
-              {place.location}
-            </p>
-          </div>
+                    <p className="mt-1 text-lg font-bold text-slate-900">
+                      {place.rating.toFixed(1)}
+                    </p>
+                  </div>
+                </div>
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-slate-400">Province</p>
+                {/* Location */}
+                <div className="flex items-center gap-4 py-6 sm:px-6">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-emerald-50">
+                    <MapPin className="h-5 w-5 text-emerald-600" />
+                  </div>
 
-            <p className="mt-2 text-lg font-bold text-slate-900">
-              {place.province}
-            </p>
-          </div>
+                  <div>
+                    <p className="text-xs font-medium text-slate-400">
+                      Location
+                    </p>
 
-          <div className="rounded-2xl bg-white p-6 shadow-sm">
-            <p className="text-sm text-slate-400">Best Time</p>
+                    <p className="mt-1 text-sm font-bold text-slate-900">
+                      {place.location}
+                    </p>
+                  </div>
+                </div>
 
-            <p className="mt-2 text-lg font-bold text-slate-900">
-              {place.bestTime}
-            </p>
-          </div>
-        </div>
-      </section>
+                {/* Province */}
+                <div className="flex items-center gap-4 py-6 sm:px-6">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50">
+                    <Compass className="h-5 w-5 text-blue-500" />
+                  </div>
 
-      {/* About */}
-      <section className="mx-auto max-w-7xl px-6 pb-16">
-        <div className="max-w-4xl">
-          <p className="font-semibold uppercase tracking-[0.15em] text-emerald-600">
-            About the destination
-          </p>
+                  <div>
+                    <p className="text-xs font-medium text-slate-400">
+                      Province
+                    </p>
 
-          <h2 className="mt-2 text-3xl font-bold text-slate-900 md:text-4xl">
-            About {place.name}
-          </h2>
+                    <p className="mt-1 text-sm font-bold text-slate-900">
+                      {place.province}
+                    </p>
+                  </div>
+                </div>
 
-          <p className="mt-5 text-lg leading-8 text-slate-600">
-            {place.description}
-          </p>
-        </div>
-      </section>
+                {/* Best Time */}
+                <div className="flex items-center gap-4 py-6 sm:px-6 sm:last:pr-0">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-violet-50">
+                    <CalendarDays className="h-5 w-5 text-violet-500" />
+                  </div>
 
-      {/* Things To Do */}
-      <section className="bg-white py-16">
-        <div className="mx-auto max-w-7xl px-6">
-          <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
-            Things to Do in {place.name}
-          </h2>
+                  <div>
+                    <p className="text-xs font-medium text-slate-400">
+                      Best time
+                    </p>
 
-          <p className="mt-3 text-slate-500">
-            Discover experiences and places worth exploring during your visit.
-          </p>
+                    <p className="mt-1 text-sm font-bold text-slate-900">
+                      {place.bestTime}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {details.activities.map((activity) => (
-              <article
-                key={activity.name}
-                className="rounded-2xl border border-slate-100 bg-slate-50 p-6 transition duration-300 hover:-translate-y-1 hover:shadow-lg"
-              >
-                <h3 className="text-xl font-bold text-slate-900">
-                  {activity.name}
-                </h3>
-
-                <p className="mt-3 leading-7 text-slate-500">
-                  {activity.description}
+          {/* =====================================================
+              ABOUT
+          ====================================================== */}
+          <section className="mx-auto max-w-7xl px-8 py-16 lg:px-10 lg:py-20">
+            <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-600">
+                  Discover
                 </p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* How To Get There */}
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        <h2 className="text-3xl font-bold text-slate-900 md:text-4xl">
-          How to Get to {place.name}
-        </h2>
+                <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-950 lg:text-4xl">
+                  About {place.name}
+                </h2>
+              </div>
 
-        <p className="mt-3 text-slate-500">
-          Choose the travel option that works best for your trip.
-        </p>
+              <div>
+                <p className="text-lg leading-8 text-slate-600">
+                  {place.description}
+                </p>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {details.travelOptions.map((option) => (
-            <article
-              key={option.type}
-              className="rounded-2xl bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
-            >
-              <div className="text-4xl">{option.icon}</div>
+                <div className="mt-6 flex flex-wrap gap-2">
+                  <span className="rounded-full bg-white px-3.5 py-2 text-xs font-medium text-slate-600 shadow-sm ring-1 ring-slate-200">
+                    {place.category}
+                  </span>
 
-              <h3 className="mt-5 text-xl font-bold text-slate-900">
-                {option.type}
-              </h3>
+                  <span className="rounded-full bg-white px-3.5 py-2 text-xs font-medium text-slate-600 shadow-sm ring-1 ring-slate-200">
+                    {place.province}
+                  </span>
 
-              <p className="mt-3 leading-7 text-slate-500">
-                {option.description}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* Destination Summary */}
-      <section className="mx-auto max-w-7xl px-6 pb-16">
-        <div className="rounded-3xl bg-white p-8 shadow-sm md:p-10">
-          <div className="grid gap-8 md:grid-cols-3">
-            <div>
-              <p className="text-sm font-medium text-slate-400">Destination</p>
-              <p className="mt-2 text-xl font-bold text-slate-900">
-                {place.name}
-              </p>
+                  <span className="rounded-full bg-white px-3.5 py-2 text-xs font-medium text-slate-600 shadow-sm ring-1 ring-slate-200">
+                    {place.bestTime}
+                  </span>
+                </div>
+              </div>
             </div>
+          </section>
 
-            <div>
-              <p className="text-sm font-medium text-slate-400">Category</p>
-              <p className="mt-2 text-xl font-bold text-slate-900">
-                {place.category}
-              </p>
+          {/* =====================================================
+              THINGS TO DO
+          ====================================================== */}
+          <section className="bg-white">
+            <div className="mx-auto max-w-7xl px-8 py-16 lg:px-10 lg:py-20">
+              <div className="flex items-end justify-between gap-6">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-600">
+                    Experiences
+                  </p>
+
+                  <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-950 lg:text-4xl">
+                    Things to do
+                  </h2>
+
+                  <p className="mt-3 max-w-xl text-sm leading-6 text-slate-500 sm:text-base">
+                    Make the most of your visit with experiences worth adding
+                    to your journey.
+                  </p>
+                </div>
+
+                <Compass className="hidden h-8 w-8 text-emerald-200 sm:block" />
+              </div>
+
+              <div className="mt-10 grid gap-5 md:grid-cols-3">
+                {details.activities.map((activity, index) => (
+                  <article
+                    key={activity.name}
+                    className="group rounded-2xl border border-slate-200 bg-[#f8f8f6] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-200 hover:bg-white hover:shadow-lg"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-sm font-bold text-emerald-600 shadow-sm ring-1 ring-slate-100">
+                        0{index + 1}
+                      </span>
+
+                      <ArrowRight className="h-4 w-4 text-slate-300 transition-all duration-200 group-hover:translate-x-1 group-hover:text-emerald-500" />
+                    </div>
+
+                    <h3 className="mt-7 text-xl font-bold text-slate-900">
+                      {activity.name}
+                    </h3>
+
+                    <p className="mt-3 text-sm leading-6 text-slate-500">
+                      {activity.description}
+                    </p>
+                  </article>
+                ))}
+              </div>
             </div>
+          </section>
 
-            <div>
-              <p className="text-sm font-medium text-slate-400">Best Time</p>
-              <p className="mt-2 text-xl font-bold text-slate-900">
-                {place.bestTime}
-              </p>
+          {/* =====================================================
+              TRAVEL OPTIONS
+          ====================================================== */}
+          <section className="bg-[#f8f8f6]">
+            <div className="mx-auto max-w-7xl px-8 py-16 lg:px-10 lg:py-20">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-600">
+                  Getting there
+                </p>
+
+                <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-950 lg:text-4xl">
+                  How to get to {place.name}
+                </h2>
+
+                <p className="mt-3 max-w-xl text-sm leading-6 text-slate-500 sm:text-base">
+                  Choose a travel option that fits your route and style.
+                </p>
+              </div>
+
+              <div className="mt-10 grid gap-5 md:grid-cols-3">
+                {details.travelOptions.map((option) => (
+                  <article
+                    key={option.type}
+                    className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                  >
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                      {getTravelIcon(option.type)}
+                    </div>
+
+                    <div className="mt-6 flex items-center gap-2">
+                      <h3 className="text-lg font-bold text-slate-900">
+                        {option.type}
+                      </h3>
+
+                      <ChevronRight className="h-4 w-4 text-slate-300" />
+                    </div>
+
+                    <p className="mt-3 text-sm leading-6 text-slate-500">
+                      {option.description}
+                    </p>
+                  </article>
+                ))}
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* Paila AI */}
-      <section className="mx-auto max-w-7xl px-6 pb-20">
-        <div className="rounded-3xl bg-slate-900 p-8 md:p-12">
-          <div className="max-w-2xl">
-            <p className="font-semibold text-emerald-400">✨ Paila AI</p>
+          {/* =====================================================
+              QUICK SUMMARY
+          ====================================================== */}
+          <section className="mx-auto max-w-7xl px-8 py-16 lg:px-10">
+            <div className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm lg:p-9">
+              <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                    Destination
+                  </p>
 
-            <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">
-              Planning a trip to {place.name}?
-            </h2>
+                  <p className="mt-2 text-lg font-bold text-slate-900">
+                    {place.name}
+                  </p>
+                </div>
 
-            <p className="mt-4 text-lg leading-7 text-slate-300">
-              Let Paila create a personalized Nepal itinerary based on your
-              budget, duration, transportation, accommodation and interests.
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                    Category
+                  </p>
+
+                  <p className="mt-2 text-lg font-bold text-slate-900">
+                    {place.category}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                    Best time
+                  </p>
+
+                  <p className="mt-2 text-lg font-bold text-slate-900">
+                    {place.bestTime}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                    Rating
+                  </p>
+
+                  <p className="mt-2 flex items-center gap-1.5 text-lg font-bold text-slate-900">
+                    <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                    {place.rating.toFixed(1)}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* =====================================================
+              PAILA AI CTA
+          ====================================================== */}
+          <section className="mx-auto max-w-7xl px-8 pb-20 lg:px-10">
+            <div className="relative overflow-hidden rounded-[2rem] bg-slate-900">
+              {/* Background decoration */}
+              <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl" />
+              <div className="absolute -bottom-32 left-1/3 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl" />
+
+              <div className="relative flex flex-col justify-between gap-10 p-8 sm:p-10 lg:flex-row lg:items-center lg:p-12">
+                <div className="max-w-2xl">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-emerald-400">
+                    <Sparkles className="h-4 w-4" />
+                    Paila AI
+                  </div>
+
+                  <h2 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                    Planning a trip to {place.name}?
+                  </h2>
+
+                  <p className="mt-4 text-sm leading-6 text-slate-400 sm:text-base">
+                    Chat with Paila to explore ideas, transportation, places
+                    to visit and ways to make your journey around Nepal easier.
+                  </p>
+
+                  <div className="mt-7 flex flex-wrap gap-3">
+                    <Link
+                      to="/chat"
+                      className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-emerald-600"
+                    >
+                      Chat with Paila
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+
+                    <Link
+                      to="/destinations"
+                      className="inline-flex items-center gap-2 rounded-xl border border-white/15 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10"
+                    >
+                      Explore more
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Decorative icon */}
+                <div className="hidden shrink-0 lg:flex">
+                  <div className="flex h-36 w-36 items-center justify-center rounded-full border border-emerald-400/20 bg-emerald-400/5">
+                    <div className="flex h-24 w-24 items-center justify-center rounded-full border border-emerald-400/20 bg-emerald-400/10">
+                      <Wallet className="h-9 w-9 text-emerald-400" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        {/* =====================================================
+            FOOTER
+        ====================================================== */}
+        <footer className="border-t border-slate-200 bg-white">
+          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-8 py-7 text-center sm:flex-row sm:text-left lg:px-10">
+            <p className="text-xs text-slate-400 sm:text-sm">
+              © {new Date().getFullYear()} Paila. Made for Nepal.
             </p>
 
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link
-                to="/chat"
-                className="inline-flex rounded-xl bg-emerald-500 px-6 py-3 font-semibold text-white transition hover:bg-emerald-600"
-              >
-                Chat with Paila →
-              </Link>
-
-              <Link
-                to="/destinations"
-                className="inline-flex rounded-xl border border-white/20 px-6 py-3 font-semibold text-white transition hover:bg-white/10"
-              >
-                Explore More Destinations
-              </Link>
-            </div>
+            <p className="text-xs text-slate-400 sm:text-sm">
+              Every journey starts with a step. 🇳🇵
+            </p>
           </div>
-        </div>
-      </section>
-    </main>
+        </footer>
+      </div>
+    </div>
   );
 }

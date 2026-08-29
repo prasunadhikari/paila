@@ -1,3 +1,4 @@
+
 import { useLayoutEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
@@ -72,13 +73,8 @@ export default function AppRouter() {
           element={<RegisterPage />}
         />
 
-        {/* Destinations */}
-        <Route
-          path="/destinations"
-          element={<DestinationsPage />}
-        />
-
-        {/* All Feedback */}
+        {/* Feedback
+            Available to everyone */}
         <Route
           path="/feedback"
           element={<AllFeedbackPage />}
@@ -95,11 +91,14 @@ export default function AppRouter() {
             element={<DashboardPage />}
           />
 
-          {/* Admin Feedback */}
-          <Route
-            path="/admin/feedback"
-            element={<FeedbackAdminPage />}
-          />
+          {/* Destinations */}
+<Route element={<ProtectedRoute />}>
+  <Route path="/destinations" element={<DestinationsPage />} />
+  <Route path="/destinations/:destination" element={<DestinationPage />} />
+  <Route path="/dashboard" element={<DashboardPage />} />
+  <Route path="/ai" element={<PailaAIPage />} />
+  <Route path="/admin/feedback" element={<FeedbackAdminPage />} />
+</Route>
 
           {/* Destination Details */}
           <Route
@@ -111,6 +110,12 @@ export default function AppRouter() {
           <Route
             path="/ai"
             element={<PailaAIPage />}
+          />
+
+          {/* Admin Feedback */}
+          <Route
+            path="/admin/feedback"
+            element={<FeedbackAdminPage />}
           />
         </Route>
       </Routes>

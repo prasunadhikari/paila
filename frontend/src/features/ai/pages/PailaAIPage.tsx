@@ -1,441 +1,779 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import {
-ArrowLeft,
-Bot,
-MapPin,
-Send,
-Sparkles,
-User,
+  ArrowRight,
+  Bot,
+  Compass,
+  Home,
+  Map,
+  MapPin,
+  Menu,
+  MessageCircle,
+  Plus,
+  Send,
+  Sparkles,
+  User,
+  X,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Message {
-id: number;
-role: "user" | "assistant";
-content: string;
+  id: number;
+  role: "user" | "assistant";
+  content: string;
 }
 
 const suggestions = [
-"Tell me about Pokhara",
-"Best places to visit in Nepal?",
-"How can I travel to Mustang?",
-"What can I do in Kathmandu?",
+  {
+    title: "Explore Pokhara",
+    description: "Lakes, mountains, viewpoints and things to do",
+    icon: MapPin,
+    prompt: "Tell me about Pokhara",
+  },
+  {
+    title: "Discover Nepal",
+    description: "Find the best places to visit in Nepal",
+    icon: Compass,
+    prompt: "Best places to visit in Nepal?",
+  },
+  {
+    title: "Travel to Mustang",
+    description: "Routes, transport and travel tips",
+    icon: Map,
+    prompt: "How can I travel to Mustang?",
+  },
+  {
+    title: "Kathmandu Guide",
+    description: "Places, culture, food and experiences",
+    icon: Home,
+    prompt: "What can I do in Kathmandu?",
+  },
 ];
 
-function formatInlineText(text: string) {
-const parts = text.split(/(\*\*.*?\*\*)/g);
+function formatInlineText(text: string): ReactNode[] {
+  const parts = text.split(/(\*\*.*?\*\*)/g);
 
-return parts.map((part, index) => {
-if (part.startsWith("**") && part.endsWith("**")) {
-return ( <strong
-       key={index}
-       className="font-semibold text-slate-900"
-     >
-{part.slice(2, -2)} </strong>
-);
-}
+  return parts.map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong
+          key={index}
+          className="font-semibold text-slate-900"
+        >
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
 
-return part;
-
-
-});
+    return part;
+  });
 }
 
 function formatAIMessage(content: string) {
-const lines = content.split("\n");
-const elements: React.ReactNode[] = [];
+  const lines = content.split("\n");
+  const elements: ReactNode[] = [];
 
-lines.forEach((line, index) => {
-const trimmed = line.trim();
+  lines.forEach((line, index) => {
+    const trimmed = line.trim();
 
-if (!trimmed || trimmed === "---") {
-  return;
-}
+    if (!trimmed || trimmed === "---") {
+      return;
+    }
 
-if (trimmed.startsWith("## ")) {
-  elements.push(
-    <h2
-      key={index}
-      className="mt-6 mb-3 text-lg font-bold tracking-tight text-slate-900 first:mt-0"
-    >
-      {formatInlineText(trimmed.replace(/^## /, ""))}
-    </h2>
-  );
-  return;
-}
+    if (trimmed.startsWith("## ")) {
+      elements.push(
+        <h2
+          key={index}
+          className="mb-3 mt-6 text-lg font-bold tracking-tight text-slate-900 first:mt-0"
+        >
+          {formatInlineText(trimmed.replace(/^## /, ""))}
+        </h2>
+      );
 
-if (trimmed.startsWith("### ")) {
-  elements.push(
-    <h3
-      key={index}
-      className="mt-5 mb-2 text-base font-bold text-slate-900"
-    >
-      {formatInlineText(trimmed.replace(/^### /, ""))}
-    </h3>
-  );
-  return;
-}
+      return;
+    }
 
-if (/^\d+\.\s/.test(trimmed)) {
-  const match = trimmed.match(/^(\d+)\.\s(.+)$/);
+    if (trimmed.startsWith("### ")) {
+      elements.push(
+        <h3
+          key={index}
+          className="mb-2 mt-5 text-base font-bold text-slate-900"
+        >
+          {formatInlineText(trimmed.replace(/^### /, ""))}
+        </h3>
+      );
 
-  if (match) {
+      return;
+    }
+
+    const numberedMatch = trimmed.match(/^(\d+)\.\s(.+)$/);
+
+    if (numberedMatch) {
+      elements.push(
+        <div
+          key={index}
+          className="mt-3 flex gap-3"
+        >
+          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-xs font-bold text-emerald-700">
+            {numberedMatch[1]}
+          </span>
+
+          <p className="pt-0.5 text-sm leading-7 text-slate-700">
+            {formatInlineText(numberedMatch[2])}
+          </p>
+        </div>
+      );
+
+      return;
+    }
+
+    if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
+      const text = trimmed.replace(/^[-*]\s/, "");
+
+      elements.push(
+        <div
+          key={index}
+          className="flex gap-3 pl-1"
+        >
+          <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
+
+          <p className="text-sm leading-7 text-slate-700">
+            {formatInlineText(text)}
+          </p>
+        </div>
+      );
+
+      return;
+    }
+
     elements.push(
-      <div
+      <p
         key={index}
-        className="mt-3 flex gap-3"
+        className="mb-2 text-sm leading-7 text-slate-700 last:mb-0"
       >
-        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-xs font-bold text-emerald-700">
-          {match[1]}
-        </span>
+        {formatInlineText(trimmed)}
+      </p>
+    );
+  });
 
-        <p className="pt-0.5 text-slate-700">
-          {formatInlineText(match[2])}
+  return <div className="space-y-1">{elements}</div>;
+}
+
+function PailaLogo() {
+  return (
+    <div className="flex items-center gap-3">
+      <div className="relative flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-500 shadow-lg shadow-emerald-500/20">
+        <Sparkles className="h-5 w-5 text-white" />
+
+        <span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-cyan-400 ring-2 ring-slate-950" />
+      </div>
+
+      <div>
+        <p className="text-base font-bold tracking-tight text-white">
+          Paila
+        </p>
+
+        <p className="text-[11px] font-medium text-slate-500">
+          Explore Nepal
         </p>
       </div>
-    );
-  }
-
-  return;
-}
-
-if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
-  const text = trimmed.replace(/^[-*]\s/, "");
-
-  elements.push(
-    <div
-      key={index}
-      className="flex gap-3 pl-1"
-    >
-      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
-
-      <p className="text-slate-700">
-        {formatInlineText(text)}
-      </p>
     </div>
   );
-
-  return;
-}
-
-elements.push(
-  <p
-    key={index}
-    className="mb-2 leading-7 text-slate-700 last:mb-0"
-  >
-    {formatInlineText(trimmed)}
-  </p>
-);
-
-
-});
-
-return ( <div className="space-y-1">
-{elements} </div>
-);
 }
 
 export default function PailaAIPage() {
-const [input, setInput] = useState("");
+  const [input, setInput] = useState("");
 
-const [messages, setMessages] = useState<Message[]>([
-{
-id: 1,
-role: "assistant",
-content:
-"Namaste! 👋 I'm Paila AI. I can help you explore Nepal — destinations, things to do, transportation, food, budgets, trekking, travel tips, and more. What would you like to know?",
-},
-]);
-
-const [isLoading, setIsLoading] = useState(false);
-
-const getToken = () => {
-return (
-localStorage.getItem("paila_token") ||
-sessionStorage.getItem("paila_token")
-);
-};
-
-const handleSend = async () => {
-const message = input.trim();
-
-
-if (!message || isLoading) {
-  return;
-}
-
-const token = getToken();
-
-if (!token) {
-  setMessages((current) => [
-    ...current,
+  const [messages, setMessages] = useState<Message[]>([
     {
-      id: Date.now(),
+      id: 1,
       role: "assistant",
-      content: "Please log in to use Paila AI.",
+      content:
+        "Namaste! 👋 I'm Paila AI. I can help you explore Nepal — destinations, things to do, transportation, food, budgets, trekking, travel tips, and more. What would you like to know?",
     },
   ]);
 
-  return;
-}
+  const [isLoading, setIsLoading] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-setMessages((current) => [
-  ...current,
-  {
-    id: Date.now(),
-    role: "user",
-    content: message,
-  },
-]);
-
-setInput("");
-setIsLoading(true);
-
-try {
-  const API_BASE_URL =
-    import.meta.env.VITE_API_URL ||
-    "https://paila-backend.onrender.com/api/v1";
-
-  const response = await fetch(
-    `${API_BASE_URL}/ai/chat`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        message,
-      }),
-    }
-  );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data.message || "Something went wrong."
+  const getToken = () => {
+    return (
+      localStorage.getItem("paila_token") ||
+      sessionStorage.getItem("paila_token")
     );
-  }
+  };
 
-  setMessages((current) => [
-    ...current,
-    {
-      id: Date.now() + 1,
-      role: "assistant",
-      content:
-        data.message ||
-        "Sorry, I couldn't generate a response right now.",
-    },
-  ]);
-} catch (error) {
-  console.error("Paila AI error:", error);
+  const handleSend = async () => {
+    const message = input.trim();
 
-  setMessages((current) => [
-    ...current,
-    {
-      id: Date.now() + 1,
-      role: "assistant",
-      content:
-        "Sorry, I couldn't connect to Paila AI right now. Please try again.",
-    },
-  ]);
-} finally {
-  setIsLoading(false);
-}
+    if (!message || isLoading) {
+      return;
+    }
 
-};
+    const token = getToken();
 
-const handleSuggestion = (suggestion: string) => {
-setInput(suggestion);
-};
+    if (!token) {
+      setMessages((current) => [
+        ...current,
+        {
+          id: Date.now(),
+          role: "assistant",
+          content: "Please log in to use Paila AI.",
+        },
+      ]);
 
-return ( <main className="min-h-screen bg-slate-50"> <header className="border-b border-slate-200 bg-white"> <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6"> <Link
-         to="/"
-         className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 transition hover:text-slate-900"
-       > <ArrowLeft className="h-4 w-4" /> <span className="hidden sm:inline">
-Back to Home </span> </Link>
+      return;
+    }
 
+    setMessages((current) => [
+      ...current,
+      {
+        id: Date.now(),
+        role: "user",
+        content: message,
+      },
+    ]);
 
-      <div className="flex items-center gap-2">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50">
-          <Sparkles className="h-5 w-5 text-emerald-600" />
-        </div>
+    setInput("");
+    setIsLoading(true);
 
-        <span className="font-bold text-slate-900">
-          Paila AI
-        </span>
-      </div>
+    try {
+      const API_BASE_URL =
+        import.meta.env.VITE_API_URL ||
+        "https://paila-backend.onrender.com/api/v1";
 
-      <div className="hidden items-center gap-2 text-xs font-medium text-emerald-600 sm:flex">
-        <span className="h-2 w-2 rounded-full bg-emerald-500" />
-        Travel Assistant
-      </div>
-    </div>
-  </header>
+      const response = await fetch(`${API_BASE_URL}/ai/chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          message,
+        }),
+      });
 
-  <section className="flex min-h-[calc(100vh-4rem)] flex-col">
-    <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-3 py-5 sm:px-6 sm:py-8">
-      <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="mb-6 text-center sm:mb-8"
-      >
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 sm:h-16 sm:w-16">
-          <Bot className="h-7 w-7 text-emerald-600 sm:h-8 sm:w-8" />
-        </div>
+      const data = await response.json();
 
-        <h1 className="mt-4 text-2xl font-bold tracking-tight text-slate-900 sm:mt-5 sm:text-4xl">
-          Ask Paila AI
-        </h1>
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong.");
+      }
 
-        <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-slate-500 sm:mt-3 sm:text-base">
-          Your AI travel companion for exploring Nepal.
-        </p>
-      </motion.div>
+      setMessages((current) => [
+        ...current,
+        {
+          id: Date.now() + 1,
+          role: "assistant",
+          content:
+            data.message ||
+            "Sorry, I couldn't generate a response right now.",
+        },
+      ]);
+    } catch (error) {
+      console.error("Paila AI error:", error);
 
-      <div className="flex flex-1 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-        <div className="flex-1 space-y-6 overflow-y-auto p-4 sm:p-7">
-          {messages.map((message) => (
-            <motion.div
-              key={message.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`flex gap-3 ${
-                message.role === "user"
-                  ? "justify-end"
-                  : "justify-start"
-              }`}
-            >
-              {message.role === "assistant" && (
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50">
-                  <Bot className="h-5 w-5 text-emerald-600" />
-                </div>
-              )}
+      setMessages((current) => [
+        ...current,
+        {
+          id: Date.now() + 1,
+          role: "assistant",
+          content:
+            "Sorry, I couldn't connect to Paila AI right now. Please try again.",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-              <div
-                className={`max-w-[88%] text-sm leading-6 sm:max-w-[78%] ${
-                  message.role === "user"
-                    ? "rounded-2xl rounded-br-md bg-slate-900 px-4 py-3 text-white"
-                    : "rounded-2xl rounded-bl-md border border-slate-100 bg-slate-50 px-4 py-4"
-                }`}
-              >
-                {message.role === "assistant" ? (
-                  formatAIMessage(message.content)
-                ) : (
-                  <p>{message.content}</p>
-                )}
-              </div>
+  const handleSuggestion = (prompt: string) => {
+    setInput(prompt);
+  };
 
-              {message.role === "user" && (
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-900">
-                  <User className="h-5 w-5 text-white" />
-                </div>
-              )}
-            </motion.div>
-          ))}
+  const startNewChat = () => {
+    setMessages([
+      {
+        id: Date.now(),
+        role: "assistant",
+        content:
+          "Namaste! 👋 I'm Paila AI. Where would you like to explore in Nepal?",
+      },
+    ]);
 
-          {isLoading && (
-            <motion.div
+    setInput("");
+  };
+
+  return (
+    <main className="min-h-screen bg-slate-100">
+      {/* MOBILE HEADER */}
+      <header className="fixed left-0 right-0 top-0 z-50 flex h-16 items-center justify-between border-b border-slate-800 bg-slate-950 px-4 lg:hidden">
+        <button
+          type="button"
+          onClick={() => setSidebarOpen(true)}
+          className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-300 transition hover:bg-white/10 hover:text-white"
+          aria-label="Open menu"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
+
+        <PailaLogo />
+
+        <div className="flex h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-lg shadow-emerald-400/50" />
+      </header>
+
+      {/* MOBILE SIDEBAR OVERLAY */}
+      <AnimatePresence>
+        {sidebarOpen && (
+          <>
+            <motion.button
+              type="button"
+              aria-label="Close menu"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex gap-3"
+              exit={{ opacity: 0 }}
+              onClick={() => setSidebarOpen(false)}
+              className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm lg:hidden"
+            />
+
+            <motion.aside
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", damping: 28 }}
+              className="fixed bottom-0 left-0 top-0 z-[70] w-[280px] bg-slate-950 p-5 lg:hidden"
             >
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50">
-                <Bot className="h-5 w-5 text-emerald-600" />
+              <div className="flex items-center justify-between">
+                <PailaLogo />
+
+                <button
+                  type="button"
+                  onClick={() => setSidebarOpen(false)}
+                  className="flex h-9 w-9 items-center justify-center rounded-xl text-slate-400 hover:bg-white/10 hover:text-white"
+                >
+                  <X className="h-5 w-5" />
+                </button>
               </div>
 
-              <div className="rounded-2xl rounded-bl-md border border-slate-100 bg-slate-50 px-5 py-4">
-                <div className="flex items-center gap-1.5">
-                  <span className="h-2 w-2 animate-bounce rounded-full bg-slate-400" />
+              <SidebarContent
+                onNewChat={startNewChat}
+                onNavigate={() => setSidebarOpen(false)}
+              />
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
 
-                  <span
-                    className="h-2 w-2 animate-bounce rounded-full bg-slate-400"
-                    style={{
-                      animationDelay: "150ms",
-                    }}
-                  />
-
-                  <span
-                    className="h-2 w-2 animate-bounce rounded-full bg-slate-400"
-                    style={{
-                      animationDelay: "300ms",
-                    }}
-                  />
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {messages.length === 1 && (
-            <div className="pt-2">
-              <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
-                <MapPin className="h-3.5 w-3.5" />
-                Try asking
-              </div>
-
-              <div className="grid gap-2 sm:grid-cols-2">
-                {suggestions.map((suggestion) => (
-                  <button
-                    key={suggestion}
-                    type="button"
-                    onClick={() =>
-                      handleSuggestion(suggestion)
-                    }
-                    className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-left text-sm text-slate-600 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700"
-                  >
-                    {suggestion}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+      {/* DESKTOP SIDEBAR */}
+      <aside className="fixed bottom-0 left-0 top-0 z-40 hidden w-[260px] flex-col border-r border-slate-800 bg-slate-950 lg:flex">
+        <div className="p-6">
+          <PailaLogo />
         </div>
 
-        <div className="border-t border-slate-100 bg-slate-50 p-3 sm:p-5">
-          <div className="flex items-end gap-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-sm focus-within:border-emerald-400 focus-within:ring-4 focus-within:ring-emerald-500/10">
-            <textarea
-              value={input}
-              onChange={(event) =>
-                setInput(event.target.value)
-              }
-              onKeyDown={(event) => {
-                if (
-                  event.key === "Enter" &&
-                  !event.shiftKey
-                ) {
-                  event.preventDefault();
-                  handleSend();
-                }
-              }}
-              placeholder="Ask Paila AI about Nepal..."
-              rows={1}
-              disabled={isLoading}
-              className="max-h-32 min-h-11 flex-1 resize-none bg-transparent px-3 py-2.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 disabled:opacity-60"
-            />
+        <SidebarContent onNewChat={startNewChat} />
+
+        <div className="mt-auto p-5">
+          <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/10">
+                <Sparkles className="h-4 w-4 text-emerald-400" />
+              </div>
+
+              <div>
+                <p className="text-xs font-semibold text-white">
+                  Paila AI
+                </p>
+
+                <p className="text-[11px] text-slate-500">
+                  Your Nepal companion
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      {/* MAIN CONTENT */}
+      <section className="flex min-h-screen flex-col pt-16 lg:ml-[260px] lg:pt-0">
+        {/* TOP BAR */}
+        <header className="hidden h-[72px] items-center justify-between border-b border-slate-200 bg-white px-8 lg:flex">
+          <div>
+            <div className="flex items-center gap-2">
+              <MessageCircle className="h-4 w-4 text-emerald-600" />
+
+              <span className="text-sm font-semibold text-slate-900">
+                Paila AI
+              </span>
+            </div>
+
+            <p className="mt-0.5 text-xs text-slate-400">
+              Your intelligent Nepal travel companion
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50" />
+
+              <span className="text-xs font-semibold text-emerald-700">
+                Online
+              </span>
+            </div>
 
             <button
               type="button"
-              onClick={handleSend}
-              disabled={!input.trim() || isLoading}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-40"
-              aria-label="Send message"
+              onClick={startNewChat}
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
             >
-              <Send className="h-4 w-4" />
+              <Plus className="h-4 w-4" />
+              New chat
             </button>
           </div>
+        </header>
 
-          <p className="mt-2 text-center text-xs text-slate-400">
-            Paila AI can make mistakes. Verify important
-            travel information before your trip.
-          </p>
+        {/* CHAT AREA */}
+        <div className="flex min-h-[calc(100vh-4rem)] flex-1 flex-col lg:min-h-[calc(100vh-72px)]">
+          {/* AI HERO */}
+          <div className="relative overflow-hidden border-b border-slate-800 bg-slate-950">
+            <div className="absolute -left-24 -top-32 h-80 w-80 rounded-full bg-emerald-500/15 blur-3xl" />
+
+            <div className="absolute -right-24 -top-20 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
+
+            <div className="relative mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-emerald-400/20 bg-emerald-500/10">
+                    <Bot className="h-7 w-7 text-emerald-400" />
+
+                    <span className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-emerald-400 ring-4 ring-slate-950" />
+                  </div>
+
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400">
+                      Travel Intelligence
+                    </p>
+
+                    <h1 className="mt-1 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                      Ask Paila anything.
+                    </h1>
+
+                    <p className="mt-1 text-sm text-slate-400">
+                      Explore Nepal through conversation.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="hidden max-w-xs text-right sm:block">
+                  <p className="text-xs leading-5 text-slate-500">
+                    Destinations, routes, food, trekking, budgets and
+                    travel ideas — all in one place.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* MESSAGES */}
+          <div className="flex-1 overflow-y-auto">
+            <div className="mx-auto w-full max-w-5xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+              <div className="space-y-7">
+                {messages.map((message) => (
+                  <motion.div
+                    key={message.id}
+                    initial={{
+                      opacity: 0,
+                      y: 12,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    transition={{
+                      duration: 0.3,
+                    }}
+                    className={`flex gap-3 sm:gap-4 ${
+                      message.role === "user"
+                        ? "justify-end"
+                        : "justify-start"
+                    }`}
+                  >
+                    {message.role === "assistant" && (
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50 ring-1 ring-emerald-100">
+                        <Bot className="h-4 w-4 text-emerald-600" />
+                      </div>
+                    )}
+
+                    <div
+                      className={`max-w-[90%] sm:max-w-[75%] ${
+                        message.role === "user"
+                          ? "rounded-2xl rounded-br-md bg-slate-900 px-5 py-3.5 text-white shadow-sm"
+                          : "rounded-2xl rounded-bl-md border border-slate-200 bg-white px-5 py-4 shadow-sm"
+                      }`}
+                    >
+                      {message.role === "assistant" ? (
+                        formatAIMessage(message.content)
+                      ) : (
+                        <p className="text-sm leading-7 text-white">
+                          {message.content}
+                        </p>
+                      )}
+                    </div>
+
+                    {message.role === "user" && (
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-900 shadow-sm">
+                        <User className="h-4 w-4 text-white" />
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
+
+                {/* TYPING */}
+                <AnimatePresence>
+                  {isLoading && (
+                    <motion.div
+                      initial={{
+                        opacity: 0,
+                        y: 8,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                      }}
+                      exit={{
+                        opacity: 0,
+                      }}
+                      className="flex gap-3 sm:gap-4"
+                    >
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50 ring-1 ring-emerald-100">
+                        <Bot className="h-4 w-4 text-emerald-600" />
+                      </div>
+
+                      <div className="rounded-2xl rounded-bl-md border border-slate-200 bg-white px-5 py-4 shadow-sm">
+                        <div className="flex items-center gap-1.5">
+                          <span className="h-2 w-2 animate-bounce rounded-full bg-emerald-400" />
+
+                          <span
+                            className="h-2 w-2 animate-bounce rounded-full bg-emerald-400"
+                            style={{
+                              animationDelay: "150ms",
+                            }}
+                          />
+
+                          <span
+                            className="h-2 w-2 animate-bounce rounded-full bg-emerald-400"
+                            style={{
+                              animationDelay: "300ms",
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* SUGGESTIONS */}
+              {messages.length === 1 && !isLoading && (
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                    y: 15,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  transition={{
+                    delay: 0.2,
+                  }}
+                  className="mt-10"
+                >
+                  <div className="mb-4 flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-emerald-500" />
+
+                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">
+                      Start exploring
+                    </p>
+                  </div>
+
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {suggestions.map((suggestion) => {
+                      const Icon = suggestion.icon;
+
+                      return (
+                        <button
+                          key={suggestion.title}
+                          type="button"
+                          onClick={() =>
+                            handleSuggestion(suggestion.prompt)
+                          }
+                          className="group flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-lg"
+                        >
+                          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-50 transition group-hover:bg-emerald-50">
+                            <Icon className="h-5 w-5 text-slate-500 transition group-hover:text-emerald-600" />
+                          </div>
+
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center justify-between gap-3">
+                              <p className="text-sm font-bold text-slate-900">
+                                {suggestion.title}
+                              </p>
+
+                              <ArrowRight className="h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-1 group-hover:text-emerald-500" />
+                            </div>
+
+                            <p className="mt-1 text-xs leading-5 text-slate-500">
+                              {suggestion.description}
+                            </p>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+            </div>
+          </div>
+
+          {/* COMPOSER */}
+          <div className="border-t border-slate-200 bg-white/95 px-3 py-3 backdrop-blur-xl sm:px-6 sm:py-4 lg:px-8">
+            <div className="mx-auto max-w-5xl">
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-2 shadow-sm transition focus-within:border-emerald-300 focus-within:bg-white focus-within:shadow-lg focus-within:shadow-emerald-500/5">
+                <div className="flex items-end gap-2">
+                  <textarea
+                    value={input}
+                    onChange={(event) =>
+                      setInput(event.target.value)
+                    }
+                    onKeyDown={(event) => {
+                      if (
+                        event.key === "Enter" &&
+                        !event.shiftKey
+                      ) {
+                        event.preventDefault();
+                        handleSend();
+                      }
+                    }}
+                    placeholder="Ask Paila about Nepal..."
+                    rows={1}
+                    disabled={isLoading}
+                    className="max-h-32 min-h-[46px] flex-1 resize-none bg-transparent px-3 py-3 text-sm text-slate-900 outline-none placeholder:text-slate-400 disabled:opacity-60"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={handleSend}
+                    disabled={!input.trim() || isLoading}
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-white shadow-sm transition hover:bg-emerald-600 hover:shadow-lg hover:shadow-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-40"
+                    aria-label="Send message"
+                  >
+                    <Send className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="mt-2 flex items-center justify-center gap-2">
+                <Sparkles className="h-3 w-3 text-slate-300" />
+
+                <p className="text-[11px] text-slate-400">
+                  Paila AI can make mistakes. Verify important travel
+                  information before your trip.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+interface SidebarContentProps {
+  onNewChat: () => void;
+  onNavigate?: () => void;
+}
+
+function SidebarContent({
+  onNewChat,
+  onNavigate,
+}: SidebarContentProps) {
+  return (
+    <div className="flex flex-1 flex-col px-4 pt-8">
+      <button
+        type="button"
+        onClick={onNewChat}
+        className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-500/10 transition hover:bg-emerald-400"
+      >
+        <Plus className="h-4 w-4" />
+        New conversation
+      </button>
+
+      <nav className="mt-8 space-y-1">
+        <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-600">
+          Workspace
+        </p>
+
+        <Link
+          to="/"
+          onClick={onNavigate}
+          className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-slate-400 transition hover:bg-white/5 hover:text-white"
+        >
+          <Home className="h-[18px] w-[18px]" />
+          Home
+        </Link>
+
+        <Link
+          to="/destinations"
+          onClick={onNavigate}
+          className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-slate-400 transition hover:bg-white/5 hover:text-white"
+        >
+          <Compass className="h-[18px] w-[18px]" />
+          Destinations
+        </Link>
+
+        <Link
+          to="/ai"
+          onClick={onNavigate}
+          className="flex items-center gap-3 rounded-xl bg-emerald-500/10 px-3 py-3 text-sm font-semibold text-emerald-400 ring-1 ring-emerald-500/10"
+        >
+          <MessageCircle className="h-[18px] w-[18px]" />
+          Paila AI
+
+          <span className="ml-auto h-1.5 w-1.5 rounded-full bg-emerald-400" />
+        </Link>
+
+        <Link
+          to="/planner"
+          onClick={onNavigate}
+          className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-slate-400 transition hover:bg-white/5 hover:text-white"
+        >
+          <Map className="h-[18px] w-[18px]" />
+          Trip Planner
+        </Link>
+      </nav>
+
+      <div className="mt-8 border-t border-white/5 pt-6">
+        <p className="px-3 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-600">
+          Current session
+        </p>
+
+        <div className="mt-3 rounded-xl bg-white/[0.03] px-3 py-3">
+          <div className="flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10">
+              <MessageCircle className="h-4 w-4 text-emerald-400" />
+            </div>
+
+            <div className="min-w-0">
+              <p className="truncate text-xs font-semibold text-slate-300">
+                Nepal Travel Assistant
+              </p>
+
+              <p className="mt-0.5 text-[10px] text-slate-600">
+                Active conversation
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </section>
-</main>
-
-);
+  );
 }
