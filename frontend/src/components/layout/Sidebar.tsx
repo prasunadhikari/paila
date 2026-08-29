@@ -3,16 +3,17 @@ import {
   Car,
   Compass,
   Hotel,
+  LayoutDashboard,
   LogOut,
   MessageSquare,
   Plane,
   Ticket,
   Train,
   User,
-  LayoutDashboard,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import pailaLogo from "../../assets/images/pailalogo.png";
 
 export default function Sidebar() {
   const location = useLocation();
@@ -39,30 +40,34 @@ export default function Sidebar() {
   return (
     <aside className="fixed left-0 top-0 z-50 flex h-screen w-64 flex-col border-r border-slate-200 bg-white text-slate-900 shadow-[4px_0_24px_rgba(15,23,42,0.04)]">
       {/* =====================================================
-          LOGO
-      ====================================================== */}
-      <div className="border-b border-slate-100 px-5 py-5">
-        <Link
-          to="/dashboard"
-          className="group flex items-center gap-3 rounded-2xl px-2 py-1.5 transition"
-        >
-          {/* Logo Icon */}
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-600 shadow-lg shadow-emerald-600/20 transition duration-300 group-hover:scale-105 group-hover:bg-emerald-700">
-            <Compass className="h-5 w-5 text-white" />
-          </div>
+    LOGO
+====================================================== */}
+<div className="border-b border-sky-100 bg-sky-50/70 px-5 py-5">
+  <Link
+    to="/dashboard"
+    className="group flex items-center gap-3 rounded-2xl px-2 py-1.5"
+  >
+    {/* Logo */}
+    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl">
+      <img
+        src={pailaLogo}
+        alt="Paila logo"
+        className="absolute inset-0 h-full w-full scale-[1.05] object-cover object-center"
+      />
+    </div>
 
-          {/* Logo Text */}
-          <div className="min-w-0">
-            <span className="block text-xl font-black tracking-tight text-slate-900">
-              Paila
-            </span>
+    {/* Brand */}
+    <div className="min-w-0">
+      <span className="block text-xl font-black tracking-tight text-slate-900">
+        Paila
+      </span>
 
-            <span className="block text-[9px] font-semibold tracking-[0.12em] text-slate-400">
-              EVERY JOURNEY STARTS WITH A STEP
-            </span>
-          </div>
-        </Link>
-      </div>
+      <span className="mt-0.5 block max-w-[150px] text-[9px] font-semibold leading-[1.35] tracking-[0.12em] text-slate-400">
+        EVERY JOURNEY STARTS WITH A STEP
+      </span>
+    </div>
+  </Link>
+</div>
 
       {/* =====================================================
           NAVIGATION
