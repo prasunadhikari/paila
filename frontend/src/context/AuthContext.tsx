@@ -24,6 +24,11 @@ interface AuthContextType {
     rememberMe: boolean
   ) => Promise<void>;
 
+  authenticateWithToken: (
+    token: string,
+    user: User
+  ) => void;
+
   updateUser: (
     name: string,
     phone: string
@@ -124,6 +129,31 @@ export function AuthProvider({
   }
 
   /* =======================================================
+     AUTHENTICATE WITH TOKEN
+     Used after successful OTP verification
+  ======================================================= */
+
+  function authenticateWithToken(
+    token: string,
+    authenticatedUser: User
+  ) {
+    if (!token) {
+      throw new Error(
+        "Authentication token was not received"
+      );
+    }
+
+    localStorage.setItem(
+      "paila_token",
+      token
+    );
+
+    sessionStorage.removeItem("paila_token");
+
+    setUser(authenticatedUser);
+  }
+
+  /* =======================================================
      UPDATE USER
   ======================================================= */
 
@@ -168,6 +198,7 @@ export function AuthProvider({
         loading,
         isAuthenticated: !!user,
         login,
+        authenticateWithToken,
         updateUser,
         logout,
       }}

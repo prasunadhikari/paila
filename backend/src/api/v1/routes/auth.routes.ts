@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import {
   registerController,
+  verifyOtpController,
   loginController,
   meController,
   updateProfileController,
@@ -12,6 +13,8 @@ import { authenticate } from "../../../middleware/auth.middleware.js";
 const router = Router();
 
 router.post("/register", registerController);
+
+router.post("/verify-otp", verifyOtpController);
 
 router.post("/login", loginController);
 

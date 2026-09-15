@@ -8,10 +8,23 @@ export interface User {
   role?: "user" | "admin";
 }
 
+interface RegisterResponse {
+  success: boolean;
+  message: string;
+  email: string;
+}
+
 interface AuthResponse {
   success: boolean;
   message: string;
-  token?: string;
+  token: string;
+  user: User;
+}
+
+interface VerifyOtpResponse {
+  success: boolean;
+  message: string;
+  token: string;
   user: User;
 }
 
@@ -31,14 +44,27 @@ export async function register(
   email: string,
   phone: string,
   password: string
-): Promise<AuthResponse> {
-  return apiRequest<AuthResponse>("/auth/register", {
+): Promise<RegisterResponse> {
+  return apiRequest<RegisterResponse>("/auth/register", {
     method: "POST",
     body: JSON.stringify({
       name,
       email,
       phone,
       password,
+    }),
+  });
+}
+
+export async function verifyOtp(
+  email: string,
+  otp: string
+): Promise<VerifyOtpResponse> {
+  return apiRequest<VerifyOtpResponse>("/auth/verify-otp", {
+    method: "POST",
+    body: JSON.stringify({
+      email,
+      otp,
     }),
   });
 }

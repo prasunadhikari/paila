@@ -4,6 +4,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import HomePage from "../features/home/pages/HomePage";
 import LoginPage from "../features/auth/pages/LoginPage";
 import RegisterPage from "../features/auth/pages/RegisterPage";
+import VerifyOtpPage from "../features/auth/pages/VerifyOtpPage";
 
 import DestinationsPage from "../features/destinations/pages/DestinationsPage";
 import DestinationPage from "../features/destinations/pages/DestinationPage";
@@ -71,6 +72,11 @@ export default function AppRouter() {
         <Route
           path="/register"
           element={<RegisterPage />}
+        />
+
+        <Route
+          path="/verify-otp"
+          element={<VerifyOtpPage />}
         />
 
         {/* Feedback
