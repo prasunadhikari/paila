@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import dns from "node:dns";
 
 const emailUser = process.env.EMAIL_USER;
 const emailPassword = process.env.EMAIL_APP_PASSWORD;
@@ -8,6 +9,9 @@ if (!emailUser || !emailPassword) {
     "EMAIL_USER or EMAIL_APP_PASSWORD is not configured."
   );
 }
+
+// Prefer IPv4 so Render does not try Gmail's unreachable IPv6 address.
+dns.setDefaultResultOrder("ipv4first");
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -40,7 +44,6 @@ export async function sendVerificationOtp(
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 30px; color: #1e293b;">
         <h2 style="margin-bottom: 8px;">Welcome to Paila</h2>
-
         <p>Please use the verification code below to complete your signup.</p>
 
         <div style="
@@ -59,9 +62,16 @@ export async function sendVerificationOtp(
 
         <p>This code will expire in <strong>10 minutes</strong>.</p>
 
-        <p>If you did not try to create a Paila account, you can safely ignore this email.</p>
+        <p>
+          If you did not try to create a Paila account,
+          you can safely ignore this email.
+        </p>
 
-        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 25px 0;" />
+        <hr style="
+          border: none;
+          border-top: 1px solid #e2e8f0;
+          margin: 25px 0;
+        " />
 
         <p style="font-size: 13px; color: #64748b;">
           Paila — Every journey starts with a step.
