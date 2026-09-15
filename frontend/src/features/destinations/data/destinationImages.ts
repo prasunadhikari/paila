@@ -1,3 +1,18 @@
+import annapurnaCircuit from "../../../assets/destinations/annapurna_circuit.png";
+import bhaktapurImage from "../../../assets/destinations/bhaktapur.png";
+import chitwanImage from "../../../assets/destinations/chitwan.jpg";
+import everestImage from "../../../assets/destinations/everest.jpg";
+import janakpurImage from "../../../assets/destinations/janakpur.png";
+import kathmanduImage from "../../../assets/destinations/Kathmandu.png";
+import langtangImage from "../../../assets/destinations/langtang_valley.png";
+import lumbiniImage from "../../../assets/destinations/lumbini.jpg";
+import muktinathImage from "../../../assets/destinations/muktinath.png";
+import mustangImage from "../../../assets/destinations/mustang.jpg";
+import patanImage from "../../../assets/destinations/patan.png";
+import pokharaImage from "../../../assets/destinations/pokhara.jpg";
+import raraImage from "../../../assets/destinations/rara.jpg";
+import tansenImage from "../../../assets/destinations/tansen.png";
+
 const unsplash = (query: string) =>
   `https://images.unsplash.com/photo-${query}?auto=format&fit=crop&w=1200&q=85`;
 
@@ -6,14 +21,11 @@ export const destinationImages: Record<string, string> = {
   // KATHMANDU VALLEY
   // =========================
 
-  kathmandu:
-    unsplash("1533130061792-64b345e4a833"),
+  kathmandu: kathmanduImage,
 
-  bhaktapur:
-    unsplash("1605649487212-47bdab064df7"),
+  bhaktapur: bhaktapurImage,
 
-  patan:
-    unsplash("1605649487212-47bdab064df7"),
+  patan: patanImage,
 
   lalitpur:
     unsplash("1605649487212-47bdab064df7"),
@@ -73,8 +85,7 @@ export const destinationImages: Record<string, string> = {
   // POKHARA / GANDAKI
   // =========================
 
-  pokhara:
-    unsplash("1544735716-392fe2489ffa"),
+  pokhara: pokharaImage,
 
   sarangkot:
     unsplash("1486911278844-a81c5267e227"),
@@ -119,14 +130,11 @@ export const destinationImages: Record<string, string> = {
   // ANNAPURNA / MUSTANG
   // =========================
 
-  annapurna:
-    unsplash("1486911278844-a81c5267e227"),
+  annapurna: annapurnaCircuit,
 
-  mustang:
-    unsplash("1605649487212-47bdab064df7"),
+  mustang: mustangImage,
 
-  muktinath:
-    unsplash("1486911278844-a81c5267e227"),
+  muktinath: muktinathImage,
 
   marpha:
     unsplash("1486911278844-a81c5267e227"),
@@ -162,8 +170,7 @@ export const destinationImages: Record<string, string> = {
   // EVEREST / KHUMBU
   // =========================
 
-  everest:
-    unsplash("1486911278844-a81c5267e227"),
+  everest: everestImage,
 
   sagarmatha:
     unsplash("1486911278844-a81c5267e227"),
@@ -178,8 +185,7 @@ export const destinationImages: Record<string, string> = {
   // LANGTANG / BAGMATI
   // =========================
 
-  langtang:
-    unsplash("1486911278844-a81c5267e227"),
+  langtang: langtangImage,
 
   gosaikunda:
     unsplash("1500530855697-b586d89ba3ee"),
@@ -215,11 +221,10 @@ export const destinationImages: Record<string, string> = {
   // CHITWAN / TERAI
   // =========================
 
-  chitwan:
-    unsplash("1549366021-9f761d450615"),
+  chitwan: chitwanImage,
 
   "chitwan-national-park":
-    unsplash("1549366021-9f761d450615"),
+    chitwanImage,
 
   bardia:
     unsplash("1549366021-9f761d450615"),
@@ -240,8 +245,7 @@ export const destinationImages: Record<string, string> = {
   // LUMBINI / WESTERN NEPAL
   // =========================
 
-  lumbini:
-    unsplash("1605649487212-47bdab064df7"),
+  lumbini: lumbiniImage,
 
   tilaurakot:
     unsplash("1605649487212-47bdab064df7"),
@@ -252,8 +256,7 @@ export const destinationImages: Record<string, string> = {
   palpa:
     unsplash("1533130061792-64b345e4a833"),
 
-  tansen:
-    unsplash("1533130061792-64b345e4a833"),
+  tansen: tansenImage,
 
   "tansen-palpa":
     unsplash("1533130061792-64b345e4a833"),
@@ -271,11 +274,9 @@ export const destinationImages: Record<string, string> = {
   // KARNALI
   // =========================
 
-  "rara-lake":
-    unsplash("1500530855697-b586d89ba3ee"),
+  "rara-lake": raraImage,
 
-  rara:
-    unsplash("1500530855697-b586d89ba3ee"),
+  rara: raraImage,
 
   phoksundo:
     unsplash("1500530855697-b586d89ba3ee"),
@@ -351,8 +352,7 @@ export const destinationImages: Record<string, string> = {
   // JANAKPUR / MADHESH
   // =========================
 
-  janakpur:
-    unsplash("1548013146-72479768bada"),
+  janakpur: janakpurImage,
 
   // =========================
   // OTHER
