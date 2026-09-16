@@ -1,27 +1,29 @@
-const resendApiKey = process.env.RESEND_API_KEY;
+const agentMailApiKey = process.env.AGENTMAIL_API_KEY;
+const agentMailFrom =
+  process.env.AGENTMAIL_FROM || "paila.travel.nepal@agentmail.to";
 
-if (!resendApiKey) {
-  console.warn("RESEND_API_KEY is not configured.");
+if (!agentMailApiKey) {
+  console.warn("AGENTMAIL_API_KEY is not configured.");
 }
 
 export async function sendVerificationOtp(
   email: string,
   otp: string
 ) {
-  if (!resendApiKey) {
+  if (!agentMailApiKey) {
     throw new Error(
-      "Email service is not configured. Add RESEND_API_KEY to environment variables."
+      "Email service is not configured. Add AGENTMAIL_API_KEY to environment variables."
     );
   }
 
-  const response = await fetch("https://api.resend.com/emails", {
+  const response = await fetch("https://api.agentmail.to/v0/inboxes/send", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${resendApiKey}`,
+      Authorization: `Bearer ${agentMailApiKey}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "Paila <onboarding@resend.dev>",
+      from: agentMailFrom,
       to: [email],
       subject: "Your Paila verification code",
       text: `Your Paila verification code is ${otp}. This code expires in 10 minutes.`,
@@ -63,7 +65,7 @@ export async function sendVerificationOtp(
     const errorText = await response.text();
 
     throw new Error(
-      `Resend email failed: ${response.status} ${errorText}`
+      `AgentMail email failed: ${response.status} ${errorText}`
     );
   }
 }
