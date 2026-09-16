@@ -1,16 +1,10 @@
 import { useEffect, useState } from "react";
 import {
-  Bus,
-  Car,
   Compass,
-  Hotel,
   LayoutDashboard,
   LogOut,
   Menu,
   MessageSquare,
-  Plane,
-  Ticket,
-  Train,
   User,
   X,
 } from "lucide-react";
@@ -216,51 +210,6 @@ function SidebarNavigation({
           icon={<Compass className="h-[18px] w-[18px]" />}
           label="Destinations"
           active={isSectionActive(["/destinations"])}
-        />
-      </SidebarSection>
-
-      {/* BOOKING */}
-      <SidebarSection title="BOOKING">
-        <SidebarItem
-          to="/flights"
-          icon={<Plane className="h-[18px] w-[18px]" />}
-          label="Book a Flight"
-          active={isSectionActive(["/flights"])}
-        />
-
-        <SidebarItem
-          to="/hotels"
-          icon={<Hotel className="h-[18px] w-[18px]" />}
-          label="Book a Hotel"
-          active={isSectionActive(["/hotels"])}
-        />
-
-        <SidebarItem
-          to="/cabs"
-          icon={<Car className="h-[18px] w-[18px]" />}
-          label="Book a Cab"
-          active={isSectionActive(["/cabs"])}
-        />
-
-        <SidebarItem
-          to="/buses"
-          icon={<Bus className="h-[18px] w-[18px]" />}
-          label="Book a Bus"
-          active={isSectionActive(["/buses"])}
-        />
-
-        <SidebarItem
-          to="/trains"
-          icon={<Train className="h-[18px] w-[18px]" />}
-          label="Book a Train"
-          active={isSectionActive(["/trains"])}
-        />
-
-        <SidebarItem
-          to="/bookings"
-          icon={<Ticket className="h-[18px] w-[18px]" />}
-          label="My Bookings"
-          active={isSectionActive(["/bookings"])}
         />
       </SidebarSection>
 

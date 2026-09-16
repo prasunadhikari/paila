@@ -1,192 +1,211 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import {
+  ArrowRight,
+  Bus,
+  CalendarDays,
+  ChevronDown,
+  Hotel,
+  MapPin,
+  Plane,
+  Sparkles,
+  Ticket,
+} from "lucide-react";
 import heroImage from "../../../assets/images/hero.jpg";
 
 type SearchType = "flights" | "hotels" | "bus" | "experiences";
+
+const searchTabs = [
+  { id: "flights" as const, label: "Flights", icon: Plane },
+  { id: "hotels" as const, label: "Hotels", icon: Hotel },
+  { id: "bus" as const, label: "Bus", icon: Bus },
+  { id: "experiences" as const, label: "Experiences", icon: Ticket },
+];
+
+const popularDestinations = [
+  { name: "Pokhara", slug: "pokhara" },
+  { name: "Mustang", slug: "mustang" },
+  { name: "Chitwan", slug: "chitwan" },
+  { name: "Kathmandu", slug: "kathmandu" },
+];
+
+const fieldClass =
+  "rounded-2xl border border-slate-200 bg-slate-50/80 p-4 transition-all duration-200 focus-within:border-emerald-400 focus-within:bg-white focus-within:shadow-sm";
+
+function SearchField({
+  label,
+  placeholder,
+  type = "text",
+  helper,
+}: {
+  label: string;
+  placeholder?: string;
+  type?: string;
+  helper?: string;
+}) {
+  return (
+    <div className={fieldClass}>
+      <div className="flex items-center gap-2">
+        {type === "date" ? (
+          <CalendarDays className="h-4 w-4 text-emerald-600" />
+        ) : (
+          <MapPin className="h-4 w-4 text-emerald-600" />
+        )}
+
+        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+          {label}
+        </p>
+      </div>
+
+      <input
+        type={type}
+        placeholder={placeholder}
+        className="mt-2 w-full bg-transparent text-[15px] font-semibold text-slate-800 outline-none placeholder:text-slate-400"
+      />
+
+      {helper && (
+        <p className="mt-1 text-xs text-slate-400">{helper}</p>
+      )}
+    </div>
+  );
+}
 
 export default function Hero() {
   const [searchType, setSearchType] = useState<SearchType>("flights");
 
   return (
-    <section
-      className="relative min-h-screen overflow-hidden bg-cover bg-center"
-      style={{ backgroundImage: `url(${heroImage})` }}
-    >
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/45" />
+    <section className="relative min-h-screen overflow-hidden bg-slate-950">
+      {/* Background */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(${heroImage})` }}
+      />
 
-      {/* Bottom Gradient */}
-      <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black/70 to-transparent" />
+      {/* Overlays */}
+      <div className="absolute inset-0 bg-slate-950/45" />
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/45 to-slate-950/20" />
+      <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-slate-950/80 to-transparent" />
 
-      {/* Content */}
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center px-4 pb-20 pt-36 sm:px-6 sm:pb-28 sm:pt-40 lg:px-8 lg:pb-32 lg:pt-32">
+      {/* Decorative glow */}
+      <div className="absolute left-1/2 top-32 h-72 w-72 -translate-x-1/2 rounded-full bg-emerald-400/10 blur-3xl" />
+
+      {/* Main content */}
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center px-4 pb-14 pt-32 sm:px-6 sm:pb-20 sm:pt-36 lg:px-8">
         <motion.div
-          className="w-full max-w-5xl"
-          initial={{ opacity: 0, y: 30 }}
+          className="w-full"
+          initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.7 }}
         >
-          {/* Badge */}
-          <motion.p
-            className="mb-4 text-base font-semibold text-emerald-300 sm:mb-5 sm:text-lg"
-            initial={{ opacity: 0, y: 10 }}
+          {/* Hero copy */}
+          <div className="max-w-4xl">
+            <motion.div
+              className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-emerald-200 backdrop-blur-md"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Sparkles className="h-4 w-4" />
+              Your Nepal Travel Companion
+            </motion.div>
+
+            <h1 className="max-w-4xl text-5xl font-black leading-[0.98] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl">
+              Explore Nepal.
+              <span className="mt-2 block bg-gradient-to-r from-emerald-300 via-cyan-300 to-sky-300 bg-clip-text text-transparent">
+                Your journey starts here.
+              </span>
+            </h1>
+
+            <p className="mt-6 max-w-2xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8 md:text-xl">
+              Discover destinations, find places to stay, explore experiences,
+              and plan your next journey across Nepal.
+            </p>
+          </div>
+
+          {/* Search panel */}
+          <motion.div
+            className="mt-8 w-full overflow-hidden rounded-3xl border border-white/20 bg-white shadow-2xl shadow-black/20 sm:mt-10"
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Your Nepal Travel Companion
-          </motion.p>
+            {/* Tabs */}
+            <div className="border-b border-slate-100 px-2 pt-2 sm:px-3 sm:pt-3">
+              <div className="flex overflow-x-auto scrollbar-hide">
+                {searchTabs.map((tab) => {
+                  const Icon = tab.icon;
+                  const active = searchType === tab.id;
 
-          {/* Heading */}
-          <h1 className="max-w-4xl text-4xl font-black leading-[0.98] tracking-tight text-white sm:text-5xl md:text-7xl lg:text-8xl">
-            Explore Nepal.
-            <span className="mt-1 block bg-gradient-to-r from-emerald-300 to-cyan-400 bg-clip-text text-transparent sm:mt-0">
-              Your journey starts here.
-            </span>
-          </h1>
-
-          {/* Description */}
-          <p className="mt-5 max-w-2xl text-base leading-7 text-gray-200 sm:mt-7 sm:text-lg sm:leading-8 md:text-xl">
-            Search flights, hotels, buses and experiences — all in one place.
-          </p>
-
-          {/* Travel Search */}
-          <div className="mt-7 w-full max-w-5xl overflow-hidden rounded-2xl bg-white shadow-2xl sm:mt-10 sm:rounded-3xl">
-            {/* Search Tabs */}
-            <div className="flex overflow-x-auto border-b border-slate-200 px-2 pt-2 scrollbar-hide sm:px-3 sm:pt-3">
-              <button
-                type="button"
-                onClick={() => setSearchType("flights")}
-                className={`flex min-w-fit shrink-0 items-center gap-2 rounded-t-xl px-4 py-3 text-sm font-semibold transition sm:rounded-t-2xl sm:px-5 ${
-                  searchType === "flights"
-                    ? "bg-emerald-50 text-emerald-700"
-                    : "text-slate-500 hover:bg-slate-50"
-                }`}
-              >
-                ✈️ Flights
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setSearchType("hotels")}
-                className={`flex min-w-fit shrink-0 items-center gap-2 rounded-t-xl px-4 py-3 text-sm font-semibold transition sm:rounded-t-2xl sm:px-5 ${
-                  searchType === "hotels"
-                    ? "bg-emerald-50 text-emerald-700"
-                    : "text-slate-500 hover:bg-slate-50"
-                }`}
-              >
-                🏨 Hotels
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setSearchType("bus")}
-                className={`flex min-w-fit shrink-0 items-center gap-2 rounded-t-xl px-4 py-3 text-sm font-semibold transition sm:rounded-t-2xl sm:px-5 ${
-                  searchType === "bus"
-                    ? "bg-emerald-50 text-emerald-700"
-                    : "text-slate-500 hover:bg-slate-50"
-                }`}
-              >
-                🚌 Bus
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setSearchType("experiences")}
-                className={`flex min-w-fit shrink-0 items-center gap-2 rounded-t-xl px-4 py-3 text-sm font-semibold transition sm:rounded-t-2xl sm:px-5 ${
-                  searchType === "experiences"
-                    ? "bg-emerald-50 text-emerald-700"
-                    : "text-slate-500 hover:bg-slate-50"
-                }`}
-              >
-                🎟️ Experiences
-              </button>
+                  return (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      onClick={() => setSearchType(tab.id)}
+                      className={`flex shrink-0 items-center gap-2 rounded-t-2xl px-4 py-3.5 text-sm font-bold transition sm:px-6 ${
+                        active
+                          ? "bg-emerald-50 text-emerald-700"
+                          : "text-slate-500 hover:bg-slate-50 hover:text-slate-800"
+                      }`}
+                    >
+                      <Icon className="h-4 w-4" />
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
-            {/* Search Content */}
-            <div className="p-3 sm:p-4 md:p-5">
+            <div className="p-3 sm:p-5">
               {/* Flights */}
               {searchType === "flights" && (
                 <div>
-                  {/* Trip Type */}
-                  <div className="mb-4 flex flex-wrap gap-x-5 gap-y-3">
-                    <label className="flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-700">
+                  <div className="mb-4 flex flex-wrap items-center gap-5">
+                    <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-slate-700">
                       <input
                         type="radio"
                         name="tripType"
                         defaultChecked
-                        className="accent-emerald-600"
+                        className="h-4 w-4 accent-emerald-600"
                       />
                       One Way
                     </label>
 
-                    <label className="flex cursor-pointer items-center gap-2 text-sm font-medium text-slate-700">
+                    <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-slate-700">
                       <input
                         type="radio"
                         name="tripType"
-                        className="accent-emerald-600"
+                        className="h-4 w-4 accent-emerald-600"
                       />
                       Round Trip
                     </label>
                   </div>
 
                   <div className="grid gap-3 md:grid-cols-4">
-                    {/* From */}
-                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition focus-within:border-emerald-500 focus-within:bg-white">
-                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                        From
-                      </p>
+                    <SearchField
+                      label="From"
+                      placeholder="Kathmandu"
+                      helper="City or airport"
+                    />
 
-                      <input
-                        type="text"
-                        placeholder="Kathmandu"
-                        className="mt-1 w-full bg-transparent text-base font-semibold text-slate-800 outline-none placeholder:text-slate-400"
-                      />
+                    <SearchField
+                      label="To"
+                      placeholder="Pokhara"
+                      helper="City or airport"
+                    />
 
-                      <p className="mt-1 text-xs text-slate-400">
-                        City or airport
-                      </p>
-                    </div>
+                    <SearchField
+                      label="Departure"
+                      type="date"
+                      helper="Select your date"
+                    />
 
-                    {/* To */}
-                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition focus-within:border-emerald-500 focus-within:bg-white">
-                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                        To
-                      </p>
-
-                      <input
-                        type="text"
-                        placeholder="Pokhara"
-                        className="mt-1 w-full bg-transparent text-base font-semibold text-slate-800 outline-none placeholder:text-slate-400"
-                      />
-
-                      <p className="mt-1 text-xs text-slate-400">
-                        City or airport
-                      </p>
-                    </div>
-
-                    {/* Date */}
-                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition focus-within:border-emerald-500 focus-within:bg-white">
-                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                        Departure
-                      </p>
-
-                      <input
-                        type="date"
-                        className="mt-1 w-full bg-transparent text-base font-semibold text-slate-800 outline-none"
-                      />
-
-                      <p className="mt-1 text-xs text-slate-400">
-                        Select date
-                      </p>
-                    </div>
-
-                    {/* Search */}
                     <Link
                       to="/login"
-                      className="flex min-h-[72px] items-center justify-center rounded-2xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-xl active:scale-[0.98] md:min-h-[88px]"
+                      className="group flex min-h-[88px] items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-xl active:scale-[0.98]"
                     >
                       Search Flights
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Link>
                   </div>
                 </div>
@@ -195,61 +214,30 @@ export default function Hero() {
               {/* Hotels */}
               {searchType === "hotels" && (
                 <div className="grid gap-3 md:grid-cols-4">
-                  {/* Destination */}
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition focus-within:border-emerald-500 focus-within:bg-white">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                      Destination
-                    </p>
+                  <SearchField
+                    label="Destination"
+                    placeholder="Pokhara"
+                    helper="Where are you staying?"
+                  />
 
-                    <input
-                      type="text"
-                      placeholder="Pokhara"
-                      className="mt-1 w-full bg-transparent text-base font-semibold text-slate-800 outline-none placeholder:text-slate-400"
-                    />
+                  <SearchField
+                    label="Check-in"
+                    type="date"
+                    helper="Select your date"
+                  />
 
-                    <p className="mt-1 text-xs text-slate-400">
-                      Where are you staying?
-                    </p>
-                  </div>
+                  <SearchField
+                    label="Check-out"
+                    type="date"
+                    helper="Select your date"
+                  />
 
-                  {/* Check In */}
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition focus-within:border-emerald-500 focus-within:bg-white">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                      Check-in
-                    </p>
-
-                    <input
-                      type="date"
-                      className="mt-1 w-full bg-transparent text-base font-semibold text-slate-800 outline-none"
-                    />
-
-                    <p className="mt-1 text-xs text-slate-400">
-                      Select date
-                    </p>
-                  </div>
-
-                  {/* Check Out */}
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition focus-within:border-emerald-500 focus-within:bg-white">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                      Check-out
-                    </p>
-
-                    <input
-                      type="date"
-                      className="mt-1 w-full bg-transparent text-base font-semibold text-slate-800 outline-none"
-                    />
-
-                    <p className="mt-1 text-xs text-slate-400">
-                      Select date
-                    </p>
-                  </div>
-
-                  {/* Search */}
                   <Link
                     to="/login"
-                    className="flex min-h-[72px] items-center justify-center rounded-2xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-xl active:scale-[0.98] md:min-h-[88px]"
+                    className="group flex min-h-[88px] items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-xl active:scale-[0.98]"
                   >
                     Search Hotels
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </div>
               )}
@@ -257,62 +245,30 @@ export default function Hero() {
               {/* Bus */}
               {searchType === "bus" && (
                 <div className="grid gap-3 md:grid-cols-4">
-                  {/* From */}
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition focus-within:border-emerald-500 focus-within:bg-white">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                      From
-                    </p>
+                  <SearchField
+                    label="From"
+                    placeholder="Kathmandu"
+                    helper="Departure city"
+                  />
 
-                    <input
-                      type="text"
-                      placeholder="Kathmandu"
-                      className="mt-1 w-full bg-transparent text-base font-semibold text-slate-800 outline-none placeholder:text-slate-400"
-                    />
+                  <SearchField
+                    label="To"
+                    placeholder="Pokhara"
+                    helper="Arrival city"
+                  />
 
-                    <p className="mt-1 text-xs text-slate-400">
-                      Departure city
-                    </p>
-                  </div>
+                  <SearchField
+                    label="Travel Date"
+                    type="date"
+                    helper="Select your date"
+                  />
 
-                  {/* To */}
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition focus-within:border-emerald-500 focus-within:bg-white">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                      To
-                    </p>
-
-                    <input
-                      type="text"
-                      placeholder="Pokhara"
-                      className="mt-1 w-full bg-transparent text-base font-semibold text-slate-800 outline-none placeholder:text-slate-400"
-                    />
-
-                    <p className="mt-1 text-xs text-slate-400">
-                      Arrival city
-                    </p>
-                  </div>
-
-                  {/* Date */}
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition focus-within:border-emerald-500 focus-within:bg-white">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                      Travel Date
-                    </p>
-
-                    <input
-                      type="date"
-                      className="mt-1 w-full bg-transparent text-base font-semibold text-slate-800 outline-none"
-                    />
-
-                    <p className="mt-1 text-xs text-slate-400">
-                      Select date
-                    </p>
-                  </div>
-
-                  {/* Search */}
                   <Link
                     to="/login"
-                    className="flex min-h-[72px] items-center justify-center rounded-2xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-xl active:scale-[0.98] md:min-h-[88px]"
+                    className="group flex min-h-[88px] items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-xl active:scale-[0.98]"
                   >
                     Search Buses
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </div>
               )}
@@ -320,89 +276,71 @@ export default function Hero() {
               {/* Experiences */}
               {searchType === "experiences" && (
                 <div className="grid gap-3 md:grid-cols-3">
-                  {/* Destination */}
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition focus-within:border-emerald-500 focus-within:bg-white">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                      Destination
-                    </p>
+                  <SearchField
+                    label="Destination"
+                    placeholder="Where do you want to explore?"
+                  />
 
-                    <input
-                      type="text"
-                      placeholder="Where do you want to explore?"
-                      className="mt-1 w-full bg-transparent text-base font-semibold text-slate-800 outline-none placeholder:text-slate-400"
-                    />
+                  <div className={fieldClass}>
+                    <div className="flex items-center gap-2">
+                      <Ticket className="h-4 w-4 text-emerald-600" />
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                        Experience
+                      </p>
+                    </div>
+
+                    <div className="relative mt-2">
+                      <select className="w-full appearance-none bg-transparent pr-6 text-[15px] font-semibold text-slate-800 outline-none">
+                        <option>Adventure</option>
+                        <option>Trekking</option>
+                        <option>Culture</option>
+                        <option>Food</option>
+                        <option>Nature</option>
+                        <option>Family</option>
+                      </select>
+
+                      <ChevronDown className="pointer-events-none absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                    </div>
                   </div>
 
-                  {/* Experience */}
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition focus-within:border-emerald-500 focus-within:bg-white">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                      Experience
-                    </p>
-
-                    <select className="mt-1 w-full bg-transparent text-base font-semibold text-slate-800 outline-none">
-                      <option>Adventure</option>
-                      <option>Trekking</option>
-                      <option>Culture</option>
-                      <option>Food</option>
-                      <option>Nature</option>
-                      <option>Family</option>
-                    </select>
-                  </div>
-
-                  {/* Search */}
                   <Link
                     to="/login"
-                    className="flex min-h-[72px] items-center justify-center rounded-2xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-xl active:scale-[0.98] md:min-h-[88px]"
+                    className="group flex min-h-[88px] items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-6 font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 hover:shadow-xl active:scale-[0.98]"
                   >
                     Explore Experiences
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </div>
               )}
             </div>
-          </div>
+          </motion.div>
 
-          {/* Popular Destinations */}
-          <div className="mt-6 flex flex-wrap items-center gap-2.5 sm:mt-7 sm:gap-3">
-            <span className="w-full text-sm font-medium text-white/70 sm:w-auto">
+          {/* Popular destinations */}
+          <div className="mt-6 flex flex-wrap items-center gap-2.5 sm:mt-7">
+            <span className="mr-1 text-sm font-semibold text-white/70">
               Popular:
             </span>
 
-            <Link
-              to="/login"
-              className="rounded-full border border-white/30 bg-white/10 px-3.5 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20 active:scale-95 sm:px-4"
-            >
-              Pokhara
-            </Link>
-
-            <Link
-              to="/login"
-              className="rounded-full border border-white/30 bg-white/10 px-3.5 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20 active:scale-95 sm:px-4"
-            >
-              Mustang
-            </Link>
-
-            <Link
-              to="/login"
-              className="rounded-full border border-white/30 bg-white/10 px-3.5 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20 active:scale-95 sm:px-4"
-            >
-              Chitwan
-            </Link>
-
-            <Link
-              to="/login"
-              className="rounded-full border border-white/30 bg-white/10 px-3.5 py-2 text-sm text-white backdrop-blur-md transition hover:bg-white/20 active:scale-95 sm:px-4"
-            >
-              Kathmandu
-            </Link>
+            {popularDestinations.map((destination) => (
+              <Link
+                key={destination.slug}
+                to={`/destinations/${destination.slug}`}
+                className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-md transition hover:border-emerald-300/50 hover:bg-white/20 hover:text-emerald-200 active:scale-95"
+              >
+                {destination.name}
+              </Link>
+            ))}
           </div>
 
-          {/* AI Chat */}
-          <div className="mt-6 sm:mt-8">
+          {/* AI CTA */}
+          <div className="mt-7">
             <Link
               to="/ai"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-white/80 transition hover:text-emerald-300"
+              className="group inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white/90 backdrop-blur-md transition hover:border-emerald-300/40 hover:bg-white/15 hover:text-emerald-200"
             >
-              ✨ Ask Paila AI about your trip →
+              <Sparkles className="h-4 w-4 text-emerald-300" />
+              Ask Paila AI about your trip
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
         </motion.div>

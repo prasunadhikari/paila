@@ -11,6 +11,7 @@ import {
   Send,
   CheckCircle2,
   ArrowRight,
+  Sparkles,
 } from "lucide-react";
 import { apiRequest } from "../../../api/client";
 
@@ -115,53 +116,53 @@ export default function Testimonials() {
     <>
       <section
         id="testimonials"
-        className="relative overflow-hidden bg-slate-50 py-24"
+        className="relative overflow-hidden bg-slate-50 py-24 sm:py-28"
       >
         {/* Background decoration */}
-        <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-blue-100/50 blur-3xl" />
-        <div className="pointer-events-none absolute -right-32 bottom-0 h-72 w-72 rounded-full bg-emerald-100/40 blur-3xl" />
+        <div className="pointer-events-none absolute -left-40 top-20 h-80 w-80 rounded-full bg-emerald-100/60 blur-3xl" />
+        <div className="pointer-events-none absolute -right-40 bottom-10 h-80 w-80 rounded-full bg-cyan-100/50 blur-3xl" />
 
         <div className="relative mx-auto max-w-7xl px-6">
-          {/* Section heading */}
+          {/* Heading */}
           <motion.div
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="mx-auto max-w-2xl text-center"
+            className="mx-auto max-w-3xl text-center"
           >
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm ring-1 ring-slate-200">
-              <MessageCircle className="h-4 w-4 text-blue-600" />
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-white px-4 py-2 text-sm font-semibold text-emerald-700 shadow-sm">
+              <MessageCircle className="h-4 w-4" />
               Traveler Experiences
             </div>
 
-            <h2 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-              Loved by Travelers
+            <h2 className="text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
+              What travelers are saying
             </h2>
 
-            <p className="mt-5 text-lg leading-8 text-slate-500">
-              Discover what travelers think about making their Nepal journey
-              simpler with Paila.
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-500 sm:text-lg sm:leading-8">
+              Discover what travelers think about using Paila to make their
+              Nepal journey simpler.
             </p>
           </motion.div>
 
-          {/* Default Testimonials */}
-          <div className="mt-16 grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+          {/* Reviews */}
+          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {reviews.map((review, index) => (
               <motion.article
                 key={review.name}
-                initial={{ opacity: 0, y: 35 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{
                   duration: 0.5,
-                  delay: index * 0.08,
+                  delay: index * 0.07,
                 }}
-                whileHover={{ y: -7 }}
-                className="group relative rounded-3xl border border-slate-200/80 bg-white p-8 shadow-sm transition-shadow duration-300 hover:shadow-xl"
+                whileHover={{ y: -6 }}
+                className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-7 shadow-sm transition-all duration-300 hover:border-emerald-200 hover:shadow-xl hover:shadow-slate-200/60 sm:p-8"
               >
-                {/* Quote icon */}
-                <div className="absolute right-7 top-7 rounded-2xl bg-slate-50 p-3 text-slate-300 transition-colors duration-300 group-hover:bg-blue-50 group-hover:text-blue-400">
+                {/* Quote */}
+                <div className="absolute right-6 top-6 flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-500 transition-all duration-300 group-hover:bg-emerald-600 group-hover:text-white">
                   <Quote className="h-5 w-5" />
                 </div>
 
@@ -176,16 +177,15 @@ export default function Testimonials() {
                 </div>
 
                 {/* Review */}
-                <p className="mt-6 min-h-[120px] text-[15px] leading-7 text-slate-600">
+                <p className="mt-6 min-h-[126px] text-[15px] leading-7 text-slate-600">
                   "{review.review}"
                 </p>
 
-                {/* Divider */}
                 <div className="my-6 h-px bg-slate-100" />
 
                 {/* User */}
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 text-sm font-bold text-white shadow-sm">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 text-sm font-bold text-white shadow-sm">
                     {review.name
                       .split(" ")
                       .map((word) => word[0])
@@ -194,22 +194,25 @@ export default function Testimonials() {
                       .toUpperCase()}
                   </div>
 
-                  <div>
-                    <h3 className="font-semibold text-slate-900">
+                  <div className="min-w-0">
+                    <h3 className="font-bold text-slate-900">
                       {review.name}
                     </h3>
 
                     <div className="mt-1 flex items-center gap-1.5 text-sm text-slate-500">
-                      <MapPin className="h-3.5 w-3.5" />
-                      {review.location}
+                      <MapPin className="h-3.5 w-3.5 text-emerald-500" />
+                      <span>{review.location}</span>
                     </div>
                   </div>
                 </div>
+
+                {/* Bottom accent */}
+                <div className="absolute bottom-0 left-0 h-1 w-0 bg-emerald-500 transition-all duration-500 group-hover:w-full" />
               </motion.article>
             ))}
           </div>
 
-          {/* See All Feedback */}
+          {/* All feedback */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -219,7 +222,7 @@ export default function Testimonials() {
           >
             <Link
               to="/feedback"
-              className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3.5 font-semibold text-slate-800 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
+              className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3.5 font-semibold text-slate-700 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-200 hover:text-emerald-600 hover:shadow-md"
             >
               See All Feedback
               <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -232,26 +235,30 @@ export default function Testimonials() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-14 overflow-hidden rounded-3xl bg-slate-900 px-8 py-10 text-center shadow-xl sm:px-12"
+            className="relative mt-14 overflow-hidden rounded-3xl bg-slate-900 px-7 py-12 text-center shadow-xl sm:px-12"
           >
-            <div className="mx-auto max-w-2xl">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10">
-                <MessageCircle className="h-6 w-6 text-white" />
+            {/* Decorative glow */}
+            <div className="pointer-events-none absolute -left-20 -top-20 h-48 w-48 rounded-full bg-emerald-500/20 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 -right-16 h-56 w-56 rounded-full bg-cyan-500/20 blur-3xl" />
+
+            <div className="relative mx-auto max-w-2xl">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-400/20">
+                <Sparkles className="h-6 w-6" />
               </div>
 
-              <h3 className="mt-5 text-2xl font-bold text-white sm:text-3xl">
+              <h3 className="mt-6 text-2xl font-black text-white sm:text-3xl">
                 Have you tried Paila?
               </h3>
 
-              <p className="mt-3 text-slate-300">
-                We'd love to hear about your experience. Your feedback can
-                help us make Paila better for every traveler.
+              <p className="mt-3 leading-7 text-slate-300">
+                We'd love to hear about your experience. Your feedback helps
+                us make Paila better for every traveler.
               </p>
 
               <button
                 type="button"
                 onClick={() => setIsOpen(true)}
-                className="mt-7 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 font-semibold text-slate-900 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-100 hover:shadow-lg"
+                className="mt-7 inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-6 py-3.5 font-bold text-white shadow-lg shadow-emerald-500/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-emerald-400 hover:shadow-xl active:scale-95"
               >
                 <MessageCircle className="h-5 w-5" />
                 Give Feedback
@@ -297,7 +304,7 @@ export default function Testimonials() {
                 <>
                   {/* Modal heading */}
                   <div className="pr-10">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
                       <MessageCircle className="h-6 w-6" />
                     </div>
 
@@ -332,7 +339,7 @@ export default function Testimonials() {
                         }
                         placeholder="e.g. Aayush Karki"
                         maxLength={80}
-                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
                       />
                     </div>
 
@@ -357,7 +364,7 @@ export default function Testimonials() {
                         }
                         placeholder="e.g. Pokhara, Nepal"
                         maxLength={100}
-                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
                       />
                     </div>
 
@@ -420,7 +427,7 @@ export default function Testimonials() {
                         placeholder="Tell us what you liked or what we can improve..."
                         maxLength={500}
                         rows={4}
-                        className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
+                        className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-6 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10"
                       />
 
                       <p className="mt-1 text-right text-xs text-slate-400">
@@ -439,7 +446,7 @@ export default function Testimonials() {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-3.5 font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3.5 font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       {loading ? (
                         "Submitting..."
