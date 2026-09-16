@@ -24,8 +24,6 @@ interface AuthResponse {
 interface VerifyOtpResponse {
   success: boolean;
   message: string;
-  token: string;
-  user: User;
 }
 
 interface MeResponse {

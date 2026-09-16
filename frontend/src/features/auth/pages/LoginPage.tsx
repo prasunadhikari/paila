@@ -1,6 +1,13 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
 import type { FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import {
   Eye,
   EyeOff,
@@ -13,19 +20,43 @@ import {
 import heroImage from "../../../assets/images/hero.jpg";
 import { useAuth } from "../../../context/AuthContext";
 
+interface LoginLocationState {
+  email?: string;
+  password?: string;
+  verified?: boolean;
+}
+
 export default function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { login, isAuthenticated } = useAuth();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const loginState =
+    (location.state as LoginLocationState | null) ||
+    null;
+
+  const [email, setEmail] = useState(
+    loginState?.email ?? ""
+  );
+
+  const [password, setPassword] = useState(
+    loginState?.password ?? ""
+  );
 
   const [rememberMe, setRememberMe] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] =
+    useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [googleMessage, setGoogleMessage] = useState("");
+
+  const [googleMessage, setGoogleMessage] =
+    useState(
+      loginState?.verified
+        ? "Email verified successfully. Please sign in to continue."
+        : ""
+    );
 
   // If the user is already logged in,
   // don't allow them to stay on the login page.
@@ -64,8 +95,8 @@ export default function LoginPage() {
         rememberMe
       );
 
-      // Login successful → user dashboard
-    navigate("/", { replace: true });
+      // Login successful → home
+      navigate("/", { replace: true });
     } catch (error) {
       setError(
         error instanceof Error
@@ -93,10 +124,10 @@ export default function LoginPage() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-slate-950">
-
       {/* =========================
           Background
       ========================== */}
+
       <div
         className="fixed inset-0 bg-cover bg-center"
         style={{
@@ -104,28 +135,24 @@ export default function LoginPage() {
         }}
       />
 
-      {/* Dark overlay */}
       <div className="fixed inset-0 bg-slate-950/75" />
 
-      {/* Emerald gradient */}
       <div className="fixed inset-0 bg-gradient-to-br from-emerald-950/40 via-transparent to-slate-950/80" />
 
       {/* =========================
           Page
       ========================== */}
-      <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-10 sm:px-6">
 
+      <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-6 sm:px-6 sm:py-10">
         <div className="w-full max-w-lg">
-
           {/* =========================
               Login Card
           ========================== */}
+
           <div className="rounded-3xl border border-white/15 bg-white/[0.08] p-6 shadow-2xl backdrop-blur-2xl sm:p-8">
-
             {/* Header */}
-            <div className="mb-8 text-center">
 
-              {/* Icon */}
+            <div className="mb-7 text-center">
               <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/20 ring-1 ring-emerald-400/30">
                 <MapPin className="h-7 w-7 text-emerald-400" />
               </div>
@@ -137,12 +164,12 @@ export default function LoginPage() {
               <p className="mt-2 text-sm text-slate-300 sm:text-base">
                 Sign in to continue your journey with Paila.
               </p>
-
             </div>
 
             {/* =========================
                 Error Message
             ========================== */}
+
             {error && (
               <div className="mb-5 rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm leading-5 text-red-300">
                 {error}
@@ -152,6 +179,7 @@ export default function LoginPage() {
             {/* =========================
                 Information Message
             ========================== */}
+
             {googleMessage && (
               <div className="mb-5 rounded-xl border border-emerald-400/20 bg-emerald-500/10 px-4 py-3 text-center text-sm leading-5 text-emerald-300">
                 {googleMessage}
@@ -161,12 +189,13 @@ export default function LoginPage() {
             {/* =========================
                 Login Form
             ========================== */}
+
             <form
               onSubmit={handleSubmit}
               className="space-y-5"
             >
-
               {/* Email */}
+
               <div>
                 <label
                   htmlFor="email"
@@ -176,7 +205,6 @@ export default function LoginPage() {
                 </label>
 
                 <div className="relative">
-
                   <Mail className="pointer-events-none absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
                   <input
@@ -193,15 +221,13 @@ export default function LoginPage() {
                     disabled={loading}
                     className="w-full rounded-xl border border-white/15 bg-white/10 py-3.5 pl-12 pr-4 text-white outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:bg-white/[0.13] focus:ring-2 focus:ring-emerald-400/20 disabled:cursor-not-allowed disabled:opacity-60"
                   />
-
                 </div>
               </div>
 
               {/* Password */}
+
               <div>
-
                 <div className="mb-2 flex items-center justify-between">
-
                   <label
                     htmlFor="password"
                     className="block text-sm font-medium text-slate-200"
@@ -217,11 +243,9 @@ export default function LoginPage() {
                   >
                     Forgot Password?
                   </button>
-
                 </div>
 
                 <div className="relative">
-
                   <LockKeyhole className="pointer-events-none absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
                   <input
@@ -243,7 +267,6 @@ export default function LoginPage() {
                     className="w-full rounded-xl border border-white/15 bg-white/10 py-3.5 pl-12 pr-12 text-white outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:bg-white/[0.13] focus:ring-2 focus:ring-emerald-400/20 disabled:cursor-not-allowed disabled:opacity-60"
                   />
 
-                  {/* Show / Hide Password */}
                   <button
                     type="button"
                     onClick={() =>
@@ -270,15 +293,13 @@ export default function LoginPage() {
                       <Eye className="h-5 w-5" />
                     )}
                   </button>
-
                 </div>
               </div>
 
               {/* Remember Me */}
+
               <div className="flex items-center justify-between pt-1">
-
                 <label className="flex cursor-pointer items-center gap-3">
-
                   <input
                     type="checkbox"
                     checked={rememberMe}
@@ -294,17 +315,16 @@ export default function LoginPage() {
                   <span className="text-sm text-slate-300">
                     Remember me
                   </span>
-
                 </label>
 
                 <div className="flex items-center gap-1.5 text-xs text-slate-400">
                   <ShieldCheck className="h-4 w-4 text-emerald-400" />
                   Secure login
                 </div>
-
               </div>
 
               {/* Sign In */}
+
               <button
                 type="submit"
                 disabled={loading}
@@ -314,14 +334,13 @@ export default function LoginPage() {
                   ? "Signing you in..."
                   : "Sign In"}
               </button>
-
             </form>
 
             {/* =========================
                 Divider
             ========================== */}
-            <div className="my-6 flex items-center gap-4">
 
+            <div className="my-6 flex items-center gap-4">
               <div className="h-px flex-1 bg-white/10" />
 
               <span className="text-xs text-slate-500">
@@ -329,58 +348,49 @@ export default function LoginPage() {
               </span>
 
               <div className="h-px flex-1 bg-white/10" />
-
             </div>
 
             {/* =========================
                 Google Login
             ========================== */}
+
             <button
               type="button"
               onClick={handleGoogleLogin}
               disabled={loading}
               className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/15 bg-white/10 py-3.5 font-semibold text-white transition hover:bg-white/[0.15] disabled:cursor-not-allowed disabled:opacity-60"
             >
-
               <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white text-xs font-bold text-slate-700">
                 G
               </span>
 
               Continue with Google
-
             </button>
 
             {/* =========================
                 Register
             ========================== */}
+
             <div className="mt-7 border-t border-white/10 pt-6 text-center">
-
               <p className="text-sm text-slate-300">
-
                 Don't have an account?{" "}
-
                 <Link
                   to="/register"
                   className="font-semibold text-emerald-400 transition hover:text-emerald-300"
                 >
                   Create Account
                 </Link>
-
               </p>
-
             </div>
-
           </div>
 
           {/* Footer */}
+
           <p className="mt-5 text-center text-xs text-slate-400">
             Your journey starts here. 🌍
           </p>
-
         </div>
-
       </div>
-
     </div>
   );
 }

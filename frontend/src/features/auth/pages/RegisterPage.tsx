@@ -31,7 +31,8 @@ export default function RegisterPage() {
   const [phone, setPhone] = useState("");
 
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] =
+    useState("");
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] =
@@ -114,14 +115,17 @@ export default function RegisterPage() {
       );
 
       /*
-       * Registration is now only the first step.
-       * Backend sends an OTP to the email and does
-       * not create the account until the OTP is verified.
+       * Registration only starts the verification process.
+       * The backend sends an OTP to the user's email.
+       *
+       * We also pass the password through router state so
+       * the Login page can be prefilled after successful OTP
+       * verification.
        */
-
       navigate("/verify-otp", {
         state: {
           email: response.email || email.trim(),
+          password,
         },
       });
     } catch (error) {
@@ -137,7 +141,6 @@ export default function RegisterPage() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-slate-950">
-
       {/* =========================================
           BACKGROUND
           ========================================= */}
@@ -158,25 +161,19 @@ export default function RegisterPage() {
           ========================================= */}
 
       <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-10 sm:px-6">
-
         <div className="w-full max-w-lg">
-
           {/* =========================================
               REGISTER CARD
               ========================================= */}
 
           <div className="rounded-3xl border border-white/15 bg-white/[0.08] p-6 shadow-2xl backdrop-blur-2xl sm:p-8">
-
             {/* =========================================
                 HEADER
                 ========================================= */}
 
             <div className="mb-8 text-center">
-
               <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/20 ring-1 ring-emerald-400/30">
-
                 <MapPin className="h-7 w-7 text-emerald-400" />
-
               </div>
 
               <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -186,7 +183,6 @@ export default function RegisterPage() {
               <p className="mt-2 text-sm text-slate-300 sm:text-base">
                 Join Paila and start planning your next journey.
               </p>
-
             </div>
 
             {/* =========================================
@@ -207,11 +203,9 @@ export default function RegisterPage() {
               onSubmit={handleSubmit}
               className="space-y-5"
             >
-
               {/* FULL NAME */}
 
               <div>
-
                 <label
                   htmlFor="name"
                   className="mb-2 block text-sm font-medium text-slate-200"
@@ -220,7 +214,6 @@ export default function RegisterPage() {
                 </label>
 
                 <div className="relative">
-
                   <User className="pointer-events-none absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
                   <input
@@ -235,15 +228,12 @@ export default function RegisterPage() {
                     autoComplete="name"
                     className="w-full rounded-xl border border-white/15 bg-white/10 py-3.5 pl-12 pr-4 text-white outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:bg-white/[0.13] focus:ring-2 focus:ring-emerald-400/20"
                   />
-
                 </div>
-
               </div>
 
               {/* EMAIL */}
 
               <div>
-
                 <label
                   htmlFor="email"
                   className="mb-2 block text-sm font-medium text-slate-200"
@@ -252,7 +242,6 @@ export default function RegisterPage() {
                 </label>
 
                 <div className="relative">
-
                   <Mail className="pointer-events-none absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
                   <input
@@ -267,15 +256,12 @@ export default function RegisterPage() {
                     autoComplete="email"
                     className="w-full rounded-xl border border-white/15 bg-white/10 py-3.5 pl-12 pr-4 text-white outline-none transition placeholder:text-slate-400 focus:border-emerald-400 focus:bg-white/[0.13] focus:ring-2 focus:ring-emerald-400/20"
                   />
-
                 </div>
-
               </div>
 
               {/* PHONE */}
 
               <div>
-
                 <label
                   htmlFor="phone"
                   className="mb-2 block text-sm font-medium text-slate-200"
@@ -284,7 +270,6 @@ export default function RegisterPage() {
                 </label>
 
                 <div className="paila-phone">
-
                   <PhoneInput
                     defaultCountry="np"
                     value={phone}
@@ -311,19 +296,16 @@ export default function RegisterPage() {
                         "Enter your contact number",
                     }}
                   />
-
                 </div>
 
                 <p className="mt-2 text-xs text-slate-400">
                   Select your country and enter your contact number.
                 </p>
-
               </div>
 
               {/* PASSWORD */}
 
               <div>
-
                 <label
                   htmlFor="password"
                   className="mb-2 block text-sm font-medium text-slate-200"
@@ -332,7 +314,6 @@ export default function RegisterPage() {
                 </label>
 
                 <div className="relative">
-
                   <LockKeyhole className="pointer-events-none absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
                   <input
@@ -367,23 +348,17 @@ export default function RegisterPage() {
                         : "Show password"
                     }
                   >
-
                     {showPassword ? (
                       <EyeOff className="h-5 w-5" />
                     ) : (
                       <Eye className="h-5 w-5" />
                     )}
-
                   </button>
-
                 </div>
 
                 {password.length > 0 && (
-
                   <div className="mt-3">
-
                     <div className="mb-2 flex gap-1">
-
                       {[1, 2, 3, 4].map(
                         (level) => (
                           <div
@@ -397,15 +372,11 @@ export default function RegisterPage() {
                           />
                         )
                       )}
-
                     </div>
 
                     <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
-
                       <PasswordRequirement
-                        valid={
-                          passwordChecks.length
-                        }
+                        valid={passwordChecks.length}
                         text="8+ characters"
                       />
 
@@ -417,31 +388,22 @@ export default function RegisterPage() {
                       />
 
                       <PasswordRequirement
-                        valid={
-                          passwordChecks.number
-                        }
+                        valid={passwordChecks.number}
                         text="Number"
                       />
 
                       <PasswordRequirement
-                        valid={
-                          passwordChecks.special
-                        }
+                        valid={passwordChecks.special}
                         text="Special character"
                       />
-
                     </div>
-
                   </div>
-
                 )}
-
               </div>
 
               {/* CONFIRM PASSWORD */}
 
               <div>
-
                 <label
                   htmlFor="confirmPassword"
                   className="mb-2 block text-sm font-medium text-slate-200"
@@ -450,7 +412,6 @@ export default function RegisterPage() {
                 </label>
 
                 <div className="relative">
-
                   <LockKeyhole className="pointer-events-none absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
                   <input
@@ -471,8 +432,7 @@ export default function RegisterPage() {
                     autoComplete="new-password"
                     className={`w-full rounded-xl border bg-white/10 py-3.5 pl-12 pr-12 text-white outline-none transition placeholder:text-slate-400 focus:ring-2 ${
                       confirmPassword &&
-                      password !==
-                        confirmPassword
+                      password !== confirmPassword
                         ? "border-red-400/50 focus:border-red-400 focus:ring-red-400/20"
                         : "border-white/15 focus:border-emerald-400 focus:ring-emerald-400/20"
                     }`}
@@ -492,37 +452,26 @@ export default function RegisterPage() {
                         : "Show confirm password"
                     }
                   >
-
                     {showConfirmPassword ? (
                       <EyeOff className="h-5 w-5" />
                     ) : (
                       <Eye className="h-5 w-5" />
                     )}
-
                   </button>
-
                 </div>
 
                 {confirmPassword &&
-                  password ===
-                    confirmPassword && (
-
+                  password === confirmPassword && (
                     <p className="mt-2 flex items-center gap-1.5 text-xs text-emerald-400">
-
                       <CheckCircle2 className="h-4 w-4" />
-
                       Passwords match
-
                     </p>
-
                   )}
-
               </div>
 
               {/* TERMS */}
 
               <label className="flex cursor-pointer items-start gap-3 pt-1">
-
                 <input
                   type="checkbox"
                   checked={agreeTerms}
@@ -535,18 +484,14 @@ export default function RegisterPage() {
                 />
 
                 <span className="text-xs leading-5 text-slate-300">
-
                   I agree to Paila's{" "}
-
                   <Link
                     to="/terms"
                     className="font-medium text-emerald-400 hover:text-emerald-300"
                   >
                     Terms of Service
                   </Link>{" "}
-
                   and{" "}
-
                   <Link
                     to="/privacy"
                     className="font-medium text-emerald-400 hover:text-emerald-300"
@@ -554,9 +499,7 @@ export default function RegisterPage() {
                     Privacy Policy
                   </Link>
                   .
-
                 </span>
-
               </label>
 
               {/* SUBMIT */}
@@ -566,34 +509,25 @@ export default function RegisterPage() {
                 disabled={loading}
                 className="w-full rounded-xl bg-emerald-500 py-3.5 font-semibold text-white shadow-lg shadow-emerald-950/30 transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
               >
-
                 {loading
                   ? "Sending verification code..."
                   : "Create Account"}
-
               </button>
-
             </form>
 
             {/* LOGIN LINK */}
 
             <div className="mt-7 border-t border-white/10 pt-6 text-center">
-
               <p className="text-sm text-slate-300">
-
                 Already have an account?{" "}
-
                 <Link
                   to="/login"
                   className="font-semibold text-emerald-400 transition hover:text-emerald-300"
                 >
                   Sign In
                 </Link>
-
               </p>
-
             </div>
-
           </div>
 
           {/* Footer */}
@@ -601,9 +535,7 @@ export default function RegisterPage() {
           <p className="mt-5 text-center text-xs text-slate-400">
             Your journey starts here. 🌍
           </p>
-
         </div>
-
       </div>
 
       {/* =========================================
@@ -611,7 +543,6 @@ export default function RegisterPage() {
           ========================================= */}
 
       <style>{`
-
         .paila-phone {
           position: relative;
           width: 100%;
@@ -787,7 +718,6 @@ export default function RegisterPage() {
         }
 
         @media (max-width: 640px) {
-
           .paila-phone
           .react-international-phone-country-selector-dropdown {
             width: 100% !important;
@@ -795,11 +725,8 @@ export default function RegisterPage() {
             max-width: calc(100vw - 48px) !important;
             max-height: 300px !important;
           }
-
         }
-
       `}</style>
-
     </div>
   );
 }
@@ -820,7 +747,6 @@ function PasswordRequirement({
       }`}
     >
       <CheckCircle2 className="h-3.5 w-3.5" />
-
       {text}
     </span>
   );

@@ -272,7 +272,7 @@ export async function verifyOtpController(
     }
 
     // Create the actual account only after OTP verification
-    const user = await User.create({
+    await User.create({
       name: verification.name,
       email: verification.email,
       phone: verification.phone,
@@ -285,37 +285,13 @@ export async function verifyOtpController(
       _id: verification._id,
     });
 
-    // Create JWT
-    const jwtSecret = process.env.JWT_SECRET;
-
-    if (!jwtSecret) {
-      throw new Error(
-        "JWT_SECRET is not defined in .env"
-      );
-    }
-
-    const token = jwt.sign(
-      {
-        userId: user._id.toString(),
-      },
-      jwtSecret,
-      {
-        expiresIn: "7d",
-      }
-    );
-
+    // IMPORTANT:
+    // OTP verification does NOT log the user in.
+    // The user must go to the Login page and sign in.
     return res.status(201).json({
       success: true,
       message:
         "Email verified and account created successfully",
-      token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        role: user.role,
-      },
     });
   } catch (error) {
     console.error("OTP verification error:", error);
