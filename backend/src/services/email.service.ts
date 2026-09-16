@@ -16,7 +16,9 @@ export async function sendVerificationOtp(
     );
   }
 
-  const response = await fetch("https://api.agentmail.to/v0/inboxes/send", {
+  const response = await fetch(
+  `https://api.agentmail.to/v0/inboxes/${encodeURIComponent(agentMailFrom)}/messages/send`,
+  {
     method: "POST",
     headers: {
       Authorization: `Bearer ${agentMailApiKey}`,
