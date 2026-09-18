@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import {
   Compass,
+  Home,
   LayoutDashboard,
   LogOut,
   Menu,
   MessageSquare,
+  Sparkles,
   User,
   X,
 } from "lucide-react";
@@ -198,6 +200,15 @@ function SidebarNavigation({
     <div className={mobile ? "space-y-1" : ""}>
       {/* MAIN */}
       <SidebarSection title="MAIN">
+        {/* Home */}
+        <SidebarItem
+          to="/"
+          icon={<Home className="h-[18px] w-[18px]" />}
+          label="Home"
+          active={isActive("/")}
+        />
+
+        {/* Dashboard */}
         <SidebarItem
           to="/dashboard"
           icon={<LayoutDashboard className="h-[18px] w-[18px]" />}
@@ -205,16 +216,26 @@ function SidebarNavigation({
           active={isActive("/dashboard")}
         />
 
+        {/* Destinations */}
         <SidebarItem
           to="/destinations"
           icon={<Compass className="h-[18px] w-[18px]" />}
           label="Destinations"
           active={isSectionActive(["/destinations"])}
         />
+
+        {/* Paila AI */}
+        <SidebarItem
+          to="/ai"
+          icon={<Sparkles className="h-[18px] w-[18px]" />}
+          label="Paila AI"
+          active={isSectionActive(["/ai"])}
+        />
       </SidebarSection>
 
       {/* MY JOURNEY */}
       <SidebarSection title="MY JOURNEY">
+        {/* My Profile */}
         <SidebarItem
           to="/profile"
           icon={<User className="h-[18px] w-[18px]" />}
@@ -222,6 +243,7 @@ function SidebarNavigation({
           active={isActive("/profile")}
         />
 
+        {/* Feedback */}
         <SidebarItem
           to="/feedback"
           icon={<MessageSquare className="h-[18px] w-[18px]" />}
