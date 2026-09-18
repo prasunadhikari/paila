@@ -1,0 +1,188 @@
+import type { Hotel } from "../types/hotel";
+
+export const hotels: Hotel[] = [
+  {
+    id: "hotel-001",
+    name: "Hotel Shanker",
+    slug: "hotel-shanker",
+    destination: "Kathmandu",
+    location: "Lazimpat, Kathmandu",
+    image:
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",
+    rating: 4.5,
+    reviews: 1284,
+    pricePerNight: 8500,
+    description:
+      "A historic luxury hotel in Lazimpat, offering elegant rooms, gardens, restaurants, and easy access to Kathmandu's major attractions.",
+    amenities: [
+      "Free Wi-Fi",
+      "Swimming Pool",
+      "Restaurant",
+      "Parking",
+      "Room Service",
+      "24/7 Reception",
+    ],
+    featured: true,
+  },
+  {
+    id: "hotel-002",
+    name: "Temple Tree Resort & Spa",
+    slug: "temple-tree-resort",
+    destination: "Pokhara",
+    location: "Lakeside, Pokhara",
+    image:
+      "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1200&q=80",
+    rating: 4.6,
+    reviews: 946,
+    pricePerNight: 10500,
+    description:
+      "A peaceful resort near Pokhara's Lakeside area with comfortable rooms, a swimming pool, spa facilities, and beautiful surroundings.",
+    amenities: [
+      "Free Wi-Fi",
+      "Swimming Pool",
+      "Spa",
+      "Restaurant",
+      "Breakfast",
+      "Parking",
+    ],
+    featured: true,
+  },
+  {
+    id: "hotel-003",
+    name: "Barahi Jungle Lodge",
+    slug: "barahi-jungle-lodge",
+    destination: "Chitwan",
+    location: "Meghauli, Chitwan",
+    image:
+      "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=1200&q=80",
+    rating: 4.7,
+    reviews: 728,
+    pricePerNight: 12500,
+    description:
+      "A nature-focused jungle lodge near Chitwan National Park, ideal for wildlife experiences and peaceful stays.",
+    amenities: [
+      "Free Wi-Fi",
+      "Restaurant",
+      "Jungle Activities",
+      "Swimming Pool",
+      "Breakfast",
+      "Parking",
+    ],
+    featured: true,
+  },
+  {
+    id: "hotel-004",
+    name: "Hotel Yak & Yeti",
+    slug: "hotel-yak-and-yeti",
+    destination: "Kathmandu",
+    location: "Durbar Marg, Kathmandu",
+    image:
+      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80",
+    rating: 4.4,
+    reviews: 1102,
+    pricePerNight: 9500,
+    description:
+      "A well-known luxury hotel in central Kathmandu, located close to shopping, restaurants, and major city attractions.",
+    amenities: [
+      "Free Wi-Fi",
+      "Swimming Pool",
+      "Fitness Center",
+      "Restaurant",
+      "Spa",
+      "Parking",
+    ],
+    featured: false,
+  },
+  {
+    id: "hotel-005",
+    name: "Fish Tail Lodge",
+    slug: "fish-tail-lodge",
+    destination: "Pokhara",
+    location: "Lakeside, Pokhara",
+    image:
+      "https://images.unsplash.com/photo-1601918774946-25832a4be0d6?auto=format&fit=crop&w=1200&q=80",
+    rating: 4.5,
+    reviews: 834,
+    pricePerNight: 9000,
+    description:
+      "A scenic lakeside property in Pokhara offering relaxing accommodation with beautiful views and easy access to the lake.",
+    amenities: [
+      "Free Wi-Fi",
+      "Restaurant",
+      "Breakfast",
+      "Swimming Pool",
+      "Lake View",
+      "Parking",
+    ],
+    featured: false,
+  },
+  {
+    id: "hotel-006",
+    name: "Hotel Parkland",
+    slug: "hotel-parkland",
+    destination: "Chitwan",
+    location: "Sauraha, Chitwan",
+    image:
+      "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=1200&q=80",
+    rating: 4.3,
+    reviews: 512,
+    pricePerNight: 5500,
+    description:
+      "A comfortable hotel in Sauraha, Chitwan, providing convenient access to jungle safaris and local attractions.",
+    amenities: [
+      "Free Wi-Fi",
+      "Restaurant",
+      "Breakfast",
+      "Garden",
+      "Parking",
+      "24/7 Reception",
+    ],
+    featured: false,
+  },
+  {
+    id: "hotel-007",
+    name: "Hotel Barahi",
+    slug: "hotel-barahi",
+    destination: "Pokhara",
+    location: "Lakeside, Pokhara",
+    image:
+      "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80",
+    rating: 4.4,
+    reviews: 675,
+    pricePerNight: 8000,
+    description:
+      "A popular Lakeside hotel offering comfortable rooms, dining, and convenient access to Pokhara's tourist area.",
+    amenities: [
+      "Free Wi-Fi",
+      "Swimming Pool",
+      "Restaurant",
+      "Breakfast",
+      "Room Service",
+      "Parking",
+    ],
+    featured: false,
+  },
+  {
+    id: "hotel-008",
+    name: "Hotel Aloft Kathmandu Thamel",
+    slug: "aloft-kathmandu-thamel",
+    destination: "Kathmandu",
+    location: "Thamel, Kathmandu",
+    image:
+      "https://images.unsplash.com/photo-1568084680786-a84f91d1153c?auto=format&fit=crop&w=1200&q=80",
+    rating: 4.3,
+    reviews: 589,
+    pricePerNight: 7800,
+    description:
+      "A modern hotel in the heart of Thamel, offering contemporary rooms and convenient access to Kathmandu's tourist district.",
+    amenities: [
+      "Free Wi-Fi",
+      "Restaurant",
+      "Fitness Center",
+      "Breakfast",
+      "Bar",
+      "Parking",
+    ],
+    featured: false,
+  },
+];

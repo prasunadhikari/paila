@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
   Compass,
+  Heart,
   MapPin,
   Search,
   Sparkles,
@@ -13,11 +14,48 @@ import { destinations } from "../data/destinations";
 import Sidebar from "../../../components/layout/Sidebar";
 
 const ITEMS_PER_PAGE = 12;
+const SAVED_PLACES_KEY = "paila_saved_places";
 
 export default function DestinationsPage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Saved places
+  const [savedPlaces, setSavedPlaces] = useState<any[]>([]);
+
+  useEffect(() => {
+    try {
+      const storedPlaces = JSON.parse(
+        localStorage.getItem(SAVED_PLACES_KEY) || "[]"
+      );
+
+      setSavedPlaces(Array.isArray(storedPlaces) ? storedPlaces : []);
+    } catch {
+      setSavedPlaces([]);
+    }
+  }, []);
+
+  const isSaved = (slug: string) => {
+    return savedPlaces.some((place) => place.slug === slug);
+  };
+
+  const toggleSavedPlace = (destination: any) => {
+    const alreadySaved = savedPlaces.some(
+      (place) => place.slug === destination.slug
+    );
+
+    const updatedPlaces = alreadySaved
+      ? savedPlaces.filter((place) => place.slug !== destination.slug)
+      : [...savedPlaces, destination];
+
+    setSavedPlaces(updatedPlaces);
+
+    localStorage.setItem(
+      SAVED_PLACES_KEY,
+      JSON.stringify(updatedPlaces)
+    );
+  };
 
   const categories = useMemo<string[]>(() => {
     const uniqueCategories = Array.from(
@@ -88,7 +126,6 @@ export default function DestinationsPage() {
           ====================================================== */}
           <section className="border-b border-slate-200 bg-white">
             <div className="mx-auto max-w-7xl px-4 pb-10 pt-28 sm:px-6 sm:pb-12 sm:pt-12 lg:px-8 lg:pt-10">
-              {/* Heading */}
               <div className="max-w-3xl">
                 <div className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 sm:px-3.5 sm:py-2">
                   <Compass className="h-3.5 w-3.5" />
@@ -243,64 +280,94 @@ export default function DestinationsPage() {
             ================================================== */}
             {visibleDestinations.length > 0 && (
               <div className="mt-7 grid gap-5 sm:mt-9 sm:grid-cols-2 lg:grid-cols-3">
-                {visibleDestinations.map((destination) => (
-                  <Link
-                    key={destination.slug}
-                    to={`/destinations/${destination.slug}`}
-                    className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl"
-                  >
-                    {/* Image */}
-                    <div className="relative aspect-[4/3] overflow-hidden bg-slate-200">
-                      <img
-                        src={destination.image}
-                        alt={`${destination.name}, Nepal`}
-                        loading="lazy"
-                        className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                      />
+                {visibleDestinations.map((destination) => {
+                  const destinationSaved = isSaved(destination.slug);
 
-                      {/* Image overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-transparent" />
+                  return (
+                    <Link
+                      key={destination.slug}
+                      to={`/destinations/${destination.slug}`}
+                      className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl"
+                    >
+                      {/* Image */}
+                      <div className="relative aspect-[4/3] overflow-hidden bg-slate-200">
+                        <img
+                          src={destination.image}
+                          alt={`${destination.name}, Nepal`}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                        />
 
-                      {/* Category */}
-                      <div className="absolute left-3 top-3 sm:left-4 sm:top-4">
-                        <span className="inline-flex rounded-full border border-white/20 bg-white/90 px-2.5 py-1.5 text-[11px] font-semibold text-slate-700 shadow-sm backdrop-blur-md sm:px-3 sm:text-xs">
-                          {destination.category}
-                        </span>
-                      </div>
+                        {/* Image overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-transparent" />
 
-                      {/* Location */}
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <div className="flex items-center gap-1.5 text-xs font-medium text-white sm:text-sm">
-                          <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                          <span className="truncate">
-                            {destination.location}
+                        {/* Category */}
+                        <div className="absolute left-3 top-3 sm:left-4 sm:top-4">
+                          <span className="inline-flex rounded-full border border-white/20 bg-white/90 px-2.5 py-1.5 text-[11px] font-semibold text-slate-700 shadow-sm backdrop-blur-md sm:px-3 sm:text-xs">
+                            {destination.category}
                           </span>
                         </div>
 
-                        <h3 className="mt-1 text-2xl font-bold text-white">
-                          {destination.name}
-                        </h3>
+                        {/* Save Button */}
+                        <button
+                          type="button"
+                          aria-label={
+                            destinationSaved
+                              ? `Remove ${destination.name} from saved places`
+                              : `Save ${destination.name}`
+                          }
+                          onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            toggleSavedPlace(destination);
+                          }}
+                          className={`absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full shadow-lg backdrop-blur-md transition sm:right-4 sm:top-4 ${
+                            destinationSaved
+                              ? "bg-white text-rose-500"
+                              : "bg-black/30 text-white hover:bg-white hover:text-rose-500"
+                          }`}
+                        >
+                          <Heart
+                            className={`h-4.5 w-4.5 transition ${
+                              destinationSaved ? "fill-current" : ""
+                            }`}
+                          />
+                        </button>
+
+                        {/* Location */}
+                        <div className="absolute bottom-4 left-4 right-4">
+                          <div className="flex items-center gap-1.5 text-xs font-medium text-white sm:text-sm">
+                            <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                            <span className="truncate">
+                              {destination.location}
+                            </span>
+                          </div>
+
+                          <h3 className="mt-1 text-2xl font-bold text-white">
+                            {destination.name}
+                          </h3>
+                        </div>
                       </div>
-                    </div>
 
-                    {/* Card Content */}
-                    <div className="p-4 sm:p-5">
-                      <p className="line-clamp-2 min-h-[48px] text-sm leading-6 text-slate-500">
-                        {destination.description}
-                      </p>
+                      {/* Card Content */}
+                      <div className="p-4 sm:p-5">
+                        <p className="line-clamp-2 min-h-[48px] text-sm leading-6 text-slate-500">
+                          {destination.description}
+                        </p>
 
-                      <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-4 sm:mt-5">
-                        <span className="text-xs font-semibold text-emerald-600 sm:text-sm">
-                          Explore destination
-                        </span>
+                        <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-4 sm:mt-5">
+                          <span className="text-xs font-semibold text-emerald-600 sm:text-sm">
+                            Explore destination
+                          </span>
 
-                        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 transition duration-300 group-hover:bg-emerald-500 group-hover:text-white">
-                          <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
-                        </span>
+                          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 transition duration-300 group-hover:bg-emerald-500 group-hover:text-white">
+                            <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  );
+                })}
               </div>
             )}
 
@@ -367,7 +434,6 @@ export default function DestinationsPage() {
           ====================================================== */}
           <section className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8 lg:pb-20">
             <div className="relative overflow-hidden rounded-[1.5rem] border border-emerald-100 bg-gradient-to-br from-emerald-50 via-white to-cyan-50 sm:rounded-[2rem]">
-              {/* Decorative elements */}
               <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-emerald-200/30 blur-3xl" />
 
               <div className="absolute -bottom-24 left-20 h-64 w-64 rounded-full bg-cyan-200/20 blur-3xl" />
@@ -397,8 +463,6 @@ export default function DestinationsPage() {
                       Plan My Trip
                       <ArrowRight className="h-4 w-4" />
                     </Link>
-
-                  
                   </div>
                 </div>
 

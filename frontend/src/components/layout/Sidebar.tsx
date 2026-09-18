@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import {
+  CalendarDays,
   Compass,
+  Heart,
   Home,
+  Hotel,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -39,16 +42,15 @@ export default function Sidebar() {
     logout();
   };
 
-  // Close mobile menu when route changes
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
   return (
     <>
-      {/* =====================================================
+      {/* =========================
           DESKTOP SIDEBAR
-      ====================================================== */}
+      ========================== */}
       <aside className="fixed left-0 top-0 z-50 hidden h-screen w-64 flex-col border-r border-slate-200 bg-white text-slate-900 shadow-[4px_0_24px_rgba(15,23,42,0.04)] lg:flex">
         {/* Logo */}
         <div className="border-b border-sky-100 bg-sky-50/70 px-5 py-5">
@@ -56,7 +58,6 @@ export default function Sidebar() {
             to="/dashboard"
             className="group flex items-center gap-3 rounded-2xl px-2 py-1.5"
           >
-            {/* Logo */}
             <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl">
               <img
                 src={pailaLogo}
@@ -65,7 +66,6 @@ export default function Sidebar() {
               />
             </div>
 
-            {/* Brand */}
             <div className="min-w-0">
               <span className="block text-xl font-black tracking-tight text-slate-900">
                 Paila
@@ -86,7 +86,7 @@ export default function Sidebar() {
           />
         </nav>
 
-        {/* User Area */}
+        {/* User Section */}
         <SidebarUser
           user={user}
           firstName={firstName}
@@ -94,14 +94,13 @@ export default function Sidebar() {
         />
       </aside>
 
-      {/* =====================================================
+      {/* =========================
           MOBILE HEADER
-      ====================================================== */}
+      ========================== */}
       <div className="fixed left-0 right-0 top-0 z-50 px-3 pt-3 lg:hidden">
         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white/95 shadow-lg shadow-slate-900/10 backdrop-blur-xl">
           {/* Mobile Top Bar */}
           <div className="flex h-[68px] items-center justify-between px-4">
-            {/* Logo + Brand */}
             <Link
               to="/dashboard"
               onClick={() => setMobileMenuOpen(false)}
@@ -131,7 +130,9 @@ export default function Sidebar() {
               type="button"
               onClick={() => setMobileMenuOpen((open) => !open)}
               aria-label={
-                mobileMenuOpen ? "Close navigation" : "Open navigation"
+                mobileMenuOpen
+                  ? "Close navigation"
+                  : "Open navigation"
               }
               aria-expanded={mobileMenuOpen}
               className="flex h-11 w-11 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-600 transition-all duration-200 hover:border-sky-200 hover:bg-sky-50 hover:text-sky-600 active:scale-95"
@@ -144,9 +145,7 @@ export default function Sidebar() {
             </button>
           </div>
 
-          {/* =================================================
-              MOBILE DROPDOWN
-          ================================================== */}
+          {/* Mobile Navigation */}
           <div
             className={`grid transition-all duration-300 ease-out ${
               mobileMenuOpen
@@ -156,7 +155,6 @@ export default function Sidebar() {
           >
             <div className="min-h-0 overflow-hidden">
               <div className="border-t border-slate-100 px-3 pb-3 pt-3">
-                {/* Navigation */}
                 <nav className="max-h-[calc(100vh-170px)] overflow-y-auto">
                   <SidebarNavigation
                     isActive={isActive}
@@ -165,7 +163,7 @@ export default function Sidebar() {
                   />
                 </nav>
 
-                {/* User Area */}
+                {/* Mobile User */}
                 <div className="mt-3 border-t border-slate-100 pt-3">
                   <SidebarUser
                     user={user}
@@ -183,9 +181,9 @@ export default function Sidebar() {
   );
 }
 
-/* =========================================================
+/* =========================
    SIDEBAR NAVIGATION
-========================================================= */
+========================= */
 
 function SidebarNavigation({
   isActive,
@@ -198,7 +196,9 @@ function SidebarNavigation({
 }) {
   return (
     <div className={mobile ? "space-y-1" : ""}>
-      {/* MAIN */}
+      {/* =========================
+          MAIN
+      ========================== */}
       <SidebarSection title="MAIN">
         {/* Home */}
         <SidebarItem
@@ -211,7 +211,9 @@ function SidebarNavigation({
         {/* Dashboard */}
         <SidebarItem
           to="/dashboard"
-          icon={<LayoutDashboard className="h-[18px] w-[18px]" />}
+          icon={
+            <LayoutDashboard className="h-[18px] w-[18px]" />
+          }
           label="Dashboard"
           active={isActive("/dashboard")}
         />
@@ -224,6 +226,14 @@ function SidebarNavigation({
           active={isSectionActive(["/destinations"])}
         />
 
+        {/* Hotels */}
+        <SidebarItem
+          to="/hotels"
+          icon={<Hotel className="h-[18px] w-[18px]" />}
+          label="Hotels"
+          active={isSectionActive(["/hotels"])}
+        />
+
         {/* Paila AI */}
         <SidebarItem
           to="/ai"
@@ -233,8 +243,28 @@ function SidebarNavigation({
         />
       </SidebarSection>
 
-      {/* MY JOURNEY */}
+      {/* =========================
+          MY JOURNEY
+      ========================== */}
       <SidebarSection title="MY JOURNEY">
+        {/* Saved Places */}
+        <SidebarItem
+          to="/saved"
+          icon={<Heart className="h-[18px] w-[18px]" />}
+          label="Saved Places"
+          active={isSectionActive(["/saved"])}
+        />
+
+        {/* My Trips */}
+        <SidebarItem
+          to="/trips"
+          icon={
+            <CalendarDays className="h-[18px] w-[18px]" />
+          }
+          label="My Trips"
+          active={isSectionActive(["/trips"])}
+        />
+
         {/* My Profile */}
         <SidebarItem
           to="/profile"
@@ -246,7 +276,9 @@ function SidebarNavigation({
         {/* Feedback */}
         <SidebarItem
           to="/feedback"
-          icon={<MessageSquare className="h-[18px] w-[18px]" />}
+          icon={
+            <MessageSquare className="h-[18px] w-[18px]" />
+          }
           label="Feedback"
           active={isActive("/feedback")}
         />
@@ -255,9 +287,9 @@ function SidebarNavigation({
   );
 }
 
-/* =========================================================
-   USER AREA
-========================================================= */
+/* =========================
+   SIDEBAR USER
+========================= */
 
 function SidebarUser({
   user,
@@ -278,20 +310,20 @@ function SidebarUser({
           : "border-t border-slate-100 bg-slate-50/70 p-3"
       }
     >
-      {/* User */}
+      {/* User Card */}
       <div className="mb-2 flex items-center gap-3 rounded-2xl border border-slate-200/70 bg-white px-3 py-3 shadow-sm">
-        {/* Avatar */}
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-sm font-bold text-emerald-700">
           {firstName.charAt(0).toUpperCase()}
         </div>
 
-        {/* User Info */}
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-bold text-slate-800">
             {user?.name || "Traveler"}
           </p>
 
-          <p className="mt-0.5 text-xs text-slate-400">Traveler</p>
+          <p className="mt-0.5 text-xs text-slate-400">
+            Traveler
+          </p>
         </div>
       </div>
 
@@ -311,9 +343,9 @@ function SidebarUser({
   );
 }
 
-/* =========================================================
+/* =========================
    SIDEBAR SECTION
-========================================================= */
+========================= */
 
 function SidebarSection({
   title,
@@ -324,7 +356,6 @@ function SidebarSection({
 }) {
   return (
     <div className="mb-7">
-      {/* Section Heading */}
       <div className="mb-2.5 flex items-center gap-2.5 px-2">
         <span className="text-[10px] font-extrabold tracking-[0.16em] text-emerald-600">
           {title}
@@ -333,15 +364,16 @@ function SidebarSection({
         <div className="h-px flex-1 bg-slate-100" />
       </div>
 
-      {/* Items */}
-      <div className="space-y-1">{children}</div>
+      <div className="space-y-1">
+        {children}
+      </div>
     </div>
   );
 }
 
-/* =========================================================
+/* =========================
    SIDEBAR ITEM
-========================================================= */
+========================= */
 
 function SidebarItem({
   to,

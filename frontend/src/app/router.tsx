@@ -19,121 +19,136 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import PailaAIPage from "../features/ai/pages/PailaAIPage";
 import ProfilePage from "../features/profile/pages/ProfilePage";
 
+// Saved Places
+import SavedPlacesPage from "../features/saved/pages/SavedPlacesPage";
+
+// My Trips
+import MyTripsPage from "../features/trips/pages/MyTripsPage";
+
+// Hotels
+import HotelsPage from "../features/hotels/pages/HotelsPage";
+import HotelDetailsPage from "../features/hotels/pages/HotelDetailsPage";
+
 /* =========================
-SCROLL TO TOP
+   SCROLL TO TOP
 ========================= */
 
 function ScrollToTop() {
-const { pathname } = useLocation();
+  const { pathname } = useLocation();
 
-useLayoutEffect(() => {
-if ("scrollRestoration" in window.history) {
-window.history.scrollRestoration = "manual";
-}
+  useLayoutEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
 
-window.scrollTo({
-  top: 0,
-  left: 0,
-  behavior: "instant",
-});
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant",
+    });
 
-document.documentElement.scrollTop = 0;
-document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [pathname]);
 
-}, [pathname]);
-
-return null;
+  return null;
 }
 
 /* =========================
-ROUTER
+   ROUTER
 ========================= */
 
 export default function AppRouter() {
-return (
-<> <ScrollToTop />
-  <Routes>
-    {/* =========================
-        PUBLIC ROUTES
-    ========================== */}
+  return (
+    <>
+      <ScrollToTop />
 
-    {/* Landing Page */}
-    <Route
-      path="/"
-      element={<HomePage />}
-    />
+      <Routes>
+        {/* =========================
+            PUBLIC ROUTES
+        ========================== */}
 
-    {/* Authentication */}
-    <Route
-      path="/login"
-      element={<LoginPage />}
-    />
+        {/* Landing Page */}
+        <Route path="/" element={<HomePage />} />
 
-    <Route
-      path="/register"
-      element={<RegisterPage />}
-    />
+        {/* Authentication */}
+        <Route path="/login" element={<LoginPage />} />
 
-    <Route
-      path="/verify-otp"
-      element={<VerifyOtpPage />}
-    />
+        <Route path="/register" element={<RegisterPage />} />
 
-    {/* Terms & Privacy */}
-    <Route
-      path="/legal"
-      element={<LegalPage />}
-    />
+        <Route path="/verify-otp" element={<VerifyOtpPage />} />
 
-    {/* Feedback
-        Available to everyone */}
-    <Route
-      path="/feedback"
-      element={<AllFeedbackPage />}
-    />
+        {/* Terms & Privacy */}
+        <Route path="/legal" element={<LegalPage />} />
 
-    {/* =========================
-        PROTECTED ROUTES
-    ========================== */}
+        {/* Feedback
+            Available to everyone */}
+        <Route path="/feedback" element={<AllFeedbackPage />} />
 
-    <Route element={<ProtectedRoute />}>
-      {/* Dashboard */}
-      <Route
-        path="/dashboard"
-        element={<DashboardPage />}
-      />
+        {/* =========================
+            PROTECTED ROUTES
+        ========================== */}
 
-      {/* Destinations */}
-      <Route
-        path="/destinations"
-        element={<DestinationsPage />}
-      />
+        <Route element={<ProtectedRoute />}>
+          {/* Dashboard */}
+          <Route
+            path="/dashboard"
+            element={<DashboardPage />}
+          />
 
-      <Route
-        path="/destinations/:destination"
-        element={<DestinationPage />}
-      />
+          {/* Destinations */}
+          <Route
+            path="/destinations"
+            element={<DestinationsPage />}
+          />
 
-      {/* Paila AI */}
-      <Route
-        path="/ai"
-        element={<PailaAIPage />}
-      />
+          <Route
+            path="/destinations/:destination"
+            element={<DestinationPage />}
+          />
 
-      {/* Profile */}
-      <Route
-        path="/profile"
-        element={<ProfilePage />}
-      />
+          {/* Hotels */}
+          <Route
+            path="/hotels"
+            element={<HotelsPage />}
+          />
 
-      {/* Admin Feedback */}
-      <Route
-        path="/admin/feedback"
-        element={<FeedbackAdminPage />}
-      />
-    </Route>
-  </Routes>
-</>
+          <Route
+            path="/hotels/:hotel"
+            element={<HotelDetailsPage />}
+          />
 
-);
+          {/* Paila AI */}
+          <Route
+            path="/ai"
+            element={<PailaAIPage />}
+          />
+
+          {/* Saved Places */}
+          <Route
+            path="/saved"
+            element={<SavedPlacesPage />}
+          />
+
+          {/* My Trips */}
+          <Route
+            path="/trips"
+            element={<MyTripsPage />}
+          />
+
+          {/* Profile */}
+          <Route
+            path="/profile"
+            element={<ProfilePage />}
+          />
+
+          {/* Admin Feedback */}
+          <Route
+            path="/admin/feedback"
+            element={<FeedbackAdminPage />}
+          />
+        </Route>
+      </Routes>
+    </>
+  );
 }
