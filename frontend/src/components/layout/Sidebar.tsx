@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import {
   CalendarDays,
@@ -33,7 +34,7 @@ export default function Sidebar() {
     return paths.some(
       (path) =>
         location.pathname === path ||
-        location.pathname.startsWith(`${path}/`)
+        location.pathname.startsWith(`${path}/`),
     );
   };
 
@@ -226,20 +227,25 @@ function SidebarNavigation({
           active={isSectionActive(["/destinations"])}
         />
 
-        {/* Hotels */}
-        <SidebarItem
-          to="/hotels"
-          icon={<Hotel className="h-[18px] w-[18px]" />}
-          label="Hotels"
-          active={isSectionActive(["/hotels"])}
-        />
-
         {/* Paila AI */}
         <SidebarItem
           to="/ai"
           icon={<Sparkles className="h-[18px] w-[18px]" />}
           label="Paila AI"
           active={isSectionActive(["/ai"])}
+        />
+      </SidebarSection>
+
+      {/* =========================
+          BOOKING
+      ========================== */}
+      <SidebarSection title="BOOKING">
+        {/* Hotels */}
+        <SidebarItem
+          to="/hotels"
+          icon={<Hotel className="h-[18px] w-[18px]" />}
+          label="Hotels"
+          active={isSectionActive(["/hotels"])}
         />
       </SidebarSection>
 
