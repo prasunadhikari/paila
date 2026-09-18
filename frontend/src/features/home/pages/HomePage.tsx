@@ -1,6 +1,7 @@
 import Navbar from "../../../components/layout/Navbar";
 import Hero from "../components/Hero";
 import Destinations from "../components/Destinations";
+import Hotels from "../components/Hotels";
 import WhyPaila from "../components/WhyPaila";
 import Testimonials from "../components/Testimonials";
 import Footer from "../../../components/layout/Footer";
@@ -11,6 +12,7 @@ export default function HomePage() {
       <Navbar />
       <Hero />
       <Destinations />
+      <Hotels />
       <WhyPaila />
       <Testimonials />
       <Footer />

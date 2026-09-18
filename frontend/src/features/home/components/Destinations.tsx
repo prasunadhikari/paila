@@ -32,7 +32,7 @@ const places = [
 
 export default function Destinations() {
   return (
-    <section className="relative z-20 -mt-5 overflow-hidden rounded-t-[32px] bg-[#f8fafc] py-14 sm:rounded-t-[42px] sm:py-16 lg:-mt-6 lg:py-20">
+    <section className="relative z-20 -mt-5 overflow-hidden rounded-t-[32px] bg-[#05070a] py-14 text-white sm:rounded-t-[42px] sm:py-16 lg:-mt-6 lg:py-20">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
         {/* =========================
             SECTION INTRO
@@ -42,30 +42,30 @@ export default function Destinations() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.7 }}
-          className="border-b border-slate-200/80 pb-9 sm:pb-11"
+          className="border-b border-white/10 pb-9 sm:pb-11"
         >
           <div className="grid gap-7 lg:grid-cols-[1fr_auto] lg:items-end">
             {/* Left content */}
             <div className="max-w-3xl">
               {/* Eyebrow */}
               <div className="mb-4 flex items-center gap-3">
-                <span className="h-px w-9 bg-emerald-500 sm:w-10" />
+                <span className="h-px w-9 bg-emerald-400 sm:w-10" />
 
-                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-emerald-600 sm:text-[11px]">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-emerald-300 sm:text-[11px]">
                   Discover Nepal
                 </p>
               </div>
 
               {/* Heading */}
-              <h2 className="max-w-3xl text-4xl font-medium leading-[0.98] tracking-[-0.045em] text-slate-900 sm:text-5xl lg:text-[4.3rem]">
+              <h2 className="max-w-3xl text-4xl font-medium leading-[0.98] tracking-[-0.045em] text-white sm:text-5xl lg:text-[4.3rem]">
                 Places worth
-                <span className="block font-light italic text-slate-400">
+                <span className="block font-light italic text-white/45">
                   going somewhere for.
                 </span>
               </h2>
 
               {/* Description */}
-              <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base sm:leading-8">
+              <p className="mt-5 max-w-2xl text-sm leading-7 text-white/55 sm:text-base sm:leading-8">
                 From peaceful lakes and towering mountains to ancient kingdoms
                 and wild jungles, discover the places that make Nepal
                 unforgettable.
@@ -75,11 +75,11 @@ export default function Destinations() {
             {/* Desktop View All */}
             <Link
               to="/destinations"
-              className="group hidden shrink-0 items-center gap-3 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-300 hover:text-emerald-600 hover:shadow-md sm:inline-flex"
+              className="group hidden shrink-0 items-center gap-3 rounded-full border border-white/15 bg-white/[0.04] px-4 py-2.5 text-sm font-semibold text-white/80 shadow-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-400/40 hover:bg-emerald-400/10 hover:text-white hover:shadow-lg sm:inline-flex"
             >
               View all destinations
 
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 transition-all duration-300 group-hover:bg-emerald-50">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] transition-all duration-300 group-hover:border-emerald-300/30 group-hover:bg-emerald-400/10">
                 <ArrowRight
                   size={15}
                   className="transition-transform duration-300 group-hover:translate-x-0.5"
@@ -103,7 +103,7 @@ export default function Destinations() {
                 duration: 0.7,
                 delay: index * 0.12,
               }}
-              className="group relative overflow-hidden rounded-[24px] bg-slate-900 shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-slate-900/15 sm:rounded-[28px]"
+              className="group relative overflow-hidden rounded-[24px] border border-white/10 bg-black shadow-lg shadow-black/20 transition-all duration-500 hover:-translate-y-1.5 hover:border-white/20 hover:shadow-2xl hover:shadow-black/40 sm:rounded-[28px]"
             >
               {/* Image */}
               <div className="relative aspect-[4/5] w-full overflow-hidden">
@@ -114,21 +114,21 @@ export default function Destinations() {
                   className="h-full w-full object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.07]"
                 />
 
-                {/* Main cinematic overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/25 to-black/0" />
+                {/* Cinematic bottom gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/5" />
 
-                {/* Subtle color overlay */}
-                <div className="absolute inset-0 bg-sky-950/5 transition-all duration-700 group-hover:bg-sky-950/15" />
+                {/* Subtle dark tint */}
+                <div className="absolute inset-0 bg-black/10 transition-all duration-700 group-hover:bg-black/20" />
 
-                {/* Top shine */}
-                <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/20 to-transparent opacity-70" />
+                {/* Soft top gradient */}
+                <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/30 to-transparent" />
 
                 {/* Number */}
                 <div className="absolute left-5 top-5 flex h-9 w-9 items-center justify-center rounded-full border border-white/25 bg-black/20 text-[11px] font-medium text-white backdrop-blur-md transition-all duration-300 group-hover:border-white/40 group-hover:bg-white/10">
                   0{index + 1}
                 </div>
 
-                {/* Content */}
+                {/* Card Content */}
                 <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 lg:p-7">
                   <div className="flex items-end justify-between gap-4">
                     <div className="min-w-0">
@@ -172,11 +172,11 @@ export default function Destinations() {
         <div className="mt-7 sm:hidden">
           <Link
             to="/destinations"
-            className="group flex w-full items-center justify-between rounded-full border border-slate-200 bg-white px-5 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition-all duration-300 hover:border-emerald-300 hover:text-emerald-600"
+            className="group flex w-full items-center justify-between rounded-full border border-white/10 bg-white/[0.04] px-5 py-3.5 text-sm font-semibold text-white/80 backdrop-blur-md transition-all duration-300 hover:border-emerald-400/30 hover:bg-emerald-400/10 hover:text-white"
           >
             <span>View all destinations</span>
 
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 transition-all duration-300 group-hover:bg-emerald-50">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/[0.07] transition-all duration-300 group-hover:bg-emerald-400/10">
               <ArrowRight
                 size={15}
                 className="transition-transform duration-300 group-hover:translate-x-0.5"
