@@ -116,152 +116,253 @@ export default function Testimonials() {
     <>
       <section
         id="testimonials"
-        className="relative overflow-hidden bg-slate-50 py-24 sm:py-28"
+        className="relative overflow-hidden bg-[#f7f6f2] py-20 sm:py-24 lg:py-28"
       >
-        {/* Background decoration */}
-        <div className="pointer-events-none absolute -left-40 top-20 h-80 w-80 rounded-full bg-emerald-100/60 blur-3xl" />
-        <div className="pointer-events-none absolute -right-40 bottom-10 h-80 w-80 rounded-full bg-cyan-100/50 blur-3xl" />
+        {/* Floating background glow */}
+        <motion.div
+          animate={{
+            x: [0, 25, 0],
+            y: [0, -20, 0],
+          }}
+          transition={{
+            duration: 11,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="pointer-events-none absolute -left-40 top-10 h-80 w-80 rounded-full bg-emerald-100/60 blur-3xl"
+        />
 
-        <div className="relative mx-auto max-w-7xl px-6">
-          {/* Heading */}
+        <motion.div
+          animate={{
+            x: [0, -25, 0],
+            y: [0, 20, 0],
+          }}
+          transition={{
+            duration: 13,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="pointer-events-none absolute -right-40 bottom-20 h-80 w-80 rounded-full bg-cyan-100/50 blur-3xl"
+        />
+
+        <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mx-auto max-w-3xl text-center"
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7 }}
+            className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between"
           >
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-white px-4 py-2 text-sm font-semibold text-emerald-700 shadow-sm">
-              <MessageCircle className="h-4 w-4" />
-              Traveler Experiences
+            <div className="max-w-3xl">
+              <div className="mb-5 flex items-center gap-3">
+                <span className="h-px w-10 bg-emerald-600" />
+
+                <p className="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-700">
+                  Traveler Experiences
+                </p>
+              </div>
+
+              <h2 className="text-4xl font-medium leading-[1.05] tracking-[-0.04em] text-slate-900 sm:text-5xl lg:text-6xl">
+                Stories from the
+                <span className="block font-light italic text-slate-500">
+                  road.
+                </span>
+              </h2>
+
+              <p className="mt-6 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base sm:leading-8">
+                Discover what travelers have experienced while exploring Nepal
+                with Paila.
+              </p>
             </div>
 
-            <h2 className="text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
-              What travelers are saying
-            </h2>
-
-            <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-500 sm:text-lg sm:leading-8">
-              Discover what travelers think about using Paila to make their
-              Nepal journey simpler.
-            </p>
+            <Link
+              to="/feedback"
+              className="group inline-flex w-fit items-center gap-3 text-sm font-semibold text-slate-700 transition hover:text-emerald-700"
+            >
+              See all feedback
+              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 transition-all duration-300 group-hover:border-emerald-600 group-hover:bg-emerald-600 group-hover:text-white">
+                <ArrowRight
+                  size={15}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5"
+                />
+              </span>
+            </Link>
           </motion.div>
 
           {/* Reviews */}
-          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-4 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3">
             {reviews.map((review, index) => (
               <motion.article
                 key={review.name}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, amount: 0.15 }}
                 transition={{
-                  duration: 0.5,
-                  delay: index * 0.07,
+                  duration: 0.6,
+                  delay: index * 0.08,
                 }}
                 whileHover={{ y: -6 }}
-                className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-7 shadow-sm transition-all duration-300 hover:border-emerald-200 hover:shadow-xl hover:shadow-slate-200/60 sm:p-8"
+                className="group relative overflow-hidden rounded-[28px] border border-slate-200/80 bg-white p-6 shadow-sm transition-all duration-500 hover:border-emerald-200 hover:shadow-xl hover:shadow-slate-300/30 sm:p-7 lg:p-8"
               >
-                {/* Quote */}
-                <div className="absolute right-6 top-6 flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-500 transition-all duration-300 group-hover:bg-emerald-600 group-hover:text-white">
+                {/* Floating quote */}
+                <motion.div
+                  animate={{
+                    y: [0, -5, 0],
+                    rotate: [0, 2, 0],
+                  }}
+                  transition={{
+                    duration: 4 + index * 0.4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: index * 0.2,
+                  }}
+                  className="absolute right-6 top-6 flex h-11 w-11 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 transition-all duration-500 group-hover:bg-emerald-600 group-hover:text-white"
+                >
                   <Quote className="h-5 w-5" />
-                </div>
+                </motion.div>
 
-                {/* Stars */}
+                {/* Rating */}
                 <div className="flex gap-1">
-                  {[...Array(5)].map((_, i) => (
+                  {[...Array(5)].map((_, starIndex) => (
                     <Star
-                      key={i}
-                      className="h-4 w-4 fill-amber-400 text-amber-400"
+                      key={starIndex}
+                      className="h-3.5 w-3.5 fill-amber-400 text-amber-400"
                     />
                   ))}
                 </div>
 
                 {/* Review */}
-                <p className="mt-6 min-h-[126px] text-[15px] leading-7 text-slate-600">
-                  "{review.review}"
+                <p className="mt-7 min-h-[132px] max-w-md text-[15px] leading-7 text-slate-600">
+                  “{review.review}”
                 </p>
 
+                {/* Divider */}
                 <div className="my-6 h-px bg-slate-100" />
 
                 {/* User */}
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 text-sm font-bold text-white shadow-sm">
+                  <motion.div
+                    animate={{
+                      y: [0, -3, 0],
+                    }}
+                    transition={{
+                      duration: 4 + index * 0.3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: index * 0.25,
+                    }}
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-semibold text-white"
+                  >
                     {review.name
                       .split(" ")
                       .map((word) => word[0])
                       .join("")
                       .slice(0, 2)
                       .toUpperCase()}
-                  </div>
+                  </motion.div>
 
                   <div className="min-w-0">
-                    <h3 className="font-bold text-slate-900">
+                    <h3 className="truncate text-sm font-semibold text-slate-900">
                       {review.name}
                     </h3>
 
-                    <div className="mt-1 flex items-center gap-1.5 text-sm text-slate-500">
-                      <MapPin className="h-3.5 w-3.5 text-emerald-500" />
-                      <span>{review.location}</span>
+                    <div className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
+                      <MapPin className="h-3.5 w-3.5 text-emerald-600" />
+                      <span className="truncate">{review.location}</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Bottom accent */}
-                <div className="absolute bottom-0 left-0 h-1 w-0 bg-emerald-500 transition-all duration-500 group-hover:w-full" />
+                {/* Animated bottom accent */}
+                <motion.div
+                  className="absolute bottom-0 left-0 h-[2px] bg-emerald-500"
+                  initial={{ width: "0%" }}
+                  whileHover={{ width: "100%" }}
+                  transition={{ duration: 0.5 }}
+                />
               </motion.article>
             ))}
           </div>
-
-          {/* All feedback */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="mt-10 text-center"
-          >
-            <Link
-              to="/feedback"
-              className="group inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3.5 font-semibold text-slate-700 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-200 hover:text-emerald-600 hover:shadow-md"
-            >
-              See All Feedback
-              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-            </Link>
-          </motion.div>
 
           {/* Feedback CTA */}
           <motion.div
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="relative mt-14 overflow-hidden rounded-3xl bg-slate-900 px-7 py-12 text-center shadow-xl sm:px-12"
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7 }}
+            className="relative mt-10 overflow-hidden rounded-[28px] bg-slate-950 px-6 py-10 sm:mt-14 sm:px-10 sm:py-12 lg:rounded-[32px] lg:px-14"
           >
-            {/* Decorative glow */}
-            <div className="pointer-events-none absolute -left-20 -top-20 h-48 w-48 rounded-full bg-emerald-500/20 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-24 -right-16 h-56 w-56 rounded-full bg-cyan-500/20 blur-3xl" />
+            {/* Moving glow */}
+            <motion.div
+              animate={{
+                x: [0, 40, 0],
+                y: [0, -20, 0],
+              }}
+              transition={{
+                duration: 10,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="pointer-events-none absolute -left-20 -top-20 h-60 w-60 rounded-full bg-emerald-500/20 blur-3xl"
+            />
 
-            <div className="relative mx-auto max-w-2xl">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-400/20">
-                <Sparkles className="h-6 w-6" />
+            <motion.div
+              animate={{
+                x: [0, -30, 0],
+                y: [0, 20, 0],
+              }}
+              transition={{
+                duration: 12,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="pointer-events-none absolute -bottom-24 -right-16 h-64 w-64 rounded-full bg-cyan-500/15 blur-3xl"
+            />
+
+            <div className="relative flex flex-col items-start gap-7 lg:flex-row lg:items-center lg:justify-between">
+              <div className="max-w-2xl">
+                <div className="flex items-center gap-3">
+                  <motion.div
+                    animate={{
+                      y: [0, -4, 0],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-emerald-300"
+                  >
+                    <Sparkles className="h-5 w-5" />
+                  </motion.div>
+
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">
+                    Your story matters
+                  </p>
+                </div>
+
+                <h3 className="mt-5 text-2xl font-medium tracking-tight text-white sm:text-3xl lg:text-4xl">
+                  Have you tried Paila?
+                </h3>
+
+                <p className="mt-3 max-w-xl text-sm leading-7 text-white/60 sm:text-base">
+                  Tell us about your experience. Your feedback helps us make
+                  Paila better for every traveler.
+                </p>
               </div>
-
-              <h3 className="mt-6 text-2xl font-black text-white sm:text-3xl">
-                Have you tried Paila?
-              </h3>
-
-              <p className="mt-3 leading-7 text-slate-300">
-                We'd love to hear about your experience. Your feedback helps
-                us make Paila better for every traveler.
-              </p>
 
               <button
                 type="button"
                 onClick={() => setIsOpen(true)}
-                className="mt-7 inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-6 py-3.5 font-bold text-white shadow-lg shadow-emerald-500/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-emerald-400 hover:shadow-xl active:scale-95"
+                className="group inline-flex w-full shrink-0 items-center justify-center gap-3 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-slate-900 transition-all duration-300 hover:bg-emerald-400 hover:text-white sm:w-auto"
               >
-                <MessageCircle className="h-5 w-5" />
+                <MessageCircle className="h-4 w-4" />
                 Give Feedback
+                <ArrowRight
+                  size={15}
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                />
               </button>
             </div>
           </motion.div>
@@ -460,7 +561,6 @@ export default function Testimonials() {
                   </form>
                 </>
               ) : (
-                /* Success state */
                 <div className="py-10 text-center">
                   <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
                     <CheckCircle2 className="h-8 w-8" />

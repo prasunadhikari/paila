@@ -5,92 +5,133 @@ import {
   MapPin,
   Sparkles,
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden border-t border-slate-200 bg-white">
-      {/* Decorative background */}
-      <div className="pointer-events-none absolute -left-32 top-10 h-64 w-64 rounded-full bg-emerald-100/50 blur-3xl" />
-      <div className="pointer-events-none absolute -right-32 bottom-10 h-64 w-64 rounded-full bg-cyan-100/40 blur-3xl" />
+    <footer className="relative overflow-hidden bg-slate-950 text-white">
+      {/* Floating background glow */}
+      <motion.div
+        animate={{
+          x: [0, 35, 0],
+          y: [0, -20, 0],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="pointer-events-none absolute -left-40 top-10 h-80 w-80 rounded-full bg-emerald-500/10 blur-3xl"
+      />
 
-      <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+      <motion.div
+        animate={{
+          x: [0, -30, 0],
+          y: [0, 25, 0],
+        }}
+        transition={{
+          duration: 14,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="pointer-events-none absolute -right-40 bottom-10 h-80 w-80 rounded-full bg-cyan-500/10 blur-3xl"
+      />
+
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
+        {/* =====================================================
+            INTRO
+        ====================================================== */}
+
+        <div className="border-b border-white/10 py-16 sm:py-20 lg:py-24">
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="max-w-4xl"
+          >
+            <div className="mb-6 flex items-center gap-3">
+              <span className="h-px w-10 bg-emerald-400" />
+
+              <span className="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-300">
+                Paila · Nepal
+              </span>
+            </div>
+
+            <h2 className="text-4xl font-medium leading-[1.05] tracking-[-0.04em] text-white sm:text-5xl lg:text-7xl">
+              Your next journey
+              <span className="block font-light italic text-white/45">
+                starts here.
+              </span>
+            </h2>
+
+            <p className="mt-6 max-w-2xl text-sm leading-7 text-white/55 sm:text-base sm:leading-8">
+              Discover destinations, stays, experiences, and travel ideas
+              across Nepal — all in one place.
+            </p>
+          </motion.div>
+        </div>
+
         {/* =====================================================
             MAIN FOOTER
         ====================================================== */}
 
-        <div className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-4 lg:gap-14 lg:py-16">
-          {/* ===================================================
-              BRAND
-          ==================================================== */}
-
+        <div className="grid gap-12 py-14 sm:grid-cols-2 sm:py-16 lg:grid-cols-4 lg:gap-14">
+          {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link
               to="/"
-              className="group inline-flex items-center gap-2"
+              className="group inline-flex items-center gap-3"
             >
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-lg shadow-emerald-600/20 transition-transform duration-300 group-hover:-rotate-3 group-hover:scale-105">
+              <motion.span
+                whileHover={{ rotate: -5, scale: 1.05 }}
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-slate-950 transition-colors duration-300 group-hover:bg-emerald-400"
+              >
                 <Sparkles className="h-5 w-5" />
-              </span>
+              </motion.span>
 
-              <span className="text-2xl font-black tracking-tight text-slate-950 transition-colors group-hover:text-emerald-600">
+              <span className="text-2xl font-medium tracking-tight text-white">
                 Paila
               </span>
             </Link>
 
-            <p className="mt-5 text-sm font-bold text-slate-800">
+            <p className="mt-6 max-w-sm text-sm font-medium leading-6 text-white/80">
               Every journey starts with a step.
             </p>
 
-            <p className="mt-3 max-w-sm text-sm leading-7 text-slate-500">
-              Your companion for discovering Nepal&apos;s destinations,
-              culture, nature, adventure, and hidden gems.
+            <p className="mt-3 max-w-sm text-sm leading-7 text-white/45">
+              A travel platform built to help you discover Nepal with
+              confidence, curiosity, and ease.
             </p>
 
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3.5 py-2 text-xs font-bold text-emerald-700">
-              <MapPin className="h-3.5 w-3.5" />
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-2 text-xs font-medium text-white/60">
+              <MapPin className="h-3.5 w-3.5 text-emerald-400" />
               Made for Nepal 🇳🇵
             </div>
           </div>
 
-          {/* ===================================================
-              QUICK LINKS
-          ==================================================== */}
-
+          {/* Quick Links */}
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">
-              Quick Links
-            </h3>
-
-            <ul className="mt-5 space-y-3.5">
-              <FooterLink to="/" label="Home" />
-
-              <FooterLink
-                to="/destinations"
-                label="Destinations"
-              />
-
-              <FooterLink
-                to="/ai"
-                label="Plan Your Trip"
-              />
-
-              <FooterLink
-                to="/feedback"
-                label="Feedback"
-              />
-            </ul>
-          </div>
-
-          {/* ===================================================
-              EXPLORE
-          ==================================================== */}
-
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
               Explore
             </h3>
 
-            <ul className="mt-5 space-y-3.5">
+            <ul className="mt-6 space-y-4">
+              <FooterLink to="/" label="Home" />
+              <FooterLink to="/destinations" label="Destinations" />
+              <FooterLink to="/hotels" label="Hotels" />
+              <FooterLink to="/ai" label="Paila AI" />
+              <FooterLink to="/feedback" label="Feedback" />
+            </ul>
+          </div>
+
+          {/* Discover */}
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+              Discover
+            </h3>
+
+            <ul className="mt-6 space-y-4">
               <FooterLink
                 to="/destinations"
                 label="Popular Destinations"
@@ -118,30 +159,28 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* ===================================================
-              CONTACT
-          ==================================================== */}
-
+          {/* Contact */}
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">
-              Contact
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+              Stay connected
             </h3>
 
             <a
-              href="mailto:support@paila.com.np"
-              className="group mt-5 flex w-fit items-center gap-3 text-sm text-slate-500 transition-colors hover:text-emerald-600"
+              href="mailto:paila.travel.nepal@gmail.com"
+              className="group mt-6 flex w-fit items-center gap-3 text-sm text-white/50 transition-colors hover:text-white"
             >
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 transition-all duration-200 group-hover:bg-emerald-50 group-hover:text-emerald-600">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-all duration-300 group-hover:border-emerald-400/40 group-hover:bg-emerald-400/10 group-hover:text-emerald-300">
                 <Mail className="h-4 w-4" />
               </span>
 
-              <span>support@paila.com.np</span>
+              <span className="break-all">
+                paila.travel.nepal@gmail.com
+              </span>
             </a>
 
-            {/* Social Media */}
-
+            {/* Social */}
             <div className="mt-8">
-              <p className="text-sm font-bold text-slate-800">
+              <p className="text-sm font-medium text-white/80">
                 Follow Paila
               </p>
 
@@ -174,19 +213,28 @@ export default function Footer() {
             BOTTOM BAR
         ====================================================== */}
 
-        <div className="border-t border-slate-200 py-6">
+        <div className="border-t border-white/10 py-6">
           <div className="flex flex-col gap-3 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
-            <p className="text-xs text-slate-500 sm:text-sm">
+            <p className="text-xs text-white/35 sm:text-sm">
               © {new Date().getFullYear()}{" "}
-              <span className="font-semibold text-slate-700">
-                Prasun Adhikari
-              </span>
+              <span className="text-white/60">Prasun Adhikari</span>
               . All rights reserved.
             </p>
 
-            <p className="text-xs text-slate-500 sm:text-sm">
-              Made with <span aria-label="love">❤️</span> for Nepal.
-            </p>
+            <div className="flex items-center justify-center gap-5 text-xs text-white/35 sm:justify-end sm:text-sm">
+              <Link
+                to="/legal"
+                className="transition-colors hover:text-white"
+              >
+                Legal
+              </Link>
+
+              <span className="h-1 w-1 rounded-full bg-white/20" />
+
+              <span>
+                Made with <span aria-label="love">❤️</span> for Nepal.
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -209,11 +257,13 @@ function FooterLink({
     <li>
       <Link
         to={to}
-        className="group inline-flex items-center gap-1.5 text-sm text-slate-500 transition-colors hover:text-emerald-600"
+        className="group inline-flex items-center gap-2 text-sm text-white/45 transition-colors duration-300 hover:text-white"
       >
         <span>{label}</span>
 
-        <ArrowUpRight className="h-3.5 w-3.5 translate-y-0.5 opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:translate-y-0 group-hover:opacity-100" />
+        <ArrowUpRight
+          className="h-3.5 w-3.5 translate-y-0.5 opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:translate-y-0 group-hover:opacity-100"
+        />
       </Link>
     </li>
   );
@@ -235,11 +285,13 @@ function SocialLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group inline-flex w-fit items-center gap-1.5 text-sm text-slate-500 transition-colors hover:text-emerald-600"
+      className="group inline-flex w-fit items-center gap-2 text-sm text-white/45 transition-colors duration-300 hover:text-white"
     >
       <span>{label}</span>
 
-      <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" />
+      <ArrowUpRight
+        className="h-3.5 w-3.5 opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100"
+      />
     </a>
   );
 }
