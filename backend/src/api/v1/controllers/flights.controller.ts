@@ -12,6 +12,10 @@ type FlightSearchBody = {
   children?: number;
 };
 
+/* =========================================================
+   SEARCH FLIGHTS
+========================================================= */
+
 export async function searchFlights(req: Request, res: Response) {
   try {
     const apiKey = process.env.IGNAV_API_KEY;
@@ -52,6 +56,16 @@ export async function searchFlights(req: Request, res: Response) {
       });
     }
 
+    if (
+      tripType === "round-trip" &&
+      returnDate &&
+      returnDate < departure
+    ) {
+      return res.status(400).json({
+        message: "Return date cannot be before departure date.",
+      });
+    }
+
     if (adults < 1 || children < 0) {
       return res.status(400).json({
         message: "Invalid passenger count.",
@@ -82,6 +96,7 @@ export async function searchFlights(req: Request, res: Response) {
       origin: from,
       destination: to,
       departure,
+      returnDate,
       tripType,
     });
 
@@ -90,6 +105,7 @@ export async function searchFlights(req: Request, res: Response) {
       headers: {
         "X-Api-Key": apiKey,
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(payload),
     });
@@ -97,7 +113,6 @@ export async function searchFlights(req: Request, res: Response) {
     const responseText = await response.text();
 
     console.log("Ignav response status:", response.status);
-    console.log("Ignav response body:", responseText);
 
     let data: unknown;
 
@@ -110,6 +125,8 @@ export async function searchFlights(req: Request, res: Response) {
     }
 
     if (!response.ok) {
+      console.error("Ignav flight search error:", data);
+
       return res.status(response.status).json({
         message: "Unable to search flights.",
         ignavStatus: response.status,
@@ -127,6 +144,83 @@ export async function searchFlights(req: Request, res: Response) {
     });
   }
 }
+
+/* =========================================================
+   AIRPORT SEARCH
+========================================================= */
+
+export async function searchAirports(req: Request, res: Response) {
+  try {
+    const apiKey = process.env.IGNAV_API_KEY;
+
+    if (!apiKey) {
+      console.error("IGNAV_API_KEY is missing");
+
+      return res.status(500).json({
+        message: "Flight API is not configured.",
+      });
+    }
+
+    const query = String(req.query.q || "").trim();
+
+    if (query.length < 2) {
+      return res.status(200).json([]);
+    }
+
+    const requestedLimit = Number(req.query.limit) || 8;
+
+    const limit = Math.min(
+      Math.max(requestedLimit, 1),
+      20
+    );
+
+    const url = new URL(`${IGNAV_BASE_URL}/airports`);
+
+    url.searchParams.set("q", query);
+    url.searchParams.set("limit", String(limit));
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "X-Api-Key": apiKey,
+        Accept: "application/json",
+      },
+    });
+
+    const responseText = await response.text();
+
+    let data: unknown;
+
+    try {
+      data = JSON.parse(responseText);
+    } catch {
+      data = {
+        raw: responseText,
+      };
+    }
+
+    if (!response.ok) {
+      console.error("Ignav airport search error:", data);
+
+      return res.status(response.status).json({
+        message: "Unable to search airports.",
+        details: data,
+      });
+    }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error("Airport search error:", error);
+
+    return res.status(500).json({
+      message: "Something went wrong while searching airports.",
+    });
+  }
+}
+
+/* =========================================================
+   BOOKING LINKS
+========================================================= */
 
 export async function getFlightBookingLinks(
   req: Request,
@@ -158,6 +252,7 @@ export async function getFlightBookingLinks(
         headers: {
           "X-Api-Key": apiKey,
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
         body: JSON.stringify({
           ignav_id: ignavId,
@@ -166,9 +261,6 @@ export async function getFlightBookingLinks(
     );
 
     const responseText = await response.text();
-
-    console.log("Ignav booking-links status:", response.status);
-    console.log("Ignav booking-links response:", responseText);
 
     let data: unknown;
 
@@ -181,6 +273,8 @@ export async function getFlightBookingLinks(
     }
 
     if (!response.ok) {
+      console.error("Ignav booking-links error:", data);
+
       return res.status(response.status).json({
         message: "Unable to generate booking links.",
         ignavStatus: response.status,
