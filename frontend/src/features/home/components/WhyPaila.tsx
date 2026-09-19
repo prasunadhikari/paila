@@ -51,7 +51,10 @@ const features = [
 
 export default function WhyPaila() {
   return (
-    <section className="relative overflow-hidden bg-[#05070a] py-20 text-white sm:py-24 lg:py-28">
+    <section
+  id="why-paila"
+  className="relative overflow-hidden bg-[#05070a] py-20 text-white sm:py-24 lg:py-28"
+>
       {/* Ambient background glow */}
       <motion.div
         animate={{

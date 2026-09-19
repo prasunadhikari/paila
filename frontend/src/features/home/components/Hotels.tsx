@@ -4,7 +4,6 @@ import {
   ArrowLeft,
   ArrowRight,
   MapPin,
-  Star,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -12,119 +11,121 @@ type Hotel = {
   name: string;
   location: string;
   image: string;
-  rating: string;
-  price: string;
   type: string;
 };
 
 const hotels: Hotel[] = [
   {
-    name: "Temple Tree Resort",
+    name: "Temple Tree Resort & Spa",
     location: "Pokhara, Nepal",
     image:
       "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1600&q=90",
-    rating: "4.8",
-    price: "NPR 3,500",
     type: "Lakeside Resort",
   },
   {
-    name: "Kasara Jungle Resort",
+    name: "Kasara Resort",
     location: "Chitwan, Nepal",
     image:
-      "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=1600&q=90",
-    rating: "4.7",
-    price: "NPR 4,200",
-    type: "Jungle Retreat",
+      "https://lexlimbu.com/wp-content/uploads/KASARA-RESORT-VIP-VILLA.jpg",
+    type: "Jungle Resort",
   },
   {
-    name: "Mountain View Lodge",
-    location: "Mustang, Nepal",
+    name: "Lo Mustang Himalayan Resort",
+    location: "Muktinath, Nepal",
     image:
-      "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=1600&q=90",
-    rating: "4.9",
-    price: "NPR 3,800",
-    type: "Mountain Stay",
-  },
-  {
-    name: "Himalayan Paradise",
-    location: "Nagarkot, Nepal",
-    image:
-      "https://images.unsplash.com/photo-1601918774946-25832a4be0d6?auto=format&fit=crop&w=1600&q=90",
-    rating: "4.8",
-    price: "NPR 4,500",
+      "https://cf.bstatic.com/xdata/images/hotel/max1024x768/407073470.jpg",
     type: "Mountain Resort",
   },
   {
-    name: "The Lakeside Haven",
+    name: "Hotel Mystic Mountain",
+    location: "Nagarkot, Nepal",
+    image:
+      "https://www.hotelmysticmountain.com/wp-content/uploads/2023/08/Hotel-Mystic-Mountain-Nagarkot.jpg",
+    type: "Mountain Resort",
+  },
+  {
+    name: "Hotel Barahi",
     location: "Pokhara, Nepal",
     image:
-      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1600&q=90",
-    rating: "4.7",
-    price: "NPR 3,200",
-    type: "Boutique Hotel",
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Pokhara-03c-Hotel_Barahi-Ausblick-Berge-2015-gje.jpg",
+    type: "Lakeside Hotel",
   },
   {
-    name: "Forest Hideaway",
-    location: "Chitwan, Nepal",
-    image:
-      "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=1600&q=90",
-    rating: "4.6",
-    price: "NPR 3,900",
-    type: "Forest Retreat",
-  },
-  {
-    name: "Himalayan Heritage",
+    name: "Hotel Manaslu",
     location: "Kathmandu, Nepal",
     image:
-      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1600&q=90",
-    rating: "4.8",
-    price: "NPR 4,000",
-    type: "Heritage Stay",
-  },
-  {
-    name: "Everest View Lodge",
-    location: "Khumbu, Nepal",
-    image:
-      "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1600&q=90",
-    rating: "4.9",
-    price: "NPR 5,500",
-    type: "Mountain Lodge",
-  },
-  {
-    name: "Riverside Retreat",
-    location: "Bandipur, Nepal",
-    image:
-      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1600&q=90",
-    rating: "4.7",
-    price: "NPR 3,600",
-    type: "Riverside Stay",
-  },
-  {
-    name: "Heritage Courtyard",
-    location: "Bhaktapur, Nepal",
-    image:
-      "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1600&q=90",
-    rating: "4.8",
-    price: "NPR 3,300",
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/The_Hotel_Manaslu.jpg",
     type: "Heritage Hotel",
   },
   {
-    name: "Rara Wilderness Resort",
-    location: "Mugu, Nepal",
+    name: "Kantipur Temple House",
+    location: "Kathmandu, Nepal",
     image:
-      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1600&q=90",
-    rating: "4.9",
-    price: "NPR 4,800",
-    type: "Wilderness Stay",
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Kathmandu-Hotel-16-Kantipur_Temple_House_im_Garten-2014-gje.jpg",
+    type: "Heritage Stay",
   },
   {
-    name: "Annapurna Retreat",
-    location: "Ghandruk, Nepal",
+    name: "The Dwarika's Hotel",
+    location: "Kathmandu, Nepal",
     image:
-      "https://images.unsplash.com/photo-1601918774946-25832a4be0d6?auto=format&fit=crop&w=1600&q=90",
-    rating: "4.8",
-    price: "NPR 3,700",
-    type: "Mountain Retreat",
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Dwarika%C2%B4s_hotel_kathmandu.jpg",
+    type: "Heritage Hotel",
+  },
+  {
+    name: "Hyatt Regency Kathmandu",
+    location: "Boudha, Kathmandu",
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Hyatt_Regency_Kathmandu_Hotel.jpg",
+    type: "Luxury Hotel",
+  },
+  {
+    name: "Hotel Shanker",
+    location: "Lazimpat, Kathmandu",
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Shanker.jpg",
+    type: "Heritage Hotel",
+  },
+  {
+    name: "Hotel de l'Annapurna",
+    location: "Durbar Marg, Kathmandu",
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Hotel_de_l%27_Annapurna-2.jpg",
+    type: "City Hotel",
+  },
+  {
+    name: "Park Village Resort",
+    location: "Budhanilkantha, Kathmandu",
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Park_Village_Resort%2C_Budhanilkantha_by_KGH_%282023%29_-_img_07.jpg",
+    type: "Nature Resort",
+  },
+  {
+    name: "Fish Tail Lodge",
+    location: "Pokhara, Nepal",
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/World_Famous_%27Fish_Tail_Lodge%27_hotel_in_Pokhara..jpg",
+    type: "Lakeside Lodge",
+  },
+  {
+    name: "Rhino Residency Resort",
+    location: "Chitwan, Nepal",
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Chitwan-Rhino_Residency_Resort-02-2013-gje.jpg",
+    type: "Jungle Resort",
+  },
+  {
+    name: "Jungle Safari Resort",
+    location: "Chitwan, Nepal",
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Jungle_Safari_Resort-1.jpg",
+    type: "Safari Resort",
+  },
+  {
+    name: "Mt. Kailash Resort",
+    location: "Pokhara, Nepal",
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Mt_Kailash_Resort-25.jpg",
+    type: "Pokhara Resort",
   },
 ];
 
@@ -138,13 +139,6 @@ export default function Hotels() {
 
   const cardRef = useRef<HTMLDivElement | null>(null);
 
-  /*
-   * Detect how many cards should be visible.
-   *
-   * Desktop = 3
-   * Tablet = 2
-   * Mobile = 1
-   */
   useEffect(() => {
     const updateLayout = () => {
       const width = window.innerWidth;
@@ -167,15 +161,11 @@ export default function Hotels() {
     };
   }, []);
 
-  /*
-   * Measure real card width.
-   */
   useEffect(() => {
     const updateMeasurements = () => {
       if (!cardRef.current) return;
 
       const width = cardRef.current.getBoundingClientRect().width;
-
       setCardWidth(width);
 
       const parent = cardRef.current.parentElement;
@@ -206,24 +196,11 @@ export default function Hotels() {
     };
   }, []);
 
-  /*
-   * The last valid starting position.
-   *
-   * With 12 hotels and 3 visible:
-   *
-   * 0 = hotels 1,2,3
-   * 1 = hotels 2,3,4
-   * ...
-   * 9 = hotels 10,11,12
-   */
   const maxIndex = Math.max(
     0,
     hotels.length - visibleCards
   );
 
-  /*
-   * Auto slide every 2 seconds.
-   */
   useEffect(() => {
     const timer = window.setInterval(() => {
       setCurrentIndex((prev) => {
@@ -240,10 +217,6 @@ export default function Hotels() {
     };
   }, [maxIndex]);
 
-  /*
-   * Make sure the index remains valid when
-   * the screen size changes.
-   */
   useEffect(() => {
     setCurrentIndex((prev) => Math.min(prev, maxIndex));
   }, [maxIndex]);
@@ -272,13 +245,11 @@ export default function Hotels() {
 
   return (
     <section className="relative overflow-hidden bg-[#05070a] px-5 py-16 text-white sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-      {/* Ambient glow */}
       <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl" />
 
       <div className="pointer-events-none absolute -right-32 bottom-20 h-80 w-80 rounded-full bg-cyan-500/10 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -304,13 +275,12 @@ export default function Hotels() {
               </h2>
 
               <p className="mt-5 max-w-2xl text-sm leading-7 text-white/55 sm:text-base sm:leading-8">
-                From peaceful lakeside escapes to mountain retreats,
-                discover beautiful stays that make every step of your
-                journey better.
+                Discover real hotels, resorts and lodges across
+                Nepal, from peaceful lakeside stays to mountain
+                retreats and heritage properties.
               </p>
             </div>
 
-            {/* Desktop controls */}
             <div className="hidden items-center gap-3 sm:flex">
               <button
                 type="button"
@@ -347,7 +317,6 @@ export default function Hotels() {
           </div>
         </motion.div>
 
-        {/* Carousel */}
         <div className="relative mt-8 sm:mt-10">
           <div className="overflow-hidden">
             <motion.div
@@ -370,75 +339,26 @@ export default function Hotels() {
                         ? "calc((100% - 40px) / 3)"
                         : undefined,
                   }}
-                  className="
-                    group
-                    relative
-                    h-[390px]
-                    w-[78vw]
-                    max-w-[245px]
-                    shrink-0
-                    overflow-hidden
-                    rounded-[24px]
-                    border
-                    border-white/10
-                    bg-[#080b0f]
-                    shadow-xl
-                    shadow-black/30
-                    sm:h-[420px]
-                    sm:w-[42vw]
-                    sm:max-w-[300px]
-                    sm:rounded-[26px]
-                    lg:h-[440px]
-                    lg:max-w-none
-                  "
+                  className="group relative h-[390px] w-[78vw] max-w-[245px] shrink-0 overflow-hidden rounded-[24px] border border-white/10 bg-[#080b0f] shadow-xl shadow-black/30 sm:h-[420px] sm:w-[42vw] sm:max-w-[300px] sm:rounded-[26px] lg:h-[440px] lg:max-w-none"
                 >
-                  {/* Image */}
                   <img
                     src={hotel.image}
                     alt={`${hotel.name}, ${hotel.location}`}
                     loading={index < 3 ? "eager" : "lazy"}
                     decoding="async"
                     referrerPolicy="no-referrer"
-                    sizes="
-                      (max-width: 639px) 78vw,
-                      (max-width: 1023px) 42vw,
-                      33vw
-                    "
-                    className="
-                      absolute
-                      inset-0
-                      h-full
-                      w-full
-                      object-cover
-                      object-center
-                      transition-transform
-                      duration-1000
-                      ease-out
-                      group-hover:scale-[1.06]
-                    "
+                    sizes="(max-width: 639px) 78vw, (max-width: 1023px) 42vw, 33vw"
+                    className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.06]"
                   />
 
-                  {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/5" />
 
                   <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/30 to-transparent" />
 
-                  {/* Type */}
                   <div className="absolute left-4 top-4 rounded-full border border-white/15 bg-black/35 px-3 py-1.5 text-[10px] font-medium text-white backdrop-blur-md">
                     {hotel.type}
                   </div>
 
-                  {/* Rating */}
-                  <div className="absolute right-4 top-4 flex items-center gap-1 rounded-full bg-white px-3 py-1.5 text-[10px] font-semibold text-black shadow-lg">
-                    <Star
-                      size={12}
-                      className="fill-emerald-500 text-emerald-500"
-                    />
-
-                    {hotel.rating}
-                  </div>
-
-                  {/* Bottom content */}
                   <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
                     <p className="mb-2 text-[9px] font-semibold uppercase tracking-[0.25em] text-emerald-300/80 sm:text-[10px]">
                       Featured stay
@@ -469,17 +389,13 @@ export default function Hotels() {
                       </Link>
                     </div>
 
-                    {/* Price */}
                     <div className="mt-4 border-t border-white/10 pt-3">
                       <span className="text-[9px] uppercase tracking-[0.2em] text-white/40">
-                        Stay from
+                        Discover this stay
                       </span>
 
                       <p className="mt-1 text-sm font-medium text-white">
-                        {hotel.price}
-                        <span className="ml-1 text-[10px] font-normal text-white/40">
-                          / night
-                        </span>
+                        View hotel details
                       </p>
                     </div>
                   </div>
@@ -489,7 +405,6 @@ export default function Hotels() {
           </div>
         </div>
 
-        {/* Mobile controls */}
         <div className="mt-6 flex items-center justify-between sm:hidden">
           <Link
             to="/hotels"
@@ -519,9 +434,10 @@ export default function Hotels() {
           </div>
         </div>
 
-        {/* Progress indicators */}
         <div className="mt-6 flex justify-center gap-1.5 sm:mt-7">
-          {Array.from({ length: maxIndex + 1 }).map((_, index) => (
+          {Array.from({
+            length: maxIndex + 1,
+          }).map((_, index) => (
             <button
               key={index}
               type="button"
@@ -536,7 +452,6 @@ export default function Hotels() {
           ))}
         </div>
 
-        {/* Bottom CTA */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -550,7 +465,7 @@ export default function Hotels() {
             </h3>
 
             <p className="mt-1 text-sm text-white/45">
-              Find a place that feels right for your journey.
+              Find a real place to stay for your journey across Nepal.
             </p>
           </div>
 

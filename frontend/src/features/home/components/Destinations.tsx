@@ -3,19 +3,6 @@ import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import pokhara from "../../../assets/destinations/pokhara.jpg";
-import mustang from "../../../assets/destinations/mustang.jpg";
-import chitwan from "../../../assets/destinations/chitwan.jpg";
-import everest from "../../../assets/destinations/everest.jpg";
-import annapurnaCircuit from "../../../assets/destinations/annapurna_circuit.png";
-import langtangValley from "../../../assets/destinations/langtang_valley.png";
-import rara from "../../../assets/destinations/rara.jpg";
-import lumbini from "../../../assets/destinations/lumbini.jpg";
-import muktinath from "../../../assets/destinations/muktinath.png";
-import ghandruk from "../../../assets/destinations/ghandruk.png";
-import kathmandu from "../../../assets/destinations/Kathmandu.png";
-import bhaktapur from "../../../assets/destinations/bhaktapur.png";
-
 type Place = {
   name: string;
   slug: string;
@@ -27,86 +14,106 @@ const places: Place[] = [
   {
     name: "Pokhara",
     slug: "pokhara",
-    image: pokhara,
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Phewa%20Lake%20in%20Pokhara%2C%20Nepal.jpg",
     description:
       "Lakes, mountains and unforgettable adventures surrounded by the Himalayas.",
   },
   {
     name: "Mustang",
     slug: "mustang",
-    image: mustang,
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Landscape%20in%20Mustang%2C%20Nepal.jpg",
     description:
       "An ancient Himalayan kingdom shaped by dramatic landscapes and timeless culture.",
   },
   {
     name: "Chitwan",
     slug: "chitwan",
-    image: chitwan,
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Chitwan%20National%20Park.jpg",
     description:
       "Wildlife, jungles and unforgettable encounters in southern Nepal.",
   },
   {
     name: "Everest",
     slug: "everest",
-    image: everest,
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/World%20highest%20peak%20Mount%20Everest.jpg",
     description:
       "Stand among the world's highest peaks and experience the Himalayas.",
   },
   {
     name: "Annapurna Circuit",
     slug: "annapurna-circuit",
-    image: annapurnaCircuit,
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Annapurna%20Circuit.jpg",
     description:
       "One of Nepal's legendary trekking routes through spectacular landscapes.",
   },
   {
     name: "Langtang Valley",
     slug: "langtang-valley",
-    image: langtangValley,
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Langtang%20Valley.jpg",
     description:
       "A beautiful Himalayan valley filled with mountains, forests and culture.",
   },
   {
     name: "Rara",
     slug: "rara",
-    image: rara,
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Rara%20Lake%2C%20Nepal.jpg",
     description:
       "Nepal's breathtaking blue lake surrounded by peaceful mountain wilderness.",
   },
   {
     name: "Lumbini",
     slug: "lumbini",
-    image: lumbini,
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Maya%20Devi%20Temple%2C%20Lumbini%2C%20Nepal.jpg",
     description:
       "A peaceful cultural destination and the birthplace of Lord Buddha.",
   },
   {
     name: "Muktinath",
     slug: "muktinath",
-    image: muktinath,
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Muktinath%20Temple%2C%20Mustang.JPG",
     description:
       "A sacred Himalayan destination surrounded by dramatic mountain scenery.",
   },
   {
     name: "Ghandruk",
     slug: "ghandruk",
-    image: ghandruk,
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Ghandruk%20village%20overlooking%20Annapurna.jpg",
     description:
       "A beautiful mountain village with incredible views of the Annapurna range.",
   },
   {
     name: "Kathmandu",
     slug: "kathmandu",
-    image: kathmandu,
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Durbar%20Square%2C%20Kathmandu.jpg",
     description:
       "Ancient temples, vibrant streets and centuries of Nepalese culture.",
   },
   {
     name: "Bhaktapur",
     slug: "bhaktapur",
-    image: bhaktapur,
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Bhaktapur%20Durbar%20Square%20%2C%20NEPAL.jpg",
     description:
       "A historic city filled with traditional architecture, art and culture.",
+  },
+  {
+    name: "Janakpur",
+    slug: "janakpur",
+    image:
+      "https://commons.wikimedia.org/wiki/Special:Redirect/file/Janaki%20temple%20janakpur.jpg",
+    description:
+      "A sacred Mithila city known for the magnificent Janaki Mandir and rich cultural heritage.",
   },
 ];
 
@@ -116,13 +123,32 @@ export default function Destinations() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardWidth, setCardWidth] = useState(0);
   const [gap, setGap] = useState(20);
+  const [visibleCards, setVisibleCards] = useState(3);
 
   const cardRef = useRef<HTMLDivElement | null>(null);
 
-  /*
-   * Measure the real card width.
-   * This prevents the carousel from breaking at different screen sizes.
-   */
+  useEffect(() => {
+    const updateLayout = () => {
+      const width = window.innerWidth;
+
+      if (width >= 1024) {
+        setVisibleCards(3);
+      } else if (width >= 640) {
+        setVisibleCards(2);
+      } else {
+        setVisibleCards(1);
+      }
+    };
+
+    updateLayout();
+
+    window.addEventListener("resize", updateLayout);
+
+    return () => {
+      window.removeEventListener("resize", updateLayout);
+    };
+  }, []);
+
   useEffect(() => {
     const updateMeasurements = () => {
       if (!cardRef.current) return;
@@ -159,13 +185,15 @@ export default function Destinations() {
     };
   }, []);
 
-  /*
-   * Automatically move every 2 seconds.
-   */
+  const maxIndex = Math.max(
+    0,
+    places.length - visibleCards
+  );
+
   useEffect(() => {
     const timer = window.setInterval(() => {
       setCurrentIndex((prev) => {
-        if (prev >= places.length - 1) {
+        if (prev >= maxIndex) {
           return 0;
         }
 
@@ -176,11 +204,15 @@ export default function Destinations() {
     return () => {
       window.clearInterval(timer);
     };
-  }, []);
+  }, [maxIndex]);
+
+  useEffect(() => {
+    setCurrentIndex((prev) => Math.min(prev, maxIndex));
+  }, [maxIndex]);
 
   const nextSlide = () => {
     setCurrentIndex((prev) => {
-      if (prev >= places.length - 1) {
+      if (prev >= maxIndex) {
         return 0;
       }
 
@@ -191,7 +223,7 @@ export default function Destinations() {
   const previousSlide = () => {
     setCurrentIndex((prev) => {
       if (prev <= 0) {
-        return places.length - 1;
+        return maxIndex;
       }
 
       return prev - 1;
@@ -203,7 +235,6 @@ export default function Destinations() {
   return (
     <section className="relative z-20 -mt-5 overflow-hidden rounded-t-[32px] bg-[#05070a] py-14 text-white sm:rounded-t-[42px] sm:py-16 lg:-mt-6 lg:py-20">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -235,7 +266,6 @@ export default function Destinations() {
               </p>
             </div>
 
-            {/* Desktop controls */}
             <div className="hidden items-center gap-3 sm:flex">
               <button
                 type="button"
@@ -272,7 +302,6 @@ export default function Destinations() {
           </div>
         </motion.div>
 
-        {/* Carousel */}
         <div className="relative mt-8 sm:mt-10">
           <div className="overflow-hidden">
             <motion.div
@@ -289,60 +318,22 @@ export default function Destinations() {
                 <motion.article
                   key={place.slug}
                   ref={index === 0 ? cardRef : undefined}
-                  className="
-                    group
-                    relative
-                    h-[360px]
-                    w-[78vw]
-                    max-w-[245px]
-                    shrink-0
-                    overflow-hidden
-                    rounded-[24px]
-                    border
-                    border-white/10
-                    bg-black
-                    shadow-xl
-                    shadow-black/30
-                    sm:h-[390px]
-                    sm:w-[30vw]
-                    sm:max-w-[260px]
-                    sm:rounded-[26px]
-                    lg:h-[420px]
-                    lg:w-[calc((100%-40px)/3)]
-                    lg:max-w-none
-                  "
+                  className="group relative h-[360px] w-[78vw] max-w-[245px] shrink-0 overflow-hidden rounded-[24px] border border-white/10 bg-black shadow-xl shadow-black/30 sm:h-[390px] sm:w-[30vw] sm:max-w-[260px] sm:rounded-[26px] lg:h-[420px] lg:w-[calc((100%-40px)/3)] lg:max-w-none"
                 >
-                  {/* Image */}
                   <img
                     src={place.image}
                     alt={`${place.name}, Nepal`}
                     loading={index < 3 ? "eager" : "lazy"}
                     decoding="async"
-                    sizes="
-                      (max-width: 639px) 78vw,
-                      (max-width: 1023px) 30vw,
-                      33vw
-                    "
-                    className="
-                      absolute
-                      inset-0
-                      h-full
-                      w-full
-                      object-cover
-                      object-center
-                      transition-transform
-                      duration-1000
-                      ease-out
-                      group-hover:scale-[1.06]
-                    "
+                    sizes="(max-width: 639px) 78vw, (max-width: 1023px) 30vw, 33vw"
+                    referrerPolicy="no-referrer"
+                    className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.06]"
                   />
 
-                  {/* Image overlays */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/5" />
 
                   <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/25 to-transparent" />
 
-                  {/* Content */}
                   <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
                     <p className="mb-2 text-[9px] font-semibold uppercase tracking-[0.25em] text-emerald-300/80 sm:text-[10px]">
                       Nepal
@@ -362,25 +353,7 @@ export default function Destinations() {
                       <Link
                         to={`/destinations/${place.slug}`}
                         aria-label={`Explore ${place.name}`}
-                        className="
-                          flex
-                          h-10
-                          w-10
-                          shrink-0
-                          items-center
-                          justify-center
-                          rounded-full
-                          bg-white
-                          text-slate-900
-                          shadow-lg
-                          transition-all
-                          duration-300
-                          hover:scale-105
-                          hover:bg-emerald-500
-                          hover:text-white
-                          sm:h-11
-                          sm:w-11
-                        "
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-slate-900 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-emerald-500 hover:text-white sm:h-11 sm:w-11"
                       >
                         <ArrowRight size={17} />
                       </Link>
@@ -392,7 +365,6 @@ export default function Destinations() {
           </div>
         </div>
 
-        {/* Mobile controls */}
         <div className="mt-6 flex items-center justify-between sm:hidden">
           <Link
             to="/destinations"
@@ -422,7 +394,6 @@ export default function Destinations() {
           </div>
         </div>
 
-        {/* Progress indicator */}
         <div className="mt-6 flex justify-center gap-1.5 sm:mt-7">
           {places.map((place, index) => (
             <button
