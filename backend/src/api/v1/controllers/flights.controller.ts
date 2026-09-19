@@ -17,6 +17,8 @@ export async function searchFlights(req: Request, res: Response) {
     const apiKey = process.env.IGNAV_API_KEY;
 
     if (!apiKey) {
+      console.error("IGNAV_API_KEY is missing");
+
       return res.status(500).json({
         message: "Flight API is not configured.",
       });
@@ -75,6 +77,14 @@ export async function searchFlights(req: Request, res: Response) {
       payload.return_date = returnDate;
     }
 
+    console.log("Ignav flight search:", {
+      endpoint,
+      origin: from,
+      destination: to,
+      departure,
+      tripType,
+    });
+
     const response = await fetch(endpoint, {
       method: "POST",
       headers: {
@@ -84,23 +94,36 @@ export async function searchFlights(req: Request, res: Response) {
       body: JSON.stringify(payload),
     });
 
-    const data = await response.json();
+    const responseText = await response.text();
+
+    console.log("Ignav response status:", response.status);
+    console.log("Ignav response body:", responseText);
+
+    let data: unknown;
+
+    try {
+      data = JSON.parse(responseText);
+    } catch {
+      data = {
+        raw: responseText,
+      };
+    }
 
     if (!response.ok) {
-      console.error("Ignav flight search error:", data);
-
       return res.status(response.status).json({
         message: "Unable to search flights.",
+        ignavStatus: response.status,
         details: data,
       });
     }
 
     return res.status(200).json(data);
   } catch (error) {
-    console.error("Flight search error:", error);
+    console.error("Flight search request failed:", error);
 
     return res.status(500).json({
-      message: "Something went wrong while searching flights.",
+      message: "Flight search request failed.",
+      error: error instanceof Error ? error.message : String(error),
     });
   }
 }
@@ -113,6 +136,8 @@ export async function getFlightBookingLinks(
     const apiKey = process.env.IGNAV_API_KEY;
 
     if (!apiKey) {
+      console.error("IGNAV_API_KEY is missing");
+
       return res.status(500).json({
         message: "Flight API is not configured.",
       });
@@ -140,23 +165,36 @@ export async function getFlightBookingLinks(
       }
     );
 
-    const data = await response.json();
+    const responseText = await response.text();
+
+    console.log("Ignav booking-links status:", response.status);
+    console.log("Ignav booking-links response:", responseText);
+
+    let data: unknown;
+
+    try {
+      data = JSON.parse(responseText);
+    } catch {
+      data = {
+        raw: responseText,
+      };
+    }
 
     if (!response.ok) {
-      console.error("Ignav booking-link error:", data);
-
       return res.status(response.status).json({
         message: "Unable to generate booking links.",
+        ignavStatus: response.status,
         details: data,
       });
     }
 
     return res.status(200).json(data);
   } catch (error) {
-    console.error("Booking-link error:", error);
+    console.error("Booking-link request failed:", error);
 
     return res.status(500).json({
-      message: "Something went wrong while generating booking links.",
+      message: "Booking-link request failed.",
+      error: error instanceof Error ? error.message : String(error),
     });
   }
 }
