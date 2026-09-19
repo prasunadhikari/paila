@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import {
   CalendarDays,
@@ -10,6 +9,7 @@ import {
   LogOut,
   Menu,
   MessageSquare,
+  Plane,
   Sparkles,
   User,
   X,
@@ -240,6 +240,14 @@ function SidebarNavigation({
           BOOKING
       ========================== */}
       <SidebarSection title="BOOKING">
+        {/* Flights */}
+        <SidebarItem
+          to="/flights"
+          icon={<Plane className="h-[18px] w-[18px]" />}
+          label="Flights"
+          active={isSectionActive(["/flights"])}
+        />
+
         {/* Hotels */}
         <SidebarItem
           to="/hotels"

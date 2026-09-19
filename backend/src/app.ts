@@ -4,6 +4,7 @@ import cors from "cors";
 import authRoutes from "./api/v1/routes/auth.routes.js";
 import feedbackRoutes from "./api/v1/routes/feedback.routes.js";
 import aiRoutes from "./api/v1/routes/ai.routes.js";
+import flightsRoutes from "./api/v1/routes/flights.routes.js";
 
 const app = express();
 
@@ -28,5 +29,6 @@ app.get("/", (_req, res) => {
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/feedback", feedbackRoutes);
 app.use("/api/v1/ai", aiRoutes);
+app.use("/api/v1/flights", flightsRoutes);
 
 export default app;

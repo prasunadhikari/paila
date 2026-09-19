@@ -29,6 +29,9 @@ import MyTripsPage from "../features/trips/pages/MyTripsPage";
 import HotelsPage from "../features/hotels/pages/HotelsPage";
 import HotelDetailsPage from "../features/hotels/pages/HotelDetailsPage";
 
+// Flights
+import FlightsPage from "../features/flights/pages/FlightsPage";
+
 /* =========================
    SCROLL TO TOP
 ========================= */
@@ -107,6 +110,10 @@ export default function AppRouter() {
             element={<DestinationPage />}
           />
 
+          {/* =========================
+              BOOKING
+          ========================== */}
+
           {/* Hotels */}
           <Route
             path="/hotels"
@@ -118,11 +125,24 @@ export default function AppRouter() {
             element={<HotelDetailsPage />}
           />
 
-          {/* Paila AI */}
+          {/* Flights */}
+          <Route
+            path="/flights"
+            element={<FlightsPage />}
+          />
+
+          {/* =========================
+              PAIlA AI
+          ========================== */}
+
           <Route
             path="/ai"
             element={<PailaAIPage />}
           />
+
+          {/* =========================
+              MY JOURNEY
+          ========================== */}
 
           {/* Saved Places */}
           <Route
