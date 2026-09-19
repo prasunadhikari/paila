@@ -3,7 +3,7 @@ import { Router } from "express";
 import {
   searchFlights,
   getFlightBookingLinks,
-} from "../controllers/flights.controller";
+} from "../controllers/flights.controller.js";
 
 const router = Router();
 
